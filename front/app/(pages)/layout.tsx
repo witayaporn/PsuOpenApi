@@ -20,7 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <body className="main-font">
         <HeadNavbar/>
-        {children}
+        <div className="py-20 px-7 md:px-20 lg:px-96">
+          {children}
+        </div>
         <BottomNavbar/>
       </body>
     </html>
