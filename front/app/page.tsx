@@ -1,8 +1,7 @@
+'use server'
 
-export default function Home() {
-  return (
-    <>
-    <p className="test">PSU Open API สวัสดีชาว ม.อ.</p>
-    </>
-  );
+import { redirect } from "next/navigation"
+
+export default async function HomePage(){
+    redirect('/home')
 }
