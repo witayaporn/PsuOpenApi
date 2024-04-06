@@ -1,7 +1,7 @@
 export default function ClassSearchPage(){
     return (
         <section>
-            <div className="grid grid-rows-2 gap-4">
+            <div className="grid grid-rows-1 gap-4 mb-4">
                 <div className="grid grid-rows-3 gap-4">
                     <div>
                         <p className="text-3xl font-bold text-right">Course Search</p>
@@ -48,11 +48,30 @@ export default function ClassSearchPage(){
                         </div>
                     </div>
                 </div>
-
-                <div>
-                    
-                </div>
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
+                    <p>1</p>
+                </a>
+                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
+                    <p>2</p>
+                </a>
+                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
+                    <p>3</p>
+                </a>
+                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
+                    <p>4</p>
+                </a>
+                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
+                    <p>5</p>
+                </a>
+                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
+                    <p>6</p>
+                </a>
+                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
+                    <p>7</p>
+                </a>
+                </div>
         </section>
     )
 }
