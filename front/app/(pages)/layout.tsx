@@ -1,15 +1,7 @@
+
 import type { Metadata } from "next";
-// import { Inter } from "next/font/google";
-// import "./globals.css";
 import BottomNavbar from "../components/bottomNavbar"
 import HeadNavbar from "../components/headNavbar"
-
-// const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "PSU GUIDE",
-  description: "PSU Guide",
-};
 
 export default function RootLayout({
   children,

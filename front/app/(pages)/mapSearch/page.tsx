@@ -1,4 +1,14 @@
+"use client"
+
+import { useMemo } from "react"
+import dynamic from "next/dynamic"
+
 export default function MapSearchPage(){
+    const Map = dynamic(() => import("./map"), {
+        ssr: false,
+        loading: () => <p>Loading...</p>,
+    });
+
     return (
         <section>
             <div className="grid grid-rows-1 gap-4 mb-4">
@@ -50,7 +60,7 @@ export default function MapSearchPage(){
                 </div>
             </div>
             <div className="grid">
-                <p>Map Content</p>
+                <Map/>
             </div>
         </section>
     )
