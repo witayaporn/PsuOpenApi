@@ -5,6 +5,7 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import { useEffect, useState } from 'react';
 import buildingData from '../../../public/building-data.json'
+import parkingData from '../../../public/parking-data.json'
 
 export default function Map(props) {
     const defaultGEO: GeoJSON.Feature = {
@@ -46,39 +47,70 @@ export default function Map(props) {
     //     .then((res) => res.json())
     //     .then((data) => setData(data.elements))
     // }, [])
-    useEffect(()=>{
+
+    const [filter, setFilter] = useState("building")
+    const [keyMap, setKeyMap] = useState(0)
+    const handleCheckBox = (e : any) => {
+        const id : string = e.target.id
+        setFilter(filter == id ? "" : id)
+        setSelectedPlace(defaultGEO)
+        setKeyMap(keyMap + 1)
+        // console.log(filter)
+    }
+
+    useEffect(() => {
         setSelectedPlace(defaultGEO)
     }, [])
     return (
-        <MapContainer
-            preferCanvas={true}
-            center={[7.0078, 100.5006]}
-            zoom={16}
-            scrollWheelZoom={true}
-            style={{ height: "22rem", width: "auto", borderRadius: "18px" }}
-        >
-            <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />                
-            <GeoJSON 
-            pathOptions={{color: "white", weight: 1}} 
-            data={buildingData.features}
-            eventHandlers={{
-                click: (data : any) => {
-                    const feature = data.layer['feature']
-                    setSelectedPlace(feature)
-                    props.setMapData(feature.properties)
-                    setKeyGeoJson(keyGeoJson + 1)
-                    // console.log(selectedPlace)
-                }
-            }}
-            />
-            <GeoJSON
-                pathOptions={{color: "blue", weight: 2}} 
-                data={selectedPlace}
-                key={keyGeoJson}
-            />
-        </MapContainer>
+        <div className="grid grid-cols-1 gap-4">
+            <div className="flex space-x-2">
+                <div>
+                    <input type="checkbox" id="building" checked={filter == "building"} className="hidden peer" onChange={handleCheckBox}></input>
+                    <label htmlFor="building" className="inline-flex p-1 text-gray-400 bg-blue-100 border-2 border-blue-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-black">
+                        Building
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="parking" checked={filter == "parking"} className="hidden peer" onChange={handleCheckBox}></input>
+                    <label htmlFor="parking" className="inline-flex p-1 text-gray-400 bg-red-100 border-2 border-red-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-black">
+                        Parking
+                    </label>
+                </div>
+            </div>
+            <div>
+                <MapContainer
+                    preferCanvas={true}
+                    key={keyMap}
+                    center={[7.0078, 100.5006]}
+                    zoom={16}
+                    scrollWheelZoom={true}
+                    style={{ height: "22rem", width: "auto", borderRadius: "18px" }}
+                >
+                    <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <GeoJSON
+                        pathOptions={{ color: "wheat", weight: 1, opacity: 0.1 }}
+                        data={filter == "parking" ? parkingData.features : buildingData.features}
+                        eventHandlers={{
+                            click: (data: any) => {
+                                const feature = data.layer['feature']
+                                setSelectedPlace(feature)
+                                props.setMapData(feature.properties)
+                                setKeyGeoJson(keyGeoJson + 1)
+                                // console.log(selectedPlace)
+                            }
+                        }}
+                    />
+                    {console.log(filter)}
+                    <GeoJSON
+                        pathOptions={{ color: "blue", weight: 2 }}
+                        data={selectedPlace}
+                        key={keyGeoJson}
+                    />
+                </MapContainer>
+            </div>
+        </div>
     )
 }
