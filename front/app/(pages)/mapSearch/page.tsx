@@ -1,13 +1,16 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import dynamic from "next/dynamic"
 
 export default function MapSearchPage(){
+    const [shareState, setShareState] = useState({})
     const Map = dynamic(() => import("./map"), {
         ssr: false,
         loading: () => <p>Loading...</p>,
     });
+
+    const mapMemo = useMemo(() => <Map shareState={shareState} setShareState={setShareState} />, [])
 
     return (
         <section>
@@ -59,8 +62,12 @@ export default function MapSearchPage(){
                     </div>
                 </div>
             </div>
-            <div className="grid">
-                <Map/>
+            <div>
+                {mapMemo}
+                {/* {console.log(shareState)} */}
+            </div>
+            <div>
+
             </div>
         </section>
     )

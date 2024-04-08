@@ -3,16 +3,20 @@ import { MapContainer, TileLayer, Polygon, useMap, GeoJSON } from 'react-leaflet
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import "leaflet-defaulticon-compatibility";
-import { LatLngExpression } from 'leaflet';
 import { useEffect, useState } from 'react';
-import geodata from '../../../public/building-data.json'
+import buildingData from '../../../public/building-data.json'
 
-const buildingClick = (prop : any) => {
-    console.log(prop.layer['feature'])
-}
-
-export default function Map() {
-    // const [data, setData] = useState([]);
+export default function Map(props) {
+    const defaultGEO: GeoJSON.Feature = {
+        type: 'Feature',
+        geometry: {
+            type: 'Polygon',
+            coordinates: [100.5006, 7.0078],
+        },
+        properties: {}
+    }
+    const [selectedPlace, setSelectedPlace] = useState({});
+    const [keyGeoJson, setKeyGeoJson] = useState(0)
     // useEffect(() =>{
     //     fetch('https://overpass-api.de/api/interpreter',{
     //             method: "POST",
@@ -42,13 +46,9 @@ export default function Map() {
     //     .then((res) => res.json())
     //     .then((data) => setData(data.elements))
     // }, [])
-
-    const sirinPos = [
-        [7.0064096, 100.5024446],
-        [7.0060944, 100.5026604],
-        [7.0058861, 100.5023517],
-        [7.0062013, 100.5021358]
-    ]
+    useEffect(()=>{
+        setSelectedPlace(defaultGEO)
+    }, [])
     return (
         <MapContainer
             preferCanvas={true}
@@ -60,19 +60,25 @@ export default function Map() {
             <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {/* <Polygon
-                pathOptions={{color: "blue", weight: 2}} 
-                positions={sirinPos}
-            /> */}
+            />                
             <GeoJSON 
             pathOptions={{color: "white", weight: 1}} 
-            data={geodata.features}
+            data={buildingData.features}
             eventHandlers={{
-                click: (e) => buildingClick(e)
+                click: (data : any) => {
+                    const feature = data.layer['feature']
+                    setSelectedPlace(feature)
+                    props.setShareState(feature)
+                    setKeyGeoJson(keyGeoJson + 1)
+                    // console.log(selectedPlace)
+                }
             }}
             />
-            {console.log(geodata.features)}
+            <GeoJSON
+                pathOptions={{color: "blue", weight: 2}} 
+                data={selectedPlace}
+                key={keyGeoJson}
+            />
         </MapContainer>
     )
 }
