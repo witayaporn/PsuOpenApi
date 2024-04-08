@@ -68,7 +68,7 @@ export default function Map(props) {
                 click: (data : any) => {
                     const feature = data.layer['feature']
                     setSelectedPlace(feature)
-                    props.setShareState(feature)
+                    props.setMapData(feature.properties)
                     setKeyGeoJson(keyGeoJson + 1)
                     // console.log(selectedPlace)
                 }

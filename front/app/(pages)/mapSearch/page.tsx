@@ -4,13 +4,13 @@ import { useMemo, useState } from "react"
 import dynamic from "next/dynamic"
 
 export default function MapSearchPage(){
-    const [shareState, setShareState] = useState({})
+    const [mapData, setMapData] = useState({})
     const Map = dynamic(() => import("./map"), {
         ssr: false,
         loading: () => <p>Loading...</p>,
     });
 
-    const mapMemo = useMemo(() => <Map shareState={shareState} setShareState={setShareState} />, [])
+    const mapMemo = useMemo(() => <Map mapData={mapData} setMapData={setMapData} />, [])
 
     return (
         <section>
@@ -62,12 +62,12 @@ export default function MapSearchPage(){
                     </div>
                 </div>
             </div>
-            <div>
+            <div className="grid grid-rows-2 gap-3">
                 {mapMemo}
-                {/* {console.log(shareState)} */}
-            </div>
-            <div>
-
+                <div>
+                    {console.log(mapData)}
+                    <h1 className="text-center text-xl font-bold">{mapData.name}</h1>
+                </div>
             </div>
         </section>
     )
