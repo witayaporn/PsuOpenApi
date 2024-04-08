@@ -1,18 +1,22 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import dynamic from "next/dynamic"
 
 export default function MapSearchPage(){
+    const [mapData, setMapData] = useState({})
     const Map = dynamic(() => import("./map"), {
         ssr: false,
         loading: () => <p>Loading...</p>,
     });
 
+
+    const mapMemo = useMemo(() => <Map mapData={mapData} setMapData={setMapData} />, [])
+
     return (
         <section>
-            <div className="grid grid-rows-1 gap-4 mb-4">
-                <div className="grid grid-rows-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 mb-3">
+                <div className="grid grid-rows-2 gap-4">
                     <div>
                         <p className="text-3xl font-bold text-right">Building/Room Search</p>
                     </div>
@@ -29,38 +33,14 @@ export default function MapSearchPage(){
                             </button>
                         </div>
                     </div>
-                    <div>
-                        <div className="flex space-x-2">
-                            <div>
-                                <input type="checkbox" id="option-1" value="" className="hidden peer"></input>
-                                <label htmlFor="option-1" className="inline-flex p-1 text-black bg-green-100 border-2 border-green-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">                           
-                                    Art
-                                </label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="option-2" value="" className="hidden peer"></input>
-                                <label htmlFor="option-2" className="inline-flex p-1 text-black bg-red-100 border-2 border-red-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">                           
-                                    Mathematic
-                                </label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="option-3" value="" className="hidden peer"></input>
-                                <label htmlFor="option-3" className="inline-flex p-1 text-black bg-yellow-100 border-2 border-yellow-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">                           
-                                    Technologies
-                                </label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="option-4" value="" className="hidden peer"></input>
-                                <label htmlFor="option-4" className="inline-flex p-1 text-black bg-blue-100 border-2 border-blue-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">                           
-                                    Literature
-                                </label>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <div className="grid">
-                <Map/>
+            <div className="grid grid-rows-2 gap-3">
+                {mapMemo}
+                <div>
+                    {console.log(mapData)}
+                    <h1 className="text-center text-xl font-bold">{mapData.name}</h1>
+                </div>
             </div>
         </section>
     )
