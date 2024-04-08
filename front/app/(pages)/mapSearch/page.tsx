@@ -11,7 +11,7 @@ export default function MapSearchPage(){
 
     return (
         <section>
-            <div className="grid grid-rows-1 gap-4 mb-4">
+            <div className="grid grid-rows-1 gap-4 mb-3">
                 <div className="grid grid-rows-3 gap-4">
                     <div>
                         <p className="text-3xl font-bold text-right">Building/Room Search</p>
