@@ -5,9 +5,12 @@ import CourseCard from "./courseCard";
 
 export default function ClassSearchPage() {
     const [courseData, setCourseData] = useState([])
+    const campusID: string = "01"
+    const eduTerm: string = '1'
+    const eduYear: string = "2564"
 
     useEffect(() => {
-        fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/1/2564?facID=&deptID=&keySearch=&offset=0&limit=1000`, {
+        fetch(`https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/${campusID}/${eduTerm}/${eduYear}?facID=&deptID=&keySearch=&offset=0&limit=1000`, {
             method: 'GET',   
             headers: {
                 "credential": process.env.NEXT_PUBLIC_API_KEY
