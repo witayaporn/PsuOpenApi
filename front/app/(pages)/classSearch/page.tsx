@@ -1,4 +1,22 @@
-export default function ClassSearchPage(){
+'use client'
+
+import { useEffect, useState } from "react";
+import CourseCard from "./courseCard";
+
+export default function ClassSearchPage() {
+    const [courseData, setCourseData] = useState([])
+
+    useEffect(() => {
+        fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/1/2564?facID=&deptID=&keySearch=&offset=0&limit=1000`, {
+            method: 'GET',   
+            headers: {
+                "credential": process.env.NEXT_PUBLIC_API_KEY
+            }
+        })
+        .then((res) => res.json())
+        .then((data) => setCourseData(data.data))
+    }, [])
+
     return (
         <section>
             <div className="grid grid-rows-1 gap-4 mb-4">
@@ -23,25 +41,25 @@ export default function ClassSearchPage(){
                         <div className="flex space-x-2">
                             <div>
                                 <input type="checkbox" id="option-1" value="" className="hidden peer"></input>
-                                <label htmlFor="option-1" className="inline-flex p-1 text-black bg-green-100 border-2 border-green-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">                           
+                                <label htmlFor="option-1" className="inline-flex p-1 text-black bg-green-100 border-2 border-green-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">
                                     Art
                                 </label>
                             </div>
                             <div>
                                 <input type="checkbox" id="option-2" value="" className="hidden peer"></input>
-                                <label htmlFor="option-2" className="inline-flex p-1 text-black bg-red-100 border-2 border-red-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">                           
+                                <label htmlFor="option-2" className="inline-flex p-1 text-black bg-red-100 border-2 border-red-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">
                                     Mathematic
                                 </label>
                             </div>
                             <div>
                                 <input type="checkbox" id="option-3" value="" className="hidden peer"></input>
-                                <label htmlFor="option-3" className="inline-flex p-1 text-black bg-yellow-100 border-2 border-yellow-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">                           
+                                <label htmlFor="option-3" className="inline-flex p-1 text-black bg-yellow-100 border-2 border-yellow-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">
                                     Technologies
                                 </label>
                             </div>
                             <div>
                                 <input type="checkbox" id="option-4" value="" className="hidden peer"></input>
-                                <label htmlFor="option-4" className="inline-flex p-1 text-black bg-blue-100 border-2 border-blue-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">                           
+                                <label htmlFor="option-4" className="inline-flex p-1 text-black bg-blue-100 border-2 border-blue-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">
                                     Literature
                                 </label>
                             </div>
@@ -49,29 +67,11 @@ export default function ClassSearchPage(){
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
-                    <p>1</p>
-                </a>
-                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
-                    <p>2</p>
-                </a>
-                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
-                    <p>3</p>
-                </a>
-                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
-                    <p>4</p>
-                </a>
-                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
-                    <p>5</p>
-                </a>
-                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
-                    <p>6</p>
-                </a>
-                <a className="row-span-1 col-span-1 h-28 md:h-44 bg-emerald-200 rounded hover:shadow hover:scale-[1.01] transition-all ">
-                    <p>7</p>
-                </a>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {
+                    courseData.map((course, key) => <CourseCard key={key} data={course}/>)
+                }
+            </div>
         </section>
     )
 }
