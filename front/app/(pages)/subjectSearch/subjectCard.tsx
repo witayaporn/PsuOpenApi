@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react"
-export default function CourseCard(prop: any) {
+export default function SubjectCard(prop: any) {
     const data = prop.data
     const subjectNameTH = data.subjectCode + " " + data.subjectNameThai
     const subjectNameEN = data.subjectCode + " " + data.subjectNameEng
