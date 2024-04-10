@@ -1,11 +1,15 @@
 "use client"
 import { MapContainer, TileLayer, Polygon, useMap, GeoJSON } from 'react-leaflet'
+import L from 'leaflet'
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import "leaflet-defaulticon-compatibility";
 import { useEffect, useState } from 'react';
 import buildingData from '../../../public/building-data.json'
 import parkingData from '../../../public/parking-data.json'
+import parkingIconURL from '../../../public/parking-icon.png'
+
+
 
 export default function Map(props) {
     const defaultGEO: GeoJSON.Feature = {
@@ -58,6 +62,13 @@ export default function Map(props) {
         // console.log(filter)
     }
 
+    const parkingIcon = new L.Icon({
+        iconUrl: './parking-icon.png',
+        iconSize: [32, 45],
+        iconAnchor: [16, 37],
+        popupAnchor: [0, 0]
+    })
+
     useEffect(() => {
         setSelectedPlace(defaultGEO)
     }, [])
@@ -93,6 +104,7 @@ export default function Map(props) {
                     <GeoJSON
                         pathOptions={{ color: "wheat", weight: 1, opacity: 0.1 }}
                         data={filter == "parking" ? parkingData.features : buildingData.features}
+                        pointToLayer={(feature, latlng) => L.marker(latlng, {icon: parkingIcon})}
                         eventHandlers={{
                             click: (data: any) => {
                                 const feature = data.layer['feature']
@@ -108,6 +120,7 @@ export default function Map(props) {
                         pathOptions={{ color: "blue", weight: 2 }}
                         data={selectedPlace}
                         key={keyGeoJson}
+                        pointToLayer={(feature, latlng) => L.marker(latlng, {icon: parkingIcon})}
                     />
                 </MapContainer>
             </div>

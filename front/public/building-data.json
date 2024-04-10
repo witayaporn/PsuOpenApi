@@ -2,7 +2,7 @@
   "type": "FeatureCollection",
   "generator": "overpass-turbo",
   "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
-  "timestamp": "2024-04-07T19:53:15Z",
+  "timestamp": "2024-04-09T18:57:36Z",
   "features": [
     {
       "type": "Feature",
@@ -201,10 +201,72 @@
     {
       "type": "Feature",
       "properties": {
+        "@id": "way/101677210",
+        "air_conditioning": "yes",
+        "amenity": "conference_centre",
+        "building": "university",
+        "internet_access": "yes",
+        "name": "ศูนย์ประชุมนานาชาติฉลองสิริราชสมบัติครบ ๖๐ ปี",
+        "name:en": "The 60th Anniversary of His Majesty the King’s Accession to the Throne International Convention Center",
+        "name:th": "ศูนย์ประชุมนานาชาติฉลองสิริราชสมบัติครบ ๖๐ ปี",
+        "smoking": "no",
+        "source": "bing",
+        "website": "http://www.psuicc.com"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5045587,
+              7.0025363
+            ],
+            [
+              100.5042403,
+              7.001514
+            ],
+            [
+              100.5047598,
+              7.0013464
+            ],
+            [
+              100.5049498,
+              7.0019888
+            ],
+            [
+              100.5053911,
+              7.0018547
+            ],
+            [
+              100.50519,
+              7.0012123
+            ],
+            [
+              100.5057933,
+              7.0010279
+            ],
+            [
+              100.5061173,
+              7.0020614
+            ],
+            [
+              100.5045587,
+              7.0025363
+            ]
+          ]
+        ]
+      },
+      "id": "way/101677210"
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "@id": "way/101677214",
         "building": "university",
         "building:levels": "4",
-        "name": "Faculty of Natural Resources"
+        "name": "ตึกคณะทรัพยากรธรรมชาติ",
+        "name:en": "Faculty of Natural Resources",
+        "name:th": "ตึกคณะทรัพยากรธรรมชาติ"
       },
       "geometry": {
         "type": "Polygon",
@@ -279,7 +341,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/101706758",
-        "building": "university"
+        "building": "university",
+        "faculty": "Faculty of Pharmaceutical Sciences",
+        "name": "อาคารเรียน 3"
       },
       "geometry": {
         "type": "Polygon",
@@ -314,7 +378,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/101706763",
-        "building": "university"
+        "building": "university",
+        "faculty": "Faculty of Pharmaceutical Sciences",
+        "name": "อาคารเรียน 4"
       },
       "geometry": {
         "type": "Polygon",
@@ -349,7 +415,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/101706777",
-        "building": "university"
+        "building": "university",
+        "faculty": "Faculty of Pharmaceutical Sciences",
+        "name": "อาคารเรียน 2"
       },
       "geometry": {
         "type": "Polygon",
@@ -702,7 +770,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/101939919",
-        "building": "university"
+        "building": "university",
+        "faculty": "คณะเภสัชศาสตร์",
+        "name": "อาคารเรียน 1"
       },
       "geometry": {
         "type": "Polygon",
@@ -737,7 +807,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/101939922",
-        "building": "university"
+        "building": "university",
+        "faculty": "Faculty of Algo Industry",
+        "name": "อาคารคณะอุตสาหกรรมเกษตร"
       },
       "geometry": {
         "type": "Polygon",
@@ -812,7 +884,8 @@
       "type": "Feature",
       "properties": {
         "@id": "way/101939925",
-        "building": "university"
+        "building": "university",
+        "name": "อาคารเรียน 5"
       },
       "geometry": {
         "type": "Polygon",
@@ -1089,6 +1162,94 @@
         ]
       },
       "id": "way/149453751"
+    },{
+      "type": "Feature",
+      "properties": {
+        "@id": "way/858795526",
+        "building": "university",
+        "building:levels": "2",
+        "name": "ลานหินแตก"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.4987759,
+              7.008451
+            ],
+            [
+              100.4987765,
+              7.0084252
+            ],
+            [
+              100.4987942,
+              7.0083487
+            ],
+            [
+              100.4987779,
+              7.0083467
+            ],
+            [
+              100.4985604,
+              7.0083366
+            ],
+            [
+              100.4985604,
+              7.0082539
+            ],
+            [
+              100.4986397,
+              7.0081933
+            ],
+            [
+              100.4986926,
+              7.0081994
+            ],
+            [
+              100.498689,
+              7.0081292
+            ],
+            [
+              100.4987048,
+              7.0079089
+            ],
+            [
+              100.4986965,
+              7.0078365
+            ],
+            [
+              100.4987378,
+              7.0077852
+            ],
+            [
+              100.4987739,
+              7.0077838
+            ],
+            [
+              100.4988206,
+              7.007697
+            ],
+            [
+              100.4992556,
+              7.0077091
+            ],
+            [
+              100.4994589,
+              7.0078907
+            ],
+            [
+              100.4993979,
+              7.0084778
+            ],
+            [
+              100.4987759,
+              7.008451
+            ]
+          ]
+        ]
+      },
+      "id": "way/858795526"
     },
     {
       "type": "Feature",
@@ -1686,6 +1847,90 @@
         ]
       },
       "id": "way/150262214"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/150323405",
+        "building": "university",
+        "is_in:country": "Thailand",
+        "is_in:district": "Hat Yai",
+        "is_in:province": "Songkhla",
+        "name:th": "อาคารสถาบันสันติศึกษา"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.4987516,
+              7.0104115
+            ],
+            [
+              100.4986456,
+              7.0103651
+            ],
+            [
+              100.4987315,
+              7.0101685
+            ],
+            [
+              100.498799,
+              7.0100024
+            ],
+            [
+              100.498895,
+              7.0100452
+            ],
+            [
+              100.4987516,
+              7.0104115
+            ]
+          ]
+        ]
+      },
+      "id": "way/150323405"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/150323410",
+        "building": "university",
+        "building:levels": "3",
+        "is_in:country": "Thailand",
+        "is_in:district": "Hat Yai",
+        "is_in:province": "Songkhla",
+        "name": "Hall of History",
+        "name:th": "หอประวัติ มหาวิทยาลัยสงขลานครินทร์"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.4990799,
+              7.0095634
+            ],
+            [
+              100.4989143,
+              7.0098974
+            ],
+            [
+              100.4985969,
+              7.0097424
+            ],
+            [
+              100.4987626,
+              7.0094083
+            ],
+            [
+              100.4990799,
+              7.0095634
+            ]
+          ]
+        ]
+      },
+      "id": "way/150323410"
     },
     {
       "type": "Feature",
@@ -2361,7 +2606,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/150490471",
-        "building": "university"
+        "building": "university",
+        "faculty": "Faculty of Medicine Administrative",
+        "name": "อาคารเรียนรวมเเละหอสมุดคณะเเพทยศาสตร์"
       },
       "geometry": {
         "type": "Polygon",
@@ -2666,7 +2913,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/150490488",
-        "building": "hospital"
+        "building": "hospital",
+        "faculty": "Faculty of Medicine Administrative",
+        "name": "อาคารเเพทยศาสตร์ศึกษาราชนครินทร์"
       },
       "geometry": {
         "type": "Polygon",
@@ -2969,162 +3218,7 @@
         ]
       },
       "id": "way/403029540"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "@id": "way/554270973",
-        "building": "university",
-        "building:levels": "4",
-        "layer": "1"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              100.498303,
-              7.0076065
-            ],
-            [
-              100.4983159,
-              7.0073967
-            ],
-            [
-              100.4984836,
-              7.0074069
-            ],
-            [
-              100.4985137,
-              7.0074087
-            ],
-            [
-              100.4992688,
-              7.0074546
-            ],
-            [
-              100.4992785,
-              7.0074552
-            ],
-            [
-              100.4994351,
-              7.0074647
-            ],
-            [
-              100.499425,
-              7.0076288
-            ],
-            [
-              100.4994238,
-              7.007649
-            ],
-            [
-              100.4994222,
-              7.0076743
-            ],
-            [
-              100.4984822,
-              7.0076173
-            ],
-            [
-              100.498303,
-              7.0076065
-            ]
-          ]
-        ]
-      },
-      "id": "way/554270973"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "@id": "way/858795526",
-        "building": "university",
-        "building:levels": "2",
-        "name": "ลานหินแตก"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              100.4987759,
-              7.008451
-            ],
-            [
-              100.4987765,
-              7.0084252
-            ],
-            [
-              100.4987942,
-              7.0083487
-            ],
-            [
-              100.4987779,
-              7.0083467
-            ],
-            [
-              100.4985604,
-              7.0083366
-            ],
-            [
-              100.4985604,
-              7.0082539
-            ],
-            [
-              100.4986397,
-              7.0081933
-            ],
-            [
-              100.4986926,
-              7.0081994
-            ],
-            [
-              100.498689,
-              7.0081292
-            ],
-            [
-              100.4987048,
-              7.0079089
-            ],
-            [
-              100.4986965,
-              7.0078365
-            ],
-            [
-              100.4987378,
-              7.0077852
-            ],
-            [
-              100.4987739,
-              7.0077838
-            ],
-            [
-              100.4988206,
-              7.007697
-            ],
-            [
-              100.4992556,
-              7.0077091
-            ],
-            [
-              100.4994589,
-              7.0078907
-            ],
-            [
-              100.4993979,
-              7.0084778
-            ],
-            [
-              100.4987759,
-              7.008451
-            ]
-          ]
-        ]
-      },
-      "id": "way/858795526"
-    },
-    {
+    },{
       "type": "Feature",
       "properties": {
         "@id": "way/858795529",
@@ -3377,7 +3471,8 @@
         "@id": "way/858795543",
         "building": "university",
         "building:levels": "3",
-        "name": "อาคาร3 คณะพยาบาลศาสตร์"
+        "faculty": "Faculty of Nursing",
+        "name": "อาคาร 3 คณะพยาบาลศาสตร์"
       },
       "geometry": {
         "type": "Polygon",
@@ -3483,7 +3578,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/858795550",
-        "building": "university"
+        "building": "university",
+        "faculty": "Faculty of Nursing",
+        "name": "อาคารเรียน 2"
       },
       "geometry": {
         "type": "Polygon",
@@ -3518,7 +3615,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/858795551",
-        "building": "university"
+        "building": "university",
+        "faculty": "Faculty of Nursing",
+        "name": "อาคารเรียน 1"
       },
       "geometry": {
         "type": "Polygon",
@@ -3553,7 +3652,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/858795552",
-        "building": "university"
+        "building": "university",
+        "faculty": "Faculty of Medicine Administrative",
+        "name": "อาคารบริหารคณะเเพทยศาสตร์"
       },
       "geometry": {
         "type": "Polygon",
@@ -3663,6 +3764,86 @@
         ]
       },
       "id": "way/858854608"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/858854618",
+        "building": "gym",
+        "leisure": "fitness_centre",
+        "sport": "fitness"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5007591,
+              7.0100372
+            ],
+            [
+              100.5007728,
+              7.0098367
+            ],
+            [
+              100.501102,
+              7.0098589
+            ],
+            [
+              100.5010882,
+              7.0100594
+            ],
+            [
+              100.5007591,
+              7.0100372
+            ]
+          ]
+        ]
+      },
+      "id": "way/858854618"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/858854620",
+        "access": "yes",
+        "building": "sports_centre",
+        "leisure": "sports_hall",
+        "sport": "soccer;basketball;multi;volleyball;table_tennis",
+        "website": "http://www.sportscenter.psu.ac.th/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5004596,
+              7.0109816
+            ],
+            [
+              100.5004605,
+              7.0105439
+            ],
+            [
+              100.5004606,
+              7.010469
+            ],
+            [
+              100.5016622,
+              7.0104712
+            ],
+            [
+              100.5016612,
+              7.010984
+            ],
+            [
+              100.5004596,
+              7.0109816
+            ]
+          ]
+        ]
+      },
+      "id": "way/858854620"
     },
     {
       "type": "Feature",
@@ -3855,6 +4036,45 @@
     {
       "type": "Feature",
       "properties": {
+        "@id": "way/858854627",
+        "building": "university"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.4984059,
+              7.0100335
+            ],
+            [
+              100.4984794,
+              7.009865
+            ],
+            [
+              100.498799,
+              7.0100024
+            ],
+            [
+              100.4987315,
+              7.0101685
+            ],
+            [
+              100.4984917,
+              7.0100653
+            ],
+            [
+              100.4984059,
+              7.0100335
+            ]
+          ]
+        ]
+      },
+      "id": "way/858854627"
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "@id": "way/858854628",
         "building": "university",
         "name": "Instiltute for Peace Studies",
@@ -4002,7 +4222,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/858860103",
-        "building": "hospital"
+        "building": "hospital",
+        "faculty": "Faculty of Dentistry",
+        "name": "อาคารคณะทันตแพทยศาสตร์"
       },
       "geometry": {
         "type": "Polygon",
@@ -4100,7 +4322,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/858860107",
-        "building": "university"
+        "building": "university",
+        "faculty": "Faculty of Management Sciences",
+        "name": "อาคารบริหารเเละอาคารเรียน 2"
       },
       "geometry": {
         "type": "Polygon",
@@ -4329,7 +4553,9 @@
       "type": "Feature",
       "properties": {
         "@id": "way/860359361",
-        "building": "university"
+        "building": "university",
+        "faculty": "Faculty of Management Sciences",
+        "name": "อาคารเรียน 1"
       },
       "geometry": {
         "type": "Polygon",
@@ -4383,6 +4609,118 @@
         ]
       },
       "id": "way/860359361"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/860359362",
+        "amenity": "food_court",
+        "building": "university",
+        "building:levels": "1",
+        "internet_access": "yes",
+        "name": "โรงช้าง",
+        "name:en": "Rong Chang"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.4995147,
+              7.0115701
+            ],
+            [
+              100.4996893,
+              7.0117345
+            ],
+            [
+              100.4994295,
+              7.0120064
+            ],
+            [
+              100.4993303,
+              7.0119547
+            ],
+            [
+              100.4992724,
+              7.0120641
+            ],
+            [
+              100.4991907,
+              7.0120215
+            ],
+            [
+              100.4991789,
+              7.0120438
+            ],
+            [
+              100.4992436,
+              7.0120775
+            ],
+            [
+              100.4990839,
+              7.0123794
+            ],
+            [
+              100.4989462,
+              7.0123077
+            ],
+            [
+              100.4988855,
+              7.01212
+            ],
+            [
+              100.4990723,
+              7.0117561
+            ],
+            [
+              100.4991669,
+              7.0117275
+            ],
+            [
+              100.4991515,
+              7.0116772
+            ],
+            [
+              100.4992569,
+              7.0116477
+            ],
+            [
+              100.499295,
+              7.0117821
+            ],
+            [
+              100.4992497,
+              7.0118002
+            ],
+            [
+              100.4994128,
+              7.0119536
+            ],
+            [
+              100.4995519,
+              7.0118079
+            ],
+            [
+              100.4994923,
+              7.0117518
+            ],
+            [
+              100.4995494,
+              7.0116921
+            ],
+            [
+              100.4994697,
+              7.0116172
+            ],
+            [
+              100.4995147,
+              7.0115701
+            ]
+          ]
+        ]
+      },
+      "id": "way/860359362"
     },
     {
       "type": "Feature",
@@ -4488,6 +4826,187 @@
         ]
       },
       "id": "way/860359365"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/860359367",
+        "building": "university",
+        "faculty": "Faculty of Management Sciences",
+        "name": "อาคารวิจัยเเละพัฒนาองค์ความรู้เพื่อการจัดการ"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.4987462,
+              7.0123406
+            ],
+            [
+              100.4984429,
+              7.0124137
+            ],
+            [
+              100.4984389,
+              7.0123977
+            ],
+            [
+              100.4983485,
+              7.0124198
+            ],
+            [
+              100.498338,
+              7.0123773
+            ],
+            [
+              100.498313,
+              7.0123834
+            ],
+            [
+              100.4983331,
+              7.0124644
+            ],
+            [
+              100.4982505,
+              7.0124846
+            ],
+            [
+              100.498157,
+              7.0124746
+            ],
+            [
+              100.4980642,
+              7.0124309
+            ],
+            [
+              100.4980183,
+              7.0123843
+            ],
+            [
+              100.4979639,
+              7.0123071
+            ],
+            [
+              100.4979537,
+              7.0122748
+            ],
+            [
+              100.4979415,
+              7.0122264
+            ],
+            [
+              100.4979517,
+              7.012182
+            ],
+            [
+              100.4979984,
+              7.012176
+            ],
+            [
+              100.498031,
+              7.0120832
+            ],
+            [
+              100.4981388,
+              7.0121545
+            ],
+            [
+              100.4981529,
+              7.0121336
+            ],
+            [
+              100.4982159,
+              7.0120993
+            ],
+            [
+              100.4982607,
+              7.0121053
+            ],
+            [
+              100.4983013,
+              7.0121255
+            ],
+            [
+              100.4983277,
+              7.0121477
+            ],
+            [
+              100.4983479,
+              7.0122304
+            ],
+            [
+              100.4983996,
+              7.012218
+            ],
+            [
+              100.4983774,
+              7.012127
+            ],
+            [
+              100.498407,
+              7.0121199
+            ],
+            [
+              100.498393,
+              7.0120629
+            ],
+            [
+              100.4986625,
+              7.011998
+            ],
+            [
+              100.4987462,
+              7.0123406
+            ]
+          ]
+        ]
+      },
+      "id": "way/860359367"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1051204583",
+        "amenity": "veterinary",
+        "building": "university",
+        "name": "Veterinary Teaching Hospital",
+        "operator": "Faculty of Veterinary Science",
+        "phone": "+6674289607",
+        "website": "https://www.facebook.com/psuvethospital/"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5012061,
+              7.002066
+            ],
+            [
+              100.5011152,
+              7.0017831
+            ],
+            [
+              100.5013542,
+              7.0017049
+            ],
+            [
+              100.5015589,
+              7.0016379
+            ],
+            [
+              100.5016482,
+              7.001933
+            ],
+            [
+              100.5012061,
+              7.002066
+            ]
+          ]
+        ]
+      },
+      "id": "way/1051204583"
     },
     {
       "type": "Feature",
@@ -4600,7 +5119,9 @@
         "@id": "way/1051517060",
         "building": "university",
         "building:levels": "4",
-        "name": "Physics Building"
+        "faculty": "Faculty of Science",
+        "name": "อาคารฟิสิกส์",
+        "name:en": "Physics Building"
       },
       "geometry": {
         "type": "Polygon",
@@ -4638,8 +5159,7 @@
         ]
       },
       "id": "way/1051517060"
-    },
-    {
+    },{
       "type": "Feature",
       "properties": {
         "@id": "way/1149570292",
@@ -4962,6 +5482,42 @@
     {
       "type": "Feature",
       "properties": {
+        "@id": "way/1202473240",
+        "building": "university",
+        "shop": "chemist"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5017277,
+              7.0018517
+            ],
+            [
+              100.5016631,
+              7.0016263
+            ],
+            [
+              100.5017741,
+              7.0015949
+            ],
+            [
+              100.5018388,
+              7.0018203
+            ],
+            [
+              100.5017277,
+              7.0018517
+            ]
+          ]
+        ]
+      },
+      "id": "way/1202473240"
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "@id": "way/1266705870",
         "building": "university"
       },
@@ -5064,9 +5620,10 @@
     {
       "type": "Feature",
       "properties": {
-        "@id": "way/1270600060",
+        "@id": "way/1271250662",
+        "amenity:university:faculty": "Faculty of Engineering",
         "building": "university",
-        "name": "ตึกวิศวกรรมเคมี",
+        "name": "ตึกภาควิชาวิศวกรรมเคมี",
         "name:en": "Department of Chemical Engineering"
       },
       "geometry": {
@@ -5074,29 +5631,119 @@
         "coordinates": [
           [
             [
-              100.5014608,
-              7.0060694
+              100.5010426,
+              7.0058137
             ],
             [
-              100.5010476,
-              7.0058007
+              100.5012647,
+              7.0054676
             ],
             [
-              100.5012659,
-              7.0054694
+              100.5014954,
+              7.0056242
             ],
             [
-              100.5016629,
-              7.0057631
+              100.5014771,
+              7.0056529
             ],
             [
-              100.5014608,
-              7.0060694
+              100.5016563,
+              7.0057701
+            ],
+            [
+              100.501446,
+              7.0060831
+            ],
+            [
+              100.5010426,
+              7.0058137
             ]
           ]
         ]
       },
-      "id": "way/1270600060"
+      "id": "way/1271250662"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1271250663",
+        "amenity:university:faculty": "Faculty of Engineering",
+        "building": "university",
+        "name": "อาคารปฏิบัติการวิศวกรรมพื้นฐาน"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5016363,
+              7.0061924
+            ],
+            [
+              100.5018169,
+              7.0059213
+            ],
+            [
+              100.5021233,
+              7.0061156
+            ],
+            [
+              100.5020763,
+              7.0061849
+            ],
+            [
+              100.5022007,
+              7.0062722
+            ],
+            [
+              100.5020687,
+              7.0064665
+            ],
+            [
+              100.5016363,
+              7.0061924
+            ]
+          ]
+        ]
+      },
+      "id": "way/1271250663"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1271250664",
+        "amenity:university:faculty": "Faculty of Engineering",
+        "building": "university",
+        "name": "สโมสรนักศึกษาคณะวิศวกรรมศาสตร์"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5016227,
+              7.0061836
+            ],
+            [
+              100.5015317,
+              7.0061264
+            ],
+            [
+              100.501691,
+              7.0059058
+            ],
+            [
+              100.5017737,
+              7.0059713
+            ],
+            [
+              100.5016227,
+              7.0061836
+            ]
+          ]
+        ]
+      },
+      "id": "way/1271250664"
     }
   ]
 }
