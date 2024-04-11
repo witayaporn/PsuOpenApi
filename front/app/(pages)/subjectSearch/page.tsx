@@ -6,7 +6,7 @@ import SubjectCard from "./subjectCard";
 export default function SubjectSearchPage() {
     const campusID: string = "01"
     const eduTerm: string = '1'
-    const eduYear: string = "2564"
+    const eduYear: string = "2563"
 
     useEffect(() => {
     }, [])
