@@ -1,6 +1,8 @@
 'use client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SectionCard from "./sectionCard"
+import facultyData from '../../../public/faculty-data.json'
+
 export default function SubjectCard(prop: any) {
     const data = prop.data
     const subjectNameTH = data.subjectCode + " " + data.subjectNameThai
@@ -47,10 +49,24 @@ export default function SubjectCard(prop: any) {
         }
         setShowModal(!showModal)
     }
-
+    
+    const faculty = facultyData.data.filter((fac) => fac.facId == data.facId)[0]
+    const facColor = {
+        "primary": faculty.primaryColor,
+        "secondary": faculty.secondaryColor
+    }
+    const [facultyColor, setFacultyColor] = useState({})
+    useEffect(()=>{
+        const faculty = facultyData.data.filter((fac) => fac.facId == data.facId)[0]
+        setFacultyColor({
+            "primary": faculty.primaryColor,
+            "secondary": faculty.secondaryColor
+        })
+    }, [])
     return (
         <>
-            <a className="p-4 md:h-44 bg-emerald-100 rounded-lg hover:shadow hover:scale-[1.01] transition-all " onClick={handleCardClick}>
+        {console.log(facColor)}
+            <a className="md:h-44 bg-white p-4  border border-b-4 rounded-lg hover:shadow hover:scale-[1.01] transition-all" style={{ borderColor: `linear-gradient(to left, ${facColor.primary}, ${facColor.secondary}) 1`}} onClick={handleCardClick}>
                 <div className="grid grid-cols-1 gap-1">
                     <p className="font-bold text-green-950">{subjectShortNameEN}</p>
                     <p className="text-green-800 truncate max-h-6">{data.subjectNameThai}</p>
