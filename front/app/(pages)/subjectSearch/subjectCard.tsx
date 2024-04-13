@@ -65,7 +65,7 @@ export default function SubjectCard(prop: any) {
     }, [])
     return (
         <>
-        {console.log(facColor)}
+        {/* {console.log(facColor)} */}
             <a className="md:h-44 pl-2 border rounded-lg shadow hover:shadow-md hover:scale-[1.01] transition-all" style={{ background: `linear-gradient(to bottom, ${facColor.primary}, ${facColor.secondary})`, }} onClick={handleCardClick}>
                 <div className="p-4 h-full bg-white gap-1 rounded-r-md">
                     <p className="font-bold text-green-950">{subjectShortNameEN}</p>
