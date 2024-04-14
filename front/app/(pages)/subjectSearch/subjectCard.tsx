@@ -19,6 +19,7 @@ export default function SubjectCard(prop: any) {
         if (!showModal) {
             fetch(`https://api-gateway.psu.ac.th/Test/regist/Subject/${data.subjectId}?campusID=&offset=0&limit=100`, {
                 method: 'GET',
+                cache: 'force-cache',
                 headers: {
                     "credential": process.env.NEXT_PUBLIC_API_KEY
                 }
@@ -28,6 +29,7 @@ export default function SubjectCard(prop: any) {
 
             fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionOfferCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`, {
                 method: 'GET',
+                cache: 'force-cache',
                 headers: {
                     "credential": process.env.NEXT_PUBLIC_API_KEY
                 }
@@ -35,8 +37,9 @@ export default function SubjectCard(prop: any) {
                 .then((res) => res.json())
                 .then((data) => setCourseSection(data.data))
 
-            fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}?section=&offset=0&limit=100`, {
+            fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`, {
                 method: 'GET',
+                cache: 'force-cache',
                 headers: {
                     "credential": process.env.NEXT_PUBLIC_API_KEY
                 }
@@ -90,7 +93,7 @@ export default function SubjectCard(prop: any) {
                                         <p className="text-gray-700">{data.subjectNameThai}</p>
                                         <p className="text-gray-500">{data.credit}</p>
                                     </div>
-                                    <div className="overflow-y-scroll">
+                                    <div className="">
                                         <div className="relative px-5 flex-auto">
                                             <p className="font-bold">รายละเอียด</p>
                                             <p className="text-gray-900 text-sm leading-relaxed">
@@ -101,7 +104,10 @@ export default function SubjectCard(prop: any) {
                                         <div className="relative px-5 grid grid-cols-1 gap-2">
                                             {console.log(sectionDate)}
                                             <p className="font-bold">ตอน</p>
-                                            {courseSection ? courseSection.map((section, key) => <SectionCard key={key} data={section} />) : "ไม่มีข้อมูล"}
+                                            {courseSection ? courseSection.map((section, key) => {
+                                                const dateData = sectionDate ? sectionDate.filter((data) => data.section == section.section) : sectionDate
+                                                return <SectionCard key={key} data={[section, dateData]} />
+                                            }) : "ไม่มีข้อมูล"}
                                         </div>
                                     </div>
                                     <div className="flex items-center justify-end p-1 border-t border-solid border-blueGray-200 rounded-b">
