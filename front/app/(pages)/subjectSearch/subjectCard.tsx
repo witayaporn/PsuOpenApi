@@ -70,8 +70,8 @@ export default function SubjectCard(prop: any) {
             <AnimatePresence>
                 {showModal && (
                     <>
-                        <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[1100] outline-none overscroll-auto">
-                            <div className="relative w-full my-6 mx-auto max-w-3xl">
+                        <div className="justify-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[1100] outline-none overscroll-auto">
+                            <div className="relative w-full m-auto max-w-3xl">
                                 <motion.div
                                     className="w-full h-fit grid grid-cols-1 gap-2 border-0 rounded-lg shadow-lg relative bg-white outline-none focus:outline-none"
                                     initial={{ opacity: 0, scale: 0.75 }}

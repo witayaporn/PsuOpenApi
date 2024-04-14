@@ -24,6 +24,7 @@ export default function SubjectSearchPage() {
         e.preventDefault()
         fetch(`https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/${campusID}/${termYear.term}/${termYear.year}?facID=&deptID=&keySearch=${searchInput}&offset=0&limit=1000`, {
             method: 'GET',
+            cache: 'force-cache',
             headers: {
                 "credential": process.env.NEXT_PUBLIC_API_KEY
             }
