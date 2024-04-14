@@ -10,14 +10,14 @@ export default function SectionCard(prop: any) {
     const noInterest: number = 143
     const percentage: number = (data.noOffer / noInterest) * 100
     return (
-        <div className="w-full p-4 grid grid-cols-1 gap-3 rounded-lg bg-green-200">
+        <div className="w-full p-4 grid grid-cols-1 gap-3 rounded-lg bg-slate-200 ">
             <div className="grid grid-cols-2 ">
                 {console.log(dateData)}
                 <p className="font-bold text-sm text-gray-800">ตอน {data.section}</p>
                 <p className="text-sm text-right text-gray-800">โอกาส {percentage.toFixed(2)} %</p>
             </div>
             <div>
-                <div className="grid grid-cols-3">
+                <div className="grid grid-cols-3 text-sm">
                     <p>ผู้เรียน</p>
                     <p>จำนวนที่นั่ง</p>
                     <p>จำนวนคนที่สนใจ</p>
@@ -29,7 +29,7 @@ export default function SectionCard(prop: any) {
                 </div>
             </div>
             <div>
-                <div className="grid grid-cols-3">
+                <div className="grid grid-cols-3 text-sm">
                     <p>วัน/เวลาเรียน</p>
                     <p>ห้องเรียน</p>
                     <p>ผู้สอน</p>
@@ -49,16 +49,23 @@ export default function SectionCard(prop: any) {
             </div>
 
             <div>
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-2 text-sm">
                     <p>สอบกลางภาค</p>
                     <p>สอบปลายภาค</p>
                 </div>
                 <div className="grid grid-cols-2 text-sm text-gray-600">
-                    <p>{}</p>
-                    <p>{}</p>
+                    <p>{ }</p>
+                    <p>{ }</p>
                 </div>
             </div>
-
+            <div className="grid grid-cols-1 px-auto">
+                <button
+                    className=" text-blue-500 p-2 border border-blue-500 rounded-lg font-bold uppercase text-sm hover:bg-blue-500 hover:text-white focus:outline-none ease-linear transition-all duration-150"
+                    type="button"
+                >
+                    Interest
+                </button>
+            </div>
 
         </div >
     )

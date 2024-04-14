@@ -93,15 +93,29 @@ export default function SubjectCard(prop: any) {
                                         <p className="text-gray-700">{data.subjectNameThai}</p>
                                         <p className="text-gray-500">{data.credit}</p>
                                     </div>
-                                    <div className="">
-                                        <div className="relative px-5 flex-auto">
+                                    <div className="relative px-5 grid grid-cols-1 gap-y-2">
+                                        <div className="flex-auto">
                                             <p className="font-bold">รายละเอียด</p>
+                                            <div className="grid grid-cols-2 sm:grid-cols-4 text-sm">
+                                                {console.log(data)}
+                                                <p>ภาคการศึกษา</p>
+                                                <p>{data.eduTerm + '/' + data.eduYear}</p>
+                                                <p>ภาควิชา</p>
+                                                <p>{data.deptNameThai}</p>
+                                                <p>คณะ</p>
+                                                <p>{data.facNameThai}</p>
+                                                <p>วิทยาเขต</p>
+                                                <p>{data.campusNameThai}</p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p className="font-bold">คำอธิบายรายวิชา</p>
                                             <p className="text-gray-900 text-sm leading-relaxed">
                                                 {/* {console.log(courseDetail)} */}
                                                 {courseDetail.subjectDescThai ? courseDetail.subjectDescThai : "ไม่มีข้อมูล"}
                                             </p>
                                         </div>
-                                        <div className="relative px-5 grid grid-cols-1 gap-2">
+                                        <div className="grid grid-cols-1 gap-2">
                                             {console.log(sectionDate)}
                                             <p className="font-bold">ตอน</p>
                                             {courseSection ? courseSection.map((section, key) => {
