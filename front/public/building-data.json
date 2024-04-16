@@ -8,14 +8,14 @@
       "type": "Feature",
       "properties": {
         "@id": "way/61904342",
-        "amenity:university:faculty": "Faculty of Engineering",
+        "faculty": "Faculty of Engineering",
         "building": "university",
         "is_in:country": "Thailand",
         "is_in:district": "Hatyai",
         "is_in:province": "Songkhla",
         "layer": "1",
         "name": "ตึกสตางค์ มงคลสุข",
-        "name:en": "Stang Mongkolsuk building",
+        "nameEng": "Stang Mongkolsuk building",
         "name:th": "ตึกสตางค์ มงคลสุข"
       },
       "geometry": {
@@ -83,14 +83,14 @@
       "type": "Feature",
       "properties": {
         "@id": "way/62203997",
-        "amenity:university:faculty": "Engineering",
+        "faculty": "Faculty of Engineering",
         "building": "university",
         "building:levels": "4",
         "is_in:country": "Thailand",
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "ตึกหุ่นยนต์",
-        "name:en": "Robot building",
+        "nameEng": "Robot building",
         "name:th": "ตึกหุ่นยนต์"
       },
       "geometry": {
@@ -207,7 +207,7 @@
         "building": "university",
         "internet_access": "yes",
         "name": "ศูนย์ประชุมนานาชาติฉลองสิริราชสมบัติครบ ๖๐ ปี",
-        "name:en": "The 60th Anniversary of His Majesty the King’s Accession to the Throne International Convention Center",
+        "nameEng": "The 60th Anniversary of His Majesty the King’s Accession to the Throne International Convention Center",
         "name:th": "ศูนย์ประชุมนานาชาติฉลองสิริราชสมบัติครบ ๖๐ ปี",
         "smoking": "no",
         "source": "bing",
@@ -265,7 +265,7 @@
         "building": "university",
         "building:levels": "4",
         "name": "ตึกคณะทรัพยากรธรรมชาติ",
-        "name:en": "Faculty of Natural Resources",
+        "nameEng": "Faculty of Natural Resources",
         "name:th": "ตึกคณะทรัพยากรธรรมชาติ"
       },
       "geometry": {
@@ -1007,14 +1007,14 @@
       "type": "Feature",
       "properties": {
         "@id": "way/149453707",
-        "amenity:university:faculty": "Faculty of Science",
+        "faculty": "Faculty of Science",
         "building": "university",
         "building:levels": "5",
         "is_in:country": "Thailand",
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "อาคารเคมี",
-        "name:en": "Chemistry building",
+        "nameEng": "Chemistry building",
         "name:th": "อาคารเคมี"
       },
       "geometry": {
@@ -1078,13 +1078,13 @@
       "type": "Feature",
       "properties": {
         "@id": "way/149453729",
-        "amenity:university:faculty": "Faculty of Science",
+        "faculty": "Faculty of Science",
         "building": "university",
         "is_in:country": "Thailand",
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "อาคารวิทยาการคอมพิวเตอร์",
-        "name:en": "Computer science building",
+        "nameEng": "Computer science building",
         "name:th": "อาคารวิทยาการคอมพิวเตอร์"
       },
       "geometry": {
@@ -1124,14 +1124,14 @@
       "type": "Feature",
       "properties": {
         "@id": "way/149453751",
-        "amenity:university:faculty": "Faculty of Science",
+        "faculty": "Faculty of Science",
         "building": "university",
         "building:levels": "3",
         "is_in:country": "Thailand",
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "อาคารคณิตศาสตร์",
-        "name:en": "Mathematics building",
+        "nameEng": "Mathematics building",
         "name:th": "อาคารคณิตศาสตร์"
       },
       "geometry": {
@@ -1255,7 +1255,7 @@
       "type": "Feature",
       "properties": {
         "@id": "way/149453827",
-        "amenity:university:faculty": "Faculty of Science",
+        "faculty": "Faculty of Science",
         "building": "university",
         "building:levels": "2",
         "building:levels:underground": "1",
@@ -1263,7 +1263,7 @@
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "ศูนย์ปาฐกถาประดิษฐ์ เชยจิตร (ตึกฟักทอง)",
-        "name:en": "Pumpkin Building",
+        "nameEng": "Pumpkin Building",
         "name:th": "ศูนย์ปาฐกถาประดิษฐ์ เชยจิตร",
         "roof:colour": "white",
         "website": "https://www.sci.psu.ac.th/"
@@ -1521,14 +1521,14 @@
       "type": "Feature",
       "properties": {
         "@id": "way/150157536",
-        "amenity:university:faculty": "Faculty of Economics",
+        "faculty": "Faculty of Economics",
         "building": "university",
         "is_in": "Prince of Songkla University",
         "is_in:country": "Thailand",
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "อาคารเศรษฐศาสตร์",
-        "name:en": "Economics building",
+        "nameEng": "Economics building",
         "name:th": "อาคารเศรษฐศาสตร์"
       },
       "geometry": {
@@ -1564,14 +1564,14 @@
       "type": "Feature",
       "properties": {
         "@id": "way/150157541",
-        "amenity:university:faculty": "Faculty of Law",
+        "faculty": "Faculty of Law",
         "building": "university",
         "is_in": "Prince of Songkla University",
         "is_in:country": "Thailand",
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "อาคารนิติศาสตร์",
-        "name:en": "Law building",
+        "nameEng": "Law building",
         "name:th": "อาคารนิติศาสตร์"
       },
       "geometry": {
@@ -1607,7 +1607,7 @@
       "type": "Feature",
       "properties": {
         "@id": "way/150157544",
-        "amenity:university:faculty": "Faculty of Liberal Arts",
+        "faculty": "Faculty of Liberal Arts",
         "building": "university",
         "building:levels": "4",
         "is_in": "Prince of Songkla University;Hat Yai;Songkhla;Thailand",
@@ -1615,7 +1615,7 @@
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "ศิลปศาสตร์",
-        "name:en": "Liberal Arts"
+        "nameEng": "Liberal Arts"
       },
       "geometry": {
         "type": "Polygon",
@@ -1709,7 +1709,7 @@
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "อาคารเรียนและปฏิบัติการพื้นฐานทางวิทยาศาสตร์",
-        "name:en": "Basic Science Building (BSc)",
+        "nameEng": "Basic Science Building (BSc)",
         "name:th": "อาคารเรียนและปฏิบัติการพื้นฐานทางวิทยาศาสตร์",
         "wheelchair": "yes"
       },
@@ -1780,7 +1780,7 @@
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "อาคารศูนย์ทรัพยากรการเรียนรู้",
-        "name:en": "Learning Resources Center (LRC) building",
+        "nameEng": "Learning Resources Center (LRC) building",
         "name:th": "อาคารศูนย์ทรัพยากรการเรียนรู้"
       },
       "geometry": {
@@ -1976,14 +1976,14 @@
       "type": "Feature",
       "properties": {
         "@id": "way/150393154",
-        "amenity:university:faculty": "Faculty of Science",
+        "faculty": "Faculty of Science",
         "building": "university",
         "building:levels": "2",
         "is_in:country": "Thailand",
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "อาคารบริหารคณะวิทยาศาสตร์",
-        "name:en": "Faculty of Science Administration building",
+        "nameEng": "Faculty of Science Administration building",
         "name:th": "อาคารบริหารคณะวิทยาศาสตร์"
       },
       "geometry": {
@@ -2047,14 +2047,14 @@
       "type": "Feature",
       "properties": {
         "@id": "way/150393155",
-        "amenity:university:faculty": "Faculty of Science",
+        "faculty": "Faculty of Science",
         "building": "university",
         "building:levels": "4",
         "is_in:country": "Thailand",
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "อาคารชีววิทยา",
-        "name:en": "Biology building",
+        "nameEng": "Biology building",
         "name:th": "อาคารชีววิทยา",
         "website": "https://www.sci.psu.ac.th/biological-science/"
       },
@@ -2111,14 +2111,14 @@
       "type": "Feature",
       "properties": {
         "@id": "way/150393157",
-        "amenity:university:faculty": "Faculty of Science",
+        "faculty": "Faculty of Science",
         "building": "university",
         "building:levels": "4",
         "is_in:country": "Thailand",
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "อาคารปฏิบัติการหลังใหม่",
-        "name:en": "New Multi Lab building",
+        "nameEng": "New Multi Lab building",
         "name:th": "อาคารปฏิบัติการหลังใหม่"
       },
       "geometry": {
@@ -2182,14 +2182,14 @@
       "type": "Feature",
       "properties": {
         "@id": "way/150393158",
-        "amenity:university:faculty": "Faculty of Science",
+        "faculty": "Faculty of Science",
         "building": "university",
         "building:levels": "5",
         "is_in:country": "Thailand",
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "อาคารพรีคลินิค",
-        "name:en": "Preclinic building",
+        "nameEng": "Preclinic building",
         "name:th": "อาคารพรีคลินิค"
       },
       "geometry": {
@@ -2234,7 +2234,7 @@
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
         "name": "สำนักงานอธิการบดีมหาวิทยาลัยสงขลานครินทร์",
-        "name:en": "President's Office building",
+        "nameEng": "President's Office building",
         "name:th": "สำนักงานอธิการบดีมหาวิทยาลัยสงขลานครินทร์"
       },
       "geometry": {
@@ -2278,7 +2278,7 @@
       "type": "Feature",
       "properties": {
         "@id": "way/150393160",
-        "amenity:university:faculty": "Faculty of Science",
+        "faculty": "Faculty of Science",
         "building": "university",
         "building:levels": "6",
         "is_in:country": "Thailand",
@@ -2286,7 +2286,7 @@
         "is_in:province": "Songkhla",
         "layer": "1",
         "name": "อาคารวิทยาศาสตร์เทคโนโลยี",
-        "name:en": "Science and Technology building",
+        "nameEng": "Science and Technology building",
         "name:th": "อาคารวิทยาศาสตร์เทคโนโลยี"
       },
       "geometry": {
@@ -2471,7 +2471,7 @@
         "building": "university",
         "building:levels": "2",
         "name": "เรือนเลี้ยงสัตว์ทดลอง",
-        "name:en": "Lab Animals Facility",
+        "nameEng": "Lab Animals Facility",
         "website": "https://sites.google.com/psu.ac.th/lasc/home"
       },
       "geometry": {
@@ -2607,7 +2607,7 @@
       "properties": {
         "@id": "way/150490471",
         "building": "university",
-        "faculty": "Faculty of Medicine Administrative",
+        "faculty": "Faculty of Medicine",
         "name": "อาคารเรียนรวมเเละหอสมุดคณะเเพทยศาสตร์"
       },
       "geometry": {
@@ -2914,7 +2914,7 @@
       "properties": {
         "@id": "way/150490488",
         "building": "hospital",
-        "faculty": "Faculty of Medicine Administrative",
+        "faculty": "Faculty of Medicine",
         "name": "อาคารเเพทยศาสตร์ศึกษาราชนครินทร์"
       },
       "geometry": {
@@ -3507,6 +3507,7 @@
       "type": "Feature",
       "properties": {
         "@id": "way/858795544",
+        "faculty": "Faculty of Environmental Management",
         "building": "university",
         "name": "Faculty of Environmental Management"
       },
@@ -3653,7 +3654,7 @@
       "properties": {
         "@id": "way/858795552",
         "building": "university",
-        "faculty": "Faculty of Medicine Administrative",
+        "faculty": "Faculty of Medicine",
         "name": "อาคารบริหารคณะเเพทยศาสตร์"
       },
       "geometry": {
@@ -4619,7 +4620,7 @@
         "building:levels": "1",
         "internet_access": "yes",
         "name": "โรงช้าง",
-        "name:en": "Rong Chang"
+        "nameEng": "Rong Chang"
       },
       "geometry": {
         "type": "Polygon",
@@ -5121,7 +5122,7 @@
         "building:levels": "4",
         "faculty": "Faculty of Science",
         "name": "อาคารฟิสิกส์",
-        "name:en": "Physics Building"
+        "nameEng": "Physics Building"
       },
       "geometry": {
         "type": "Polygon",
@@ -5621,10 +5622,10 @@
       "type": "Feature",
       "properties": {
         "@id": "way/1271250662",
-        "amenity:university:faculty": "Faculty of Engineering",
+        "faculty": "Faculty of Engineering",
         "building": "university",
         "name": "ตึกภาควิชาวิศวกรรมเคมี",
-        "name:en": "Department of Chemical Engineering"
+        "nameEng": "Department of Chemical Engineering"
       },
       "geometry": {
         "type": "Polygon",
@@ -5667,7 +5668,7 @@
       "type": "Feature",
       "properties": {
         "@id": "way/1271250663",
-        "amenity:university:faculty": "Faculty of Engineering",
+        "faculty": "Faculty of Engineering",
         "building": "university",
         "name": "อาคารปฏิบัติการวิศวกรรมพื้นฐาน"
       },
@@ -5712,7 +5713,7 @@
       "type": "Feature",
       "properties": {
         "@id": "way/1271250664",
-        "amenity:university:faculty": "Faculty of Engineering",
+        "faculty": "Faculty of Engineering",
         "building": "university",
         "name": "สโมสรนักศึกษาคณะวิศวกรรมศาสตร์"
       },

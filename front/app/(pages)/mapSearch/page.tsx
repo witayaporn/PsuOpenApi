@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react"
 import dynamic from "next/dynamic"
 import SearchBar from "../../components/searchBar";
+import DetailCard from "./detailCard";
 
 export default function MapSearchPage(){
     const [mapData, setMapData] = useState({})
@@ -34,8 +35,7 @@ export default function MapSearchPage(){
             <div className="grid grid-rows-2 gap-3">
                 {mapMemo}
                 <div>
-                    {console.log(mapData)}
-                    <h1 className="text-center text-xl font-bold">{mapData.name}</h1>
+                    <DetailCard data={mapData} />
                 </div>
             </div>
         </section>

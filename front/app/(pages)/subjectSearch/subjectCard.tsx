@@ -54,7 +54,7 @@ export default function SubjectCard(prop: any) {
         setShowModal(!showModal)
     }
 
-    const faculty = facultyData.data.filter((fac) => fac.facId == data.facId)[0]
+    const faculty = facultyData.filter((fac) => fac.facId == data.facId)[0]
     const facColor = {
         "primary": faculty.primaryColor,
         "secondary": faculty.secondaryColor
