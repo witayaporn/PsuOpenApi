@@ -771,7 +771,7 @@
       "properties": {
         "@id": "way/101939919",
         "building": "university",
-        "faculty": "คณะเภสัชศาสตร์",
+        "faculty": "Faculty of Pharmaceutical Sciences",
         "name": "อาคารเรียน 1"
       },
       "geometry": {
@@ -885,6 +885,7 @@
       "properties": {
         "@id": "way/101939925",
         "building": "university",
+        "faculty": "Faculty of Pharmaceutical Sciences",
         "name": "อาคารเรียน 5"
       },
       "geometry": {
@@ -2510,6 +2511,7 @@
         "building": "university",
         "building:levels": "2",
         "name": "Prince of Songkla University Computer Center",
+        "nameEng": "",
         "website": "https://diis.psu.ac.th/"
       },
       "geometry": {
@@ -3119,6 +3121,8 @@
       "type": "Feature",
       "properties": {
         "@id": "way/150490493",
+        "name": "หอพักนักศึกษา 2",
+        "nameEng": "Dormitory 2",
         "building": "dormitory"
       },
       "geometry": {
@@ -5305,8 +5309,8 @@
         "@id": "way/1157337956",
         "building": "university",
         "building:levels": "6",
-        "name": "Medical Science Research and Innovation Building",
-        "name:th": "ศูนย์ศึกษาและวิจัยด้านวิทยาศาสตร์สุขภาพ"
+        "nameEng": "Medical Science Research and Innovation Institute",
+        "name": "สถาบันวิจัยและนวัตกรรมทางการแพทย์"
       },
       "geometry": {
         "type": "Polygon",

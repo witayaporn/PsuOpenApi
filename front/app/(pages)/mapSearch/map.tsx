@@ -5,19 +5,21 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import "leaflet-defaulticon-compatibility";
 import { useEffect, useState } from 'react';
+import DetailCard from "./detailCard";
+import { motion } from "framer-motion"
 import buildingData from '../../../public/building-data.json'
 import parkingData from '../../../public/parking-data.json'
 
 
 
-export default function Map(props) {
+export default function Map() {
     const defaultGEO: GeoJSON.Feature = {
         type: 'Feature',
         geometry: {
             type: 'Polygon',
             coordinates: [100.5006, 7.0078],
         },
-        properties: {}
+        properties: null
     }
     const [selectedPlace, setSelectedPlace] = useState(defaultGEO);
     const [keyGeoJson, setKeyGeoJson] = useState(0)
@@ -124,12 +126,11 @@ export default function Map(props) {
                             click: (data: any) => {
                                 const feature = data.layer['feature']
                                 setSelectedPlace(feature)
-                                props.setMapData(feature.properties)
                                 setKeyGeoJson(keyGeoJson + 1)
                             }
                         }}
                     />
-                    {console.log(filter)}
+
                     <GeoJSON
                         pathOptions={{ color: "blue", weight: 2 }}
                         data={selectedPlace}
@@ -140,6 +141,17 @@ export default function Map(props) {
                     {/* <LocationMarker /> */}
                 </MapContainer>
             </div>
+            {selectedPlace.properties && (
+                    <motion.div
+                        key={keyGeoJson}
+                        initial={{ opacity: 0, scale: 0.75, y: 80 }}
+                        animate={{ opacity: 1, scale: 1, y: 0, transition: { ease: "easeOut", duration: 0.20 } }}
+                        exit={{ opacity: 0, scale: 0.75, transition: { ease: "easeIn", duration: 0.10 } }}
+                    >
+                        <DetailCard data={selectedPlace.properties} />
+                    </motion.div>
+                )
+            }
         </div>
     )
 }

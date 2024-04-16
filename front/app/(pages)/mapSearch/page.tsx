@@ -1,17 +1,19 @@
 "use client"
 
-import { useMemo, useState } from "react"
-import dynamic from "next/dynamic"
+import { useEffect, useMemo, useState } from "react"
 import SearchBar from "../../components/searchBar";
-import DetailCard from "./detailCard";
+import dynamic from "next/dynamic";
+import Map from "./map";
 
-export default function MapSearchPage(){
-    const [mapData, setMapData] = useState({})
+
+export default function MapSearchPage() {
+    // const [mapData, setMapData] = useState(null)
     const Map = dynamic(() => import("./map"), {
         ssr: false,
         loading: () => <p>Loading...</p>,
     });
-
+    // const mapMemo = useMemo(() => <Map mapData={mapData} setMapData={setMapData} />, [])
+    
     const handleSearchChange = (e: any) => {
         console.log(e.target.value)
     }
@@ -20,7 +22,6 @@ export default function MapSearchPage(){
         e.preventDefault()
     }
 
-    const mapMemo = useMemo(() => <Map mapData={mapData} setMapData={setMapData} />, [])
 
     return (
         <section>
@@ -29,14 +30,11 @@ export default function MapSearchPage(){
                     <div>
                         <p className="text-3xl font-bold text-right">Building/Room Search</p>
                     </div>
-                    <SearchBar onSubmit={handleSubmit} onChange={handleSearchChange}/>
+                    <SearchBar onSubmit={handleSubmit} onChange={handleSearchChange} />
                 </div>
             </div>
-            <div className="grid grid-rows-2 gap-3">
-                {mapMemo}
-                <div>
-                    <DetailCard data={mapData} />
-                </div>
+            <div>
+                <Map />
             </div>
         </section>
     )

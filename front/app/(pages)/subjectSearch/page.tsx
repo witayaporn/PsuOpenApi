@@ -82,12 +82,6 @@ export default function SubjectSearchPage() {
                                     Literature
                                 </label>
                             </div>
-                            <div>
-                                <input type="checkbox" id="option-4" value="" className="hidden peer"></input>
-                                <label htmlFor="option-4" className="inline-flex p-1 text-black bg-blue-100 border-2 border-blue-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">
-                                    Literature
-                                </label>
-                            </div>
                         </div>
                         <div className="col-span-2">
                             <select id="term" onChange={handleTermSelect} className="bg-gray-50 p-1 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">

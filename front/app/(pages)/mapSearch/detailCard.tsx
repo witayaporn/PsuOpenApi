@@ -6,7 +6,6 @@ export default function DetailCard(prop: any) {
     const buildingDetail = { ...propData, facDetail }
     return (
         <div className="max-w-full overflow-hidden p-5 bg-white grid grid-cols-1 gap-y-3 rounded-lg border">
-            {console.log(buildingDetail)}
             <div className="text-center">
                 <p className="font-bold text-xl">{buildingDetail.name}</p>
                 <p className="text-lg">{buildingDetail.nameEng}</p>
@@ -20,6 +19,7 @@ export default function DetailCard(prop: any) {
                     <p className="font-bold">เว็บไซต์</p>
                     <a href={buildingDetail.facDetail.website} className="">{buildingDetail.facDetail.website}</a>
                 </div>
+                <p>Id {buildingDetail["@id"]}</p>
             </div>
         </div>
     )
