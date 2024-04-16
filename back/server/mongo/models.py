@@ -33,13 +33,19 @@ class Student(BaseModel):
     id: Optional[PydanticObjectId] = Field(alias='_id',default=ObjectId())
     studentId: int = Field(...)
     interestSubject: int = Field(...)
+    section: int = Field(...)
+    term: int = Field(...)
+    year: int = Field(...)
 
     class Config:
         populate_by_name = True
         json_schema_extra = {
             "example": {
                 "studentId": 6410110123,
-                "interestSubject": 240
+                "interestSubject": 240,
+                "section": 1,
+                "term": 1,
+                "year": 2567,
             }
         }
 
