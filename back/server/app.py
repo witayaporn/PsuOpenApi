@@ -4,7 +4,7 @@ from fastapi import FastAPI # type: ignore
 from dotenv import dotenv_values # type: ignore
 from pymongo import MongoClient # type: ignore
 
-from back.server.routes_student import router_student
+from routes_student import router_student
 
 config = dotenv_values("./mongo/.env")
 
