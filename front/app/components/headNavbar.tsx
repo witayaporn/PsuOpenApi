@@ -1,6 +1,6 @@
 export default function HeadNavbar() {
     return (
-        <nav className="bg-[#E8F8F8] fixed w-full top-0 start-0 z-[1000]">
+        <nav className="bg-[#E8F8F8] fixed w-full top-0 start-0 z-[9999]">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="/home" className="flex items-center space-x-1 rtl:space-x-reverse">
                     {/* <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo"/> */}

@@ -1,5 +1,5 @@
 "use client"
-import { MapContainer, TileLayer, Polygon, useMap, GeoJSON } from 'react-leaflet'
+import { MapContainer, TileLayer, Polygon, useMap, GeoJSON, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
@@ -7,7 +7,6 @@ import "leaflet-defaulticon-compatibility";
 import { useEffect, useState } from 'react';
 import buildingData from '../../../public/building-data.json'
 import parkingData from '../../../public/parking-data.json'
-import parkingIconURL from '../../../public/parking-icon.png'
 
 
 
@@ -20,7 +19,7 @@ export default function Map(props) {
         },
         properties: {}
     }
-    const [selectedPlace, setSelectedPlace] = useState({});
+    const [selectedPlace, setSelectedPlace] = useState(defaultGEO);
     const [keyGeoJson, setKeyGeoJson] = useState(0)
     // useEffect(() =>{
     //     fetch('https://overpass-api.de/api/interpreter',{
@@ -54,12 +53,11 @@ export default function Map(props) {
 
     const [filter, setFilter] = useState("building")
     const [keyMap, setKeyMap] = useState(0)
-    const handleCheckBox = (e : any) => {
-        const id : string = e.target.id
+    const handleCheckBox = (e: any) => {
+        const id: string = e.target.id
         setFilter(filter == id ? "" : id)
         setSelectedPlace(defaultGEO)
         setKeyMap(keyMap + 1)
-        // console.log(filter)
     }
 
     const parkingIcon = new L.Icon({
@@ -69,9 +67,26 @@ export default function Map(props) {
         popupAnchor: [0, 0]
     })
 
-    useEffect(() => {
-        setSelectedPlace(defaultGEO)
-    }, [])
+    const LocationMarker = () => {
+        const [position, setPosition] = useState(null);
+        const map = useMap();
+        useEffect(() => {
+            map.locate().on("locationfound", (e) => {
+                setPosition(e.latlng);
+                map.flyTo(e.latlng, map.getZoom());
+            });
+
+        }, [map])
+        return position === null ? null : (
+            <Marker position={position}>
+                <Popup>You are here</Popup>
+            </Marker>
+        );
+    }
+
+    // useEffect(() => {
+    //     setSelectedPlace(defaultGEO)
+    // }, [])
     return (
         <div className="grid grid-cols-1 gap-4">
             <div className="flex space-x-2">
@@ -95,7 +110,7 @@ export default function Map(props) {
                     center={[7.0078, 100.5006]}
                     zoom={16}
                     scrollWheelZoom={true}
-                    style={{ height: "22rem", width: "auto", borderRadius: "18px" }}
+                    style={{ height: "22rem", width: "auto", borderRadius: "12px" }}
                 >
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -104,14 +119,13 @@ export default function Map(props) {
                     <GeoJSON
                         pathOptions={{ color: "wheat", weight: 1, opacity: 0.1 }}
                         data={filter == "parking" ? parkingData.features : buildingData.features}
-                        pointToLayer={(feature, latlng) => L.marker(latlng, {icon: parkingIcon})}
+                        pointToLayer={(feature, latlng) => L.marker(latlng, { icon: parkingIcon })}
                         eventHandlers={{
                             click: (data: any) => {
                                 const feature = data.layer['feature']
                                 setSelectedPlace(feature)
                                 props.setMapData(feature.properties)
                                 setKeyGeoJson(keyGeoJson + 1)
-                                // console.log(selectedPlace)
                             }
                         }}
                     />
@@ -120,8 +134,10 @@ export default function Map(props) {
                         pathOptions={{ color: "blue", weight: 2 }}
                         data={selectedPlace}
                         key={keyGeoJson}
-                        pointToLayer={(feature, latlng) => L.marker(latlng, {icon: parkingIcon})}
+                        pointToLayer={(feature, latlng) => L.marker(latlng, { icon: parkingIcon })}
                     />
+
+                    {/* <LocationMarker /> */}
                 </MapContainer>
             </div>
         </div>

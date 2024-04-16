@@ -29,9 +29,9 @@ export default function SubjectSearchPage() {
                 "credential": process.env.NEXT_PUBLIC_API_KEY
             }
         })
-        .then((res) => res.json())
-        .then((data) => setCourseData(data.data))
-        .catch(err => { const mute = err })
+            .then((res) => res.json())
+            .then((data) => setCourseData(data.data))
+            .catch(err => { const mute = err })
     }
 
     const [termSelect, setTermSelect] = useState("")
@@ -56,8 +56,8 @@ export default function SubjectSearchPage() {
                     <div>
                         <SearchBar onSubmit={handleSubmit} onChange={handleSearchChange} />
                     </div>
-                    <div>
-                        <div className="flex space-x-2">
+                    <div className="grid grid-cols-12 gap-x-2">
+                        <div className="col-span-8 flex space-x-2 overflow-x-scroll scroll-smooth no-scrollbar scrollbar-blue-edge">
                             <div>
                                 <input type="checkbox" id="option-1" value="" className="hidden peer"></input>
                                 <label htmlFor="option-1" className="inline-flex p-1 text-black bg-green-100 border-2 border-green-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">
@@ -82,15 +82,26 @@ export default function SubjectSearchPage() {
                                     Literature
                                 </label>
                             </div>
-                            <div className="">
-                                <select id="term" onChange={handleTermSelect} className="bg-gray-50 p-1 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
-                                    <option selected>2/64</option>
-                                    <option value="1/64">1/64</option>
-                                    <option value="3/63">3/63</option>
-                                    <option value="2/63">2/63</option>
-                                    <option value="1/63">1/63</option>
-                                </select>
+                            <div>
+                                <input type="checkbox" id="option-4" value="" className="hidden peer"></input>
+                                <label htmlFor="option-4" className="inline-flex p-1 text-black bg-blue-100 border-2 border-blue-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">
+                                    Literature
+                                </label>
                             </div>
+                        </div>
+                        <div className="col-span-2">
+                            <select id="term" onChange={handleTermSelect} className="bg-gray-50 p-1 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div className="col-span-2">
+                            <select id="term" onChange={handleTermSelect} className="bg-gray-50 p-1 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+                                <option value="2/64">2/64</option>
+                                <option value="1/64">1/64</option>
+                                <option value="3/63">3/63</option>
+                                <option value="2/63">2/63</option>
+                                <option value="1/63">1/63</option>
+                            </select>
                         </div>
                     </div>
                 </div>
