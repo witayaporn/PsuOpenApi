@@ -125,9 +125,9 @@ export default function SubjectCard(prop: any) {
                                             </p>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2">
-                                            {console.log(sectionDate)}
+                                            {/* {console.log(sectionDate)} */}
                                             <p className="font-bold">ตอน</p>
-                                            {courseSection ? courseSection.map((section, key) => {
+                                            {courseSection ? courseSection.map((section: any, key: number) => {
                                                 const dateData = sectionDate ? sectionDate.filter((data) => data.section == section.section) : sectionDate
                                                 return <SectionCard key={key} data={[section, dateData]} />
                                             }) : "ไม่มีข้อมูล"}

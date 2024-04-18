@@ -8,13 +8,13 @@ import { AnimatePresence, motion } from "framer-motion"
 
 export default function SubjectSearchPage() {
     const [showModal, setShowModal] = useState(false)
+    const [faculty, setFaculty] = useState(facultyData)
+    const [selectFaculty, setSelectFaculty] = useState([])
     const campusID: string = "01"
     const [termYear, setTermYear] = useState({
         "term": "2",
         "year": "2564"
     })
-    useEffect(() => {
-    }, [])
 
     const [searchInput, setSearchInput] = useState("")
     const handleSearchChange = (e: any) => {
@@ -25,6 +25,7 @@ export default function SubjectSearchPage() {
     const [courseData, setCourseData] = useState([])
     const handleSubmit = (e: any) => {
         e.preventDefault()
+        const filterFac = selectFaculty.map((selFac: any) => selFac.facId)
         fetch(`https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/${campusID}/${termYear.term}/${termYear.year}?facID=&deptID=&keySearch=${searchInput}&offset=0&limit=1000`, {
             method: 'GET',
             cache: 'force-cache',
@@ -33,8 +34,12 @@ export default function SubjectSearchPage() {
             }
         })
             .then((res) => res.json())
-            .then((data) => setCourseData(data.data))
-            .catch(err => { const mute = err })
+            .then((json) => {
+                const data = json.data
+                const filteredData = data.filter((course: any) => filterFac.includes(course.facId))
+                setCourseData(filteredData)
+            })
+        
     }
 
     const handleTermSelect = (e: any) => {
@@ -49,8 +54,6 @@ export default function SubjectSearchPage() {
         setTermYear(newTermYear)
     }
 
-    const [faculty, setFaculty] = useState(facultyData)
-    const [selectFaculty, setSelectFaculty] = useState([])
     const handleFilterClick = (e: any) => {
         console.log(e.target.id.split('-')[1])
         const key: number = e.target.id.split('-')[1]
@@ -70,7 +73,7 @@ export default function SubjectSearchPage() {
         const tmpSelectFaculty = [...selectFaculty]
         const selectFac = tmpSelectFaculty.splice(key, 1)
         tmpFaculty.push(selectFac[0])
-        setFaculty(tmpFaculty)       
+        setFaculty(tmpFaculty)
         setSelectFaculty(tmpSelectFaculty)
     }
     return (
@@ -106,7 +109,7 @@ export default function SubjectSearchPage() {
                                                     <div className="items-start justify-between overflow-hidden p-5 border-b border-solid rounded-t">
                                                         <div className="col-span-9 flex flex-wrap space-x-2 space-y-1">
                                                             {
-                                                                selectFaculty.map((fac, key) => (
+                                                                selectFaculty.map((fac: any, key: number) => (
                                                                     <div key={key}>
                                                                         <input type="checkbox" id={`${fac.facNameThai}-${key}`} value={`${fac.facNameThai}`} className="hidden peer" onClick={handleDeSelectClick}></input>
                                                                         <label
@@ -124,7 +127,7 @@ export default function SubjectSearchPage() {
                                                     <div className="items-start justify-between overflow-hidden p-5 border-b border-solid rounded-t">
                                                         <div className="col-span-9 flex flex-wrap space-x-2 space-y-1">
                                                             {
-                                                                faculty.map((fac, key) => (
+                                                                faculty.map((fac: any, key: number) => (
                                                                     <div>
                                                                         <input type="checkbox" id={`${fac.facNameThai}-${key}`} value={`${fac.facNameThai}`} className="hidden peer" onClick={handleFilterClick}></input>
                                                                         <label
@@ -139,13 +142,15 @@ export default function SubjectSearchPage() {
                                                             }
                                                         </div>
                                                     </div>
-                                                    <button
-                                                        className=" text-red-500 p-4 rounded-lg font-bold uppercase text-sm outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
-                                                        type="button"
-                                                        onClick={() => setShowModal(!showModal)}
-                                                    >
-                                                        Close
-                                                    </button>
+                                                    <div className="flex items-center justify-end p-1">
+                                                        <button
+                                                            className=" text-red-500 p-4 rounded-lg font-bold uppercase text-sm outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
+                                                            type="button"
+                                                            onClick={() => setShowModal(!showModal)}
+                                                        >
+                                                            Close
+                                                        </button>
+                                                    </div>
                                                 </motion.div>
                                             </div>
                                         </div>

@@ -1,233 +1,170 @@
 [
   {
     "facId": "00",
-    "facNameThai": "ส่วนกลางมหาวิทยาลัย",
     "facNameEng": null,
-    "website": "https://www.psu.ac.th/",
+    "facNameThai": "ส่วนกลางมหาวิทยาลัย",
     "primaryColor": null,
     "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "06",
-    "facNameThai": "คณะวิศวกรรมศาสตร์",
-    "facNameEng": "Faculty of Engineering",
-    "website": "https://www.eng.psu.ac.th/",
-    "primaryColor": "#B33939",
-    "secondaryColor": "#BC9192",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "08",
-    "facNameThai": "คณะวิทยาศาสตร์",
-    "facNameEng": "Faculty of Science",
-    "website": "https://www.sci.psu.ac.th/",
-    "primaryColor": "#FFFF00",
-    "secondaryColor": "#FFF6A9",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "09",
-    "facNameThai": "คณะแพทยศาสตร์",
-    "facNameEng": "Faculty of Medicine",
-    "website": "https://medinfo.psu.ac.th/",
-    "primaryColor": "#1E452C",
-    "secondaryColor": "#8FA598",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "11",
-    "facNameThai": "คณะวิทยาการจัดการ",
-    "facNameEng": "Faculty of Management Sciences",
-    "website": "https://www.fms.psu.ac.th/",
-    "primaryColor": "#89277F",
-    "secondaryColor": "#CCBED2",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "12",
-    "facNameThai": "คณะทรัพยากรธรรมชาติ",
-    "facNameEng": "Faculty of Natural  Resources",
-    "website": "https://natres.psu.ac.th/",
-    "primaryColor": "#008882",
-    "secondaryColor": "#9DF0AC",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "13",
-    "facNameThai": "คณะเภสัชศาสตร์",
-    "facNameEng": "Faculty of Pharmaceutical Sciences",
-    "website": "https://www.pharmacy.psu.ac.th/th/",
-    "primaryColor": "#6B8E23",
-    "secondaryColor": "#C2C199",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "14",
-    "facNameThai": "คณะพยาบาลศาสตร์",
-    "facNameEng": "Faculty of Nursing",
-    "website": "https://www.nur.psu.ac.th/",
-    "primaryColor": "#F8980F",
-    "secondaryColor": "#DAAE9A",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "15",
-    "facNameThai": "คณะทันตแพทยศาสตร์",
-    "facNameEng": "Faculty of Dentistry",
-    "website": "https://www.dent.psu.ac.th/dent/th/",
-    "primaryColor": "#DABFD8",
-    "secondaryColor": "#CABDC7",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "19",
-    "facNameThai": "ศูนย์เครื่องมือวิทยาศาสตร์",
-    "facNameEng": "The Scientific Equipment Center",
-    "website": "https://osit.psu.ac.th/th/",
-    "primaryColor": null,
-    "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "26",
-    "facNameThai": "คณะอุตสาหกรรมเกษตร",
-    "facNameEng": "Faculty of Agro-Industry",
-    "website": "https://agro.psu.ac.th/",
-    "primaryColor": "#C73D8A",
-    "secondaryColor": "#FEE1EB",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "27",
-    "facNameThai": "คณะการจัดการสิ่งแวดล้อม",
-    "facNameEng": "Faculty of Environmental Management",
-    "website": "https://sites.google.com/psu.ac.th/envipsu",
-    "primaryColor": "#516F75",
-    "secondaryColor": "#DFE9EB",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
+    "website": "https://www.psu.ac.th/"
   },
   {
     "facId": "28",
-    "facNameThai": "สถาบันทรัพยากรทะเลและชายฝั่ง",
     "facNameEng": "Marine and Coastal Resources Institute:MACORIN",
-    "website": null,
+    "facNameThai": "สถาบันทรัพยากรทะเลและชายฝั่ง",
     "primaryColor": null,
     "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
+    "website": null
   },
   {
-    "facId": "35",
-    "facNameThai": "คณะศิลปศาสตร์",
-    "facNameEng": "Faculty of Liberal Arts",
-    "website": "https://www.libarts.psu.ac.th/th/",
-    "primaryColor": "#CA0606",
-    "secondaryColor": "#D69B98",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "43",
-    "facNameThai": "คณะนิติศาสตร์",
-    "facNameEng": "Faculty of Law",
-    "website": "https://law.psu.ac.th/",
-    "primaryColor": "black",
-    "secondaryColor": "white",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "45",
-    "facNameThai": "คณะเศรษฐศาสตร์",
-    "facNameEng": "Faculty of Economics",
-    "website": "https://www.economics.psu.ac.th/",
-    "primaryColor": "#FF8C36",
-    "secondaryColor": "#E5AD9A",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "52",
-    "facNameThai": "สถาบันสันติศึกษา",
-    "facNameEng": "Institute for Peace Studies",
-    "website": "https://dmhost6.psu.ac.th/~ips/index.php/th/",
+    "facId": "51",
+    "facNameEng": "Khunying Long Athakravisunthorn Learning Resources Center",
+    "facNameThai": "สำนักทรัพยากรการเรียนรู้คุณหญิงหลง อรรถกระวีสุนทร*",
     "primaryColor": null,
     "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "53",
-    "facNameThai": "คณะการแพทย์แผนไทย",
-    "facNameEng": "Faculty of Traditional Thai Medicine",
-    "website": "https://www.ttmed.psu.ac.th/th/",
-    "primaryColor": "#D7AE1C",
-    "secondaryColor": "#DDD2A8",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "61",
-    "facNameThai": "คณะเทคนิคการแพทย์",
-    "facNameEng": "Faculty of Medical Technology",
-    "website": "https://medtech.psu.ac.th/",
-    "primaryColor": "#8B0000",
-    "secondaryColor": "#FFD700",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
+    "website": "https://www.clib.psu.ac.th/"
   },
   {
     "facId": "65",
-    "facNameThai": "วิทยาลัยนานาชาติ วิทยาเขตหาดใหญ่",
     "facNameEng": "International College",
-    "website": "https://www.facebook.com/PSUInternationalCollege/?locale=th_TH",
+    "facNameThai": "วิทยาลัยนานาชาติ วิทยาเขตหาดใหญ่",
     "primaryColor": "#000080",
     "secondaryColor": "#C0C0C0",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
+    "website": "https://www.facebook.com/PSUInternationalCollege/?locale=th_TH"
+  },
+  {
+    "facId": "52",
+    "facNameEng": "Institute for Peace Studies",
+    "facNameThai": "สถาบันสันติศึกษา",
+    "primaryColor": null,
+    "secondaryColor": null,
+    "website": "https://dmhost6.psu.ac.th/~ips/index.php/th/"
   },
   {
     "facId": "77",
-    "facNameThai": "คณะสัตวแพทยศาสตร์",
     "facNameEng": "Faculty of Veterinary Science",
-    "website": "https://vet.psu.ac.th/",
+    "facNameThai": "คณะสัตวแพทยศาสตร์",
     "primaryColor": "#B0C4DE",
     "secondaryColor": "#D2DBE1",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
+    "website": "https://vet.psu.ac.th/"
+  },
+  {
+    "facId": "53",
+    "facNameEng": "Faculty of Traditional Thai Medicine",
+    "facNameThai": "คณะการแพทย์แผนไทย",
+    "primaryColor": "#D7AE1C",
+    "secondaryColor": "#DDD2A8",
+    "website": "https://www.ttmed.psu.ac.th/th/"
+  },
+  {
+    "facId": "08",
+    "facNameEng": "Faculty of Science",
+    "facNameThai": "คณะวิทยาศาสตร์",
+    "primaryColor": "#FFFF00",
+    "secondaryColor": "#FFF6A9",
+    "website": "https://www.sci.psu.ac.th/"
+  },
+  {
+    "facId": "13",
+    "facNameEng": "Faculty of Pharmaceutical Sciences",
+    "facNameThai": "คณะเภสัชศาสตร์",
+    "primaryColor": "#6B8E23",
+    "secondaryColor": "#C2C199",
+    "website": "https://www.pharmacy.psu.ac.th/th/"
+  },
+  {
+    "facId": "14",
+    "facNameEng": "Faculty of Nursing",
+    "facNameThai": "คณะพยาบาลศาสตร์",
+    "primaryColor": "#F8980F",
+    "secondaryColor": "#DAAE9A",
+    "website": "https://www.nur.psu.ac.th/"
+  },
+  {
+    "facId": "12",
+    "facNameEng": "Faculty of Natural  Resources",
+    "facNameThai": "คณะทรัพยากรธรรมชาติ",
+    "primaryColor": "#008882",
+    "secondaryColor": "#9DF0AC",
+    "website": "https://natres.psu.ac.th/"
+  },
+  {
+    "facId": "09",
+    "facNameEng": "Faculty of Medicine",
+    "facNameThai": "คณะแพทยศาสตร์",
+    "primaryColor": "#1E452C",
+    "secondaryColor": "#8FA598",
+    "website": "https://medinfo.psu.ac.th/"
+  },
+  {
+    "facId": "61",
+    "facNameEng": "Faculty of Medical Technology",
+    "facNameThai": "คณะเทคนิคการแพทย์",
+    "primaryColor": "#8B0000",
+    "secondaryColor": "#FFD700",
+    "website": "https://medtech.psu.ac.th/"
+  },
+  {
+    "facId": "11",
+    "facNameEng": "Faculty of Management Sciences",
+    "facNameThai": "คณะวิทยาการจัดการ",
+    "primaryColor": "#89277F",
+    "secondaryColor": "#CCBED2",
+    "website": "https://www.fms.psu.ac.th/"
+  },
+  {
+    "facId": "35",
+    "facNameEng": "Faculty of Liberal Arts",
+    "facNameThai": "คณะศิลปศาสตร์",
+    "primaryColor": "#CA0606",
+    "secondaryColor": "#D69B98",
+    "website": "https://www.libarts.psu.ac.th/th/"
+  },
+  {
+    "facId": "43",
+    "facNameEng": "Faculty of Law",
+    "facNameThai": "คณะนิติศาสตร์",
+    "primaryColor": "black",
+    "secondaryColor": "white",
+    "website": "https://law.psu.ac.th/"
+  },
+  {
+    "facId": "27",
+    "facNameEng": "Faculty of Environmental Management",
+    "facNameThai": "คณะการจัดการสิ่งแวดล้อม",
+    "primaryColor": "#516F75",
+    "secondaryColor": "#DFE9EB",
+    "website": "https://sites.google.com/psu.ac.th/envipsu"
+  },
+  {
+    "facId": "06",
+    "facNameEng": "Faculty of Engineering",
+    "facNameThai": "คณะวิศวกรรมศาสตร์",
+    "primaryColor": "#B33939",
+    "secondaryColor": "#BC9192",
+    "website": "https://www.eng.psu.ac.th/"
+  },
+  {
+    "facId": "45",
+    "facNameEng": "Faculty of Economics",
+    "facNameThai": "คณะเศรษฐศาสตร์",
+    "primaryColor": "#FF8C36",
+    "secondaryColor": "#E5AD9A",
+    "website": "https://www.economics.psu.ac.th/"
+  },
+  {
+    "facId": "15",
+    "facNameEng": "Faculty of Dentistry",
+    "facNameThai": "คณะทันตแพทยศาสตร์",
+    "primaryColor": "#DABFD8",
+    "secondaryColor": "#CABDC7",
+    "website": "https://www.dent.psu.ac.th/dent/th/"
+  },
+  {
+    "facId": "26",
+    "facNameEng": "Faculty of Agro-Industry",
+    "facNameThai": "คณะอุตสาหกรรมเกษตร",
+    "primaryColor": "#C73D8A",
+    "secondaryColor": "#FEE1EB",
+    "website": "https://agro.psu.ac.th/"
   }
 ]
