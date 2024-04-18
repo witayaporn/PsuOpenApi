@@ -1,12 +1,11 @@
 'use client'
 import { useEffect, useState } from "react"
 import SectionCard from "./sectionCard"
-import facultyData from '../../../public/faculty-data.json'
+import facultyData from '@/public/faculty-data.json'
 import { AnimatePresence, motion } from "framer-motion"
 
 export default function SubjectCard(prop: any) {
     const data = prop.data
-    const subjectNameTH = data.subjectCode + " " + data.subjectNameThai
     const subjectNameEN = data.subjectCode + " " + data.subjectNameEng
     const subjectShortNameEN = data.subjectCode + " " + data.shortNameEng
 
@@ -63,7 +62,11 @@ export default function SubjectCard(prop: any) {
     return (
         <>
             {/* {console.log(facColor)} */}
-            <a className="md:h-44 pl-2 border rounded-lg shadow hover:shadow-md hover:scale-[1.01] transition-all" style={{ background: `linear-gradient(to bottom, ${facColor.primary}, ${facColor.secondary})`, }} onClick={handleCardClick}>
+            <a 
+                className="md:h-44 pl-2 border rounded-lg shadow hover:shadow-md hover:scale-[1.01] transition-all" 
+                style={{ background: `linear-gradient(to bottom, ${facColor.primary}, ${facColor.secondary})`, }} 
+                onClick={handleCardClick}
+            >
                 <div className="p-4 h-full bg-white rounded-r-md">
                     <p className="font-bold text-green-950">{subjectShortNameEN}</p>
                     <p className="text-gray-700 truncate max-h-6">{data.subjectNameThai}</p>

@@ -11,39 +11,6 @@
     "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
   },
   {
-    "facId": "01",
-    "facNameThai": "สำนักงานอธิการบดี",
-    "facNameEng": "President's  Office",
-    "website": null,
-    "primaryColor": null,
-    "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "03",
-    "facNameThai": "ศูนย์คอมพิวเตอร์",
-    "facNameEng": "Computer Center",
-    "website": "https://diis.psu.ac.th/",
-    "primaryColor": null,
-    "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "04",
-    "facNameThai": "สำนักวิจัยและพัฒนา",
-    "facNameEng": "Research and Development Office",
-    "website": "https://research.psu.ac.th/",
-    "primaryColor": null,
-    "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
     "facId": "06",
     "facNameThai": "คณะวิศวกรรมศาสตร์",
     "facNameEng": "Faculty of Engineering",
@@ -132,17 +99,6 @@
     "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
   },
   {
-    "facId": "17",
-    "facNameThai": "บัณฑิตวิทยาลัย",
-    "facNameEng": "Graduate School",
-    "website": "https://grad.psu.ac.th/th/",
-    "primaryColor": null,
-    "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
     "facId": "19",
     "facNameThai": "ศูนย์เครื่องมือวิทยาศาสตร์",
     "facNameEng": "The Scientific Equipment Center",
@@ -198,28 +154,6 @@
     "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
   },
   {
-    "facId": "37",
-    "facNameThai": "ศูนย์ส่งเสริมศิลปและวัฒนธรรม",
-    "facNameEng": "The Art and Cultural Center",
-    "website": "https://www.facebook.com/artscultural.psu/?locale=th_TH",
-    "primaryColor": null,
-    "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "38",
-    "facNameThai": "มหาวิทยาลัยสงขลานครินทร์ วิทยาเขตหาดใหญ่",
-    "facNameEng": "Prince of Songkla University  Hat Yai Campus",
-    "website": "https://www.psu.ac.th/",
-    "primaryColor": null,
-    "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
     "facId": "43",
     "facNameThai": "คณะนิติศาสตร์",
     "facNameEng": "Faculty of Law",
@@ -242,28 +176,6 @@
     "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
   },
   {
-    "facId": "50",
-    "facNameThai": "ผู้ร่วมเรียน",
-    "facNameEng": "part-time-student",
-    "website": "https://www.psu.ac.th/",
-    "primaryColor": null,
-    "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "51",
-    "facNameThai": "สำนักทรัพยากรการเรียนรู้คุณหญิงหลง อรรถกระวีสุนทร*",
-    "facNameEng": "Khunying Long Athakravisunthorn Learning Resources Center",
-    "website": "https://www.clib.psu.ac.th/",
-    "primaryColor": null,
-    "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
     "facId": "52",
     "facNameThai": "สถาบันสันติศึกษา",
     "facNameEng": "Institute for Peace Studies",
@@ -281,28 +193,6 @@
     "website": "https://www.ttmed.psu.ac.th/th/",
     "primaryColor": "#D7AE1C",
     "secondaryColor": "#DDD2A8",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "55",
-    "facNameThai": "สถานีวิทยุกระจายเสียง มอ.*",
-    "facNameEng": null,
-    "website": "https://www.facebook.com/psu10725.net/?locale=th_TH",
-    "primaryColor": null,
-    "secondaryColor": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "60",
-    "facNameThai": "ศูนย์บ่มเพาะวิสาหกิจ(ยุบอยู่ในอุทยานวิทยาศาสตร์)",
-    "facNameEng": "Prince of Songkla University Business Incubation Center\r\n",
-    "website": "http://www.psu-bic.psu.ac.th/",
-    "primaryColor": null,
-    "secondaryColor": null,
     "campusId": "01",
     "campusNameThai": "วิทยาเขตหาดใหญ่",
     "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
@@ -336,62 +226,6 @@
     "website": "https://vet.psu.ac.th/",
     "primaryColor": "#B0C4DE",
     "secondaryColor": "#D2DBE1",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "80",
-    "facNameThai": "สถาบันการจัดการระบบสุขภาพภาคใต้ (สจรส.ม.อ.)",
-    "facNameEng": "Health System Management Institute (HSMI)",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "83",
-    "facNameThai": "อุทยานวิทยาศาสตร์ มหาวิทยาลัยสงขลานครินทร์",
-    "facNameEng": "The Southern Thailand Science Park",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "84",
-    "facNameThai": "สถาบันฮาลาล มหาวิทยาลัยสงขลานครินทร์",
-    "facNameEng": "Halal Institute",
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "85",
-    "facNameThai": "ศูนย์ประชุมนานาชาติเฉลิมพระเกียรติ์**",
-    "facNameEng": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "86",
-    "facNameThai": "พิพิธภัณฑสถานธรรมชาติวิทยา 50 พรรษา สยามบรมราชกุมารี**",
-    "facNameEng": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "88",
-    "facNameThai": "ศูนย์บริการวิชาการ**",
-    "facNameEng": null,
-    "campusId": "01",
-    "campusNameThai": "วิทยาเขตหาดใหญ่",
-    "campusNameEng": "Prince of Songkla University  Hat Yai Campus"
-  },
-  {
-    "facId": "89",
-    "facNameThai": "ศูนย์กีฬาและสุขภาพ มหาวิทยาลัยสงขลานครินทร์ วิทยาเขตหาดใหญ่**",
-    "facNameEng": null,
     "campusId": "01",
     "campusNameThai": "วิทยาเขตหาดใหญ่",
     "campusNameEng": "Prince of Songkla University  Hat Yai Campus"

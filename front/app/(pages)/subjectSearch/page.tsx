@@ -3,8 +3,11 @@
 import { useEffect, useState } from "react";
 import SubjectCard from "./subjectCard";
 import SearchBar from "@/app/components/searchBar";
+import facultyData from "@/public/faculty-data.json"
+import { AnimatePresence, motion } from "framer-motion"
 
 export default function SubjectSearchPage() {
+    const [showModal, setShowModal] = useState(false)
     const campusID: string = "01"
     const [termYear, setTermYear] = useState({
         "term": "2",
@@ -34,7 +37,6 @@ export default function SubjectSearchPage() {
             .catch(err => { const mute = err })
     }
 
-    const [termSelect, setTermSelect] = useState("")
     const handleTermSelect = (e: any) => {
         e.preventDefault()
         console.log(e.target.value)
@@ -45,6 +47,31 @@ export default function SubjectSearchPage() {
             'year': "25" + splitData[1]
         }
         setTermYear(newTermYear)
+    }
+
+    const [faculty, setFaculty] = useState(facultyData)
+    const [selectFaculty, setSelectFaculty] = useState([])
+    const handleFilterClick = (e: any) => {
+        console.log(e.target.id.split('-')[1])
+        const key: number = e.target.id.split('-')[1]
+        const tmpFaculty = [...faculty]
+        const tmpSelectFaculty = [...selectFaculty]
+        const selectFac = tmpFaculty.splice(key, 1)
+        setFaculty(tmpFaculty)
+        tmpSelectFaculty.push(selectFac[0])
+        setSelectFaculty(tmpSelectFaculty)
+
+    }
+
+    const handleDeSelectClick = (e: any) => {
+        console.log(e.target.id.split('-')[1])
+        const key: number = e.target.id.split('-')[1]
+        const tmpFaculty = [...faculty]
+        const tmpSelectFaculty = [...selectFaculty]
+        const selectFac = tmpSelectFaculty.splice(key, 1)
+        tmpFaculty.push(selectFac[0])
+        setFaculty(tmpFaculty)       
+        setSelectFaculty(tmpSelectFaculty)
     }
     return (
         <section>
@@ -57,36 +84,75 @@ export default function SubjectSearchPage() {
                         <SearchBar onSubmit={handleSubmit} onChange={handleSearchChange} />
                     </div>
                     <div className="grid grid-cols-12 gap-x-2">
-                        <div className="col-span-8 flex space-x-2 overflow-x-scroll scroll-smooth no-scrollbar scrollbar-blue-edge">
-                            <div>
-                                <input type="checkbox" id="option-1" value="" className="hidden peer"></input>
-                                <label htmlFor="option-1" className="inline-flex p-1 text-black bg-green-100 border-2 border-green-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">
-                                    Art
-                                </label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="option-2" value="" className="hidden peer"></input>
-                                <label htmlFor="option-2" className="inline-flex p-1 text-black bg-red-100 border-2 border-red-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">
-                                    Mathematic
-                                </label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="option-3" value="" className="hidden peer"></input>
-                                <label htmlFor="option-3" className="inline-flex p-1 text-black bg-yellow-100 border-2 border-yellow-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">
-                                    Technologies
-                                </label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="option-4" value="" className="hidden peer"></input>
-                                <label htmlFor="option-4" className="inline-flex p-1 text-black bg-blue-100 border-2 border-blue-200 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60">
-                                    Literature
-                                </label>
-                            </div>
+                        <div className="col-span-9 flex space-x-2 overflow-x-hidden">
                         </div>
-                        <div className="col-span-2">
-                            <select id="term" onChange={handleTermSelect} className="bg-gray-50 p-1 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
-                                <option value=""></option>
-                            </select>
+                        <div className="col-span-1">
+                            <button className="w-full p-[5px] bg-gray-50 border rounded-lg shadow hover:shadow-md hover:scale-[1.01] transition-all" onClick={() => setShowModal(!showModal)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+                                </svg>
+                            </button>
+                            <AnimatePresence>
+                                {showModal && (
+                                    <>
+                                        <div className="justify-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[10100] outline-none overscroll-auto">
+                                            <div className="relative m-auto max-w-3xl">
+                                                <motion.div
+                                                    className="grid grid-cols-1 gap-2 border-0 rounded-lg shadow-lg relative bg-white outline-none focus:outline-none"
+                                                    initial={{ opacity: 0, scale: 0.75 }}
+                                                    animate={{ opacity: 1, scale: 1, transition: { ease: "easeOut", duration: 0.10 } }}
+                                                    exit={{ opacity: 0, scale: 0.75, transition: { ease: "easeIn", duration: 0.10 } }}
+                                                >
+                                                    <div className="items-start justify-between overflow-hidden p-5 border-b border-solid rounded-t">
+                                                        <div className="col-span-9 flex flex-wrap space-x-2 space-y-1">
+                                                            {
+                                                                selectFaculty.map((fac, key) => (
+                                                                    <div key={key}>
+                                                                        <input type="checkbox" id={`${fac.facNameThai}-${key}`} value={`${fac.facNameThai}`} className="hidden peer" onClick={handleDeSelectClick}></input>
+                                                                        <label
+                                                                            for={`${fac.facNameThai}-${key}`}
+                                                                            className="flex p-1 text-black text-sm border-2 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60"
+                                                                            style={{ backgroundColor: `${fac.secondaryColor}`, borderColor: `${fac.primaryColor}` }}
+                                                                        >
+                                                                            {fac.facNameThai}
+                                                                        </label>
+                                                                    </div>
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div className="items-start justify-between overflow-hidden p-5 border-b border-solid rounded-t">
+                                                        <div className="col-span-9 flex flex-wrap space-x-2 space-y-1">
+                                                            {
+                                                                faculty.map((fac, key) => (
+                                                                    <div>
+                                                                        <input type="checkbox" id={`${fac.facNameThai}-${key}`} value={`${fac.facNameThai}`} className="hidden peer" onClick={handleFilterClick}></input>
+                                                                        <label
+                                                                            for={`${fac.facNameThai}-${key}`}
+                                                                            className="flex p-1 text-black text-sm border-2 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60"
+                                                                            style={{ backgroundColor: `${fac.secondaryColor}`, borderColor: `${fac.primaryColor}` }}
+                                                                        >
+                                                                            {fac.facNameThai}
+                                                                        </label>
+                                                                    </div>
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        className=" text-red-500 p-4 rounded-lg font-bold uppercase text-sm outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
+                                                        type="button"
+                                                        onClick={() => setShowModal(!showModal)}
+                                                    >
+                                                        Close
+                                                    </button>
+                                                </motion.div>
+                                            </div>
+                                        </div>
+                                        <div className="opacity-25 fixed inset-0 z-[10000] bg-black"></div>
+                                    </>
+                                )}
+                            </AnimatePresence>
                         </div>
                         <div className="col-span-2">
                             <select id="term" onChange={handleTermSelect} className="bg-gray-50 p-1 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
