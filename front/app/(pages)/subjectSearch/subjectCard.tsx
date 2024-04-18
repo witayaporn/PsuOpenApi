@@ -64,10 +64,13 @@ export default function SubjectCard(prop: any) {
         <>
             {/* {console.log(facColor)} */}
             <a className="md:h-44 pl-2 border rounded-lg shadow hover:shadow-md hover:scale-[1.01] transition-all" style={{ background: `linear-gradient(to bottom, ${facColor.primary}, ${facColor.secondary})`, }} onClick={handleCardClick}>
-                <div className="p-4 h-full bg-white gap-1 rounded-r-md">
+                <div className="p-4 h-full bg-white rounded-r-md">
                     <p className="font-bold text-green-950">{subjectShortNameEN}</p>
                     <p className="text-gray-700 truncate max-h-6">{data.subjectNameThai}</p>
-                    <p className="text-gray-500">{data.credit}</p>
+                    <p className="text-gray-500 inline md:block">{data.credit}</p>
+                    <p className="inline-flex py-1 px-2 mx-2 md:mt-2 md:m-0 text-black text-xs bg-gray-100 border-gray-400 rounded-lg">
+                        {data.subjectTypeDesc}
+                    </p>
                 </div>
             </a>
             <AnimatePresence>
@@ -91,7 +94,10 @@ export default function SubjectCard(prop: any) {
                                         </button>
                                         <p className="font-bold text-lg text-green-950">{subjectNameEN}</p>
                                         <p className="text-gray-700">{data.subjectNameThai}</p>
-                                        <p className="text-gray-500">{data.credit}</p>
+                                        <p className="text-gray-500 inline md:block">{data.credit}</p>
+                                        <p className="inline-flex py-1 px-2 mx-2 md:mt-2 md:m-0 text-black text-xs bg-gray-100 border-gray-400 rounded-lg">
+                                            {data.subjectTypeDesc}
+                                        </p>
                                     </div>
                                     <div className="relative px-5 grid grid-cols-1 gap-y-2">
                                         <div className="flex-auto">
