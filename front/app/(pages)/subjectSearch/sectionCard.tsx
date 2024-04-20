@@ -4,6 +4,7 @@ const timeFormatter = (time: string) => {
     const m = time.slice(2, 4)
     return h + ":" + m + " น."
 }
+
 export default function SectionCard(prop: any) {
     const data = prop.data[0]
     const dateData = prop.data[1]

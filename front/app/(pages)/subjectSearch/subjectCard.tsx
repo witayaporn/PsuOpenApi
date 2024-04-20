@@ -106,7 +106,6 @@ export default function SubjectCard(prop: any) {
                                         <div className="flex-auto">
                                             <p className="font-bold">รายละเอียด</p>
                                             <div className="grid grid-cols-2 sm:grid-cols-4 text-sm">
-                                                {console.log(data)}
                                                 <p>ภาคการศึกษา</p>
                                                 <p>{data.eduTerm + '/' + data.eduYear}</p>
                                                 <p>ภาควิชา</p>
@@ -121,11 +120,10 @@ export default function SubjectCard(prop: any) {
                                             <p className="font-bold">คำอธิบายรายวิชา</p>
                                             <p className="text-gray-900 text-sm leading-relaxed">
                                                 {/* {console.log(courseDetail)} */}
-                                                {courseDetail.subjectDescThai ? courseDetail.subjectDescThai : "ไม่มีข้อมูล"}
                                             </p>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2">
-                                            {/* {console.log(sectionDate)} */}
+                                            {console.log(sectionDate)}
                                             <p className="font-bold">ตอน</p>
                                             {courseSection ? courseSection.map((section: any, key: number) => {
                                                 const dateData = sectionDate ? sectionDate.filter((data) => data.section == section.section) : sectionDate
