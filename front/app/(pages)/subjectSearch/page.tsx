@@ -36,7 +36,7 @@ export default function SubjectSearchPage() {
             .then((res) => res.json())
             .then((json) => {
                 const data = json.data
-                const filteredData = data.filter((course: any) => filterFac.includes(course.facId))
+                const filteredData = filterFac.length ? data.filter((course: any) => filterFac.includes(course.facId)) : data
                 setCourseData(filteredData)
             })
         
