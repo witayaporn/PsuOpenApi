@@ -19,10 +19,11 @@ export default function TimeTable(prop: any) {
 
     const setUpData = () => {
         let temp = defaultWeekTime
+        console.log("Set up data")
         data.map((subject) => {
             console.log(subject)
             subject.length
-                ? subject.map((item) => {
+                ? subject[0].map((item) => {
                     console.log(item)
                     switch (item.classDate) {
                         case "1":
@@ -56,12 +57,12 @@ export default function TimeTable(prop: any) {
     useEffect(() => {
         setUpData()
         { console.log("set up") }
-    }, [prop.update])
+    }, [prop.data])
 
     return (
         <>
             <div className="relative w-full text-xs bg-white rounded-lg border-2 border-slate-300 overflow-x-scroll">
-                {console.log(weekTime)}
+                {console.log(prop.data)}
                 <div className="absolute z-[2000] inline-block" style={{ width: `${(maxTime - minTime + 2) * 120}px` }}>
                     <div className="relative h-[57px] bg-green-100 opacity-50">
                     </div>
@@ -71,9 +72,9 @@ export default function TimeTable(prop: any) {
                             const stopT: string = parseInt(item.stopTime) / 100
                             const startRender = parseInt(startT - minTime) + 1
                             const period = parseInt(stopT - startT) + (((stopT - startT) % 1) / 0.6)
-                            console.log(startT + " " + stopT)
-                            console.log("start" + startRender)
-                            console.log("period" + period)
+                            // console.log(startT + " " + stopT)
+                            // console.log("start" + startRender)
+                            // console.log("period" + period)
                             return (
                                 <a
                                     className="absolute bg-blue-300 h-[60px] hover:border rounded-md"
