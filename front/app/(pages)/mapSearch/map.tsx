@@ -147,6 +147,8 @@ export default function Map() {
                         initial={{ opacity: 0, scale: 0.75, y: 80 }}
                         animate={{ opacity: 1, scale: 1, y: 0, transition: { ease: "easeOut", duration: 0.20 } }}
                         exit={{ opacity: 0, scale: 0.75, transition: { ease: "easeIn", duration: 0.10 } }}
+                        onAnimationComplete={() => window.scrollTo({ top: 1000, behavior: "smooth" })}
+                        className="mb-32"
                     >
                         <DetailCard data={selectedPlace.properties} />
                     </motion.div>
