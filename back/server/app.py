@@ -5,6 +5,7 @@ from dotenv import dotenv_values # type: ignore
 from pymongo import MongoClient # type: ignore
 
 from routes_student import router_student
+from routes_subjectinterest import router_subjectinterest
 
 config = dotenv_values("./mongo/.env")
 
@@ -33,6 +34,8 @@ def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
 
 app.include_router(router_student, tags=["student"], prefix="/student")
+
+app.include_router(router_subjectinterest, tags=["SubjectInterest"], prefix="/SubjectInterest")
 
 
 if __name__ == "__main__":
