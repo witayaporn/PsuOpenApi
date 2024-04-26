@@ -13,16 +13,18 @@ export default function TimeTable(prop: any) {
         "sun": []
     }
     const [weekTime, setWeekTime] = useState(defaultWeekTime)
-
-    const maxTime: number = 17
-    const minTime: number = 8
-
+    const [maxTime, setMaxTime] = useState(13)
+    const [minTime, setMinTime] = useState(8)
     const setUpData = () => {
         let temp = defaultWeekTime
+        let minT: number = 8
+        let maxT: number = 13
         console.log("Set up data")
         data.map((subject) => {
             subject.length
                 ? subject[0].map((item) => {
+                    minT = parseInt(item.startTime) / 100 < minT ? Math.ceil(parseInt(item.startTime) / 100) : minT
+                    maxT = parseInt(item.stopTime) / 100 > maxT ? Math.ceil(parseInt(item.stopTime) / 100) : maxT
                     switch (item.classDate) {
                         case "1":
                             temp.mon.push(item)
@@ -50,6 +52,8 @@ export default function TimeTable(prop: any) {
                 : null
         })
         setWeekTime(temp)
+        setMaxTime(maxT)
+        setMinTime(minT)
     }
 
     useEffect(() => {
@@ -61,12 +65,12 @@ export default function TimeTable(prop: any) {
         <>
             <div className="relative w-full text-xs bg-white rounded-lg border-2 border-slate-300 overflow-x-scroll">
                 <div className="absolute z-[2000] inline-block" style={{ width: `${(maxTime - minTime + 2) * 120}px` }}>
-                    <div className="relative h-[57px] bg-green-100 opacity-50">
+                    <div className="relative h-[57px] bg-green-100 opacity-20">
                     </div>
-                    <div className="relative h-[66px] py-1 pl-[120px] opacity-50">
+                    <div className="relative h-[66px] py-1 pl-[120px] opacity-20">
                         {weekTime.mon.length ? weekTime.mon.map((item, key) => {
-                            const startT: string = parseInt(item.startTime) / 100
-                            const stopT: string = parseInt(item.stopTime) / 100
+                            const startT: number = parseInt(item.startTime) / 100
+                            const stopT: number = parseInt(item.stopTime) / 100
                             const startRender = parseInt(startT - minTime) + 1
                             const period = parseInt(stopT - startT) + (((stopT - startT) % 1) / 0.6)
                             // console.log(startT + " " + stopT)
@@ -75,52 +79,52 @@ export default function TimeTable(prop: any) {
                             return (
                                 <a
                                     key={key}
-                                    className="absolute bg-blue-300 h-[60px] hover:border rounded-md"
-                                    style={{ left: `${startRender * 120}px`, width: `${period * 120}px` }}
+                                    className="absolute h-[60px] hover:border rounded-md"
+                                    style={{ left: `${startRender * 120}px`, width: `${period * 120}px`, backgroundColor: `#${item.subjectId.slice(0, 6)}` }}
                                 >
                                     {item.subjectNameThai}
                                 </a>
                             )
                         }) : <></>}
                     </div>
-                    <div className="relative h-[66px] py-1 pl-[120px] opacity-50">
+                    <div className="relative h-[66px] py-1 pl-[120px] opacity-20">
                         {weekTime.tue.length ? weekTime.tue.map((item, key) => {
-                            const startT: string = parseInt(item.startTime) / 100
-                            const stopT: string = parseInt(item.stopTime) / 100
+                            const startT: number = parseInt(item.startTime) / 100
+                            const stopT: number = parseInt(item.stopTime) / 100
                             const startRender = parseInt(startT - minTime) + 1
                             const period = parseInt(stopT - startT) + (((stopT - startT) % 1) / 0.6)
                             return (
                                 <a
                                     key={key}
-                                    className="absolute bg-blue-300 h-[60px] hover:border rounded-md"
-                                    style={{ left: `${startRender * 120}px`, width: `${period * 120}px` }}
+                                    className="absolute h-[60px] hover:border rounded-md"
+                                    style={{ left: `${startRender * 120}px`, width: `${period * 120}px`, backgroundColor: `#${item.subjectId.slice(0, 6)}` }}
                                 >
                                     {item.subjectNameThai}
                                 </a>
                             )
                         }) : <></>}
                     </div>
-                    <div className="relative h-[66px] py-1 pl-[120px] opacity-50">
+                    <div className="relative h-[66px] py-1 pl-[120px] opacity-20">
                         {weekTime.wed.length ? weekTime.wed.map((item, key) => {
-                            const startT: string = parseInt(item.startTime) / 100
-                            const stopT: string = parseInt(item.stopTime) / 100
+                            const startT: number = parseInt(item.startTime) / 100
+                            const stopT: number = parseInt(item.stopTime) / 100
                             const startRender = parseInt(startT - minTime) + 1
                             const period = parseInt(stopT - startT) + (((stopT - startT) % 1) / 0.6)
                             return (
                                 <a
                                     key={key}
-                                    className="absolute bg-blue-300 h-[60px] hover:border rounded-md"
-                                    style={{ left: `${startRender * 120}px`, width: `${period * 120}px` }}
+                                    className="absolute h-[60px] hover:border rounded-md"
+                                    style={{ left: `${startRender * 120}px`, width: `${period * 120}px`, backgroundColor: `#${item.subjectId.slice(0, 6)}` }}
                                 >
                                     {item.subjectNameThai}
                                 </a>
                             )
                         }) : <></>}
                     </div>
-                    <div className="relative h-[66px] py-1 pl-[120px] opacity-50">
+                    <div className="relative h-[66px] py-1 pl-[120px] opacity-20">
                         {weekTime.thu.length ? weekTime.thu.map((item, key) => {
-                            const startT: string = parseInt(item.startTime) / 100
-                            const stopT: string = parseInt(item.stopTime) / 100
+                            const startT: number = parseInt(item.startTime) / 100
+                            const stopT: number = parseInt(item.stopTime) / 100
                             const startRender = parseInt(startT - minTime) + 1
                             const period = parseInt(stopT - startT) + (((stopT - startT) % 1) / 0.6)
                             console.log(item.subjectId.slice(0, 6))
@@ -135,16 +139,16 @@ export default function TimeTable(prop: any) {
                             )
                         }) : <></>}
                     </div>
-                    <div className="relative h-[66px] py-1 pl-[120px] opacity-50">
+                    <div className="relative h-[66px] py-1 pl-[120px] opacity-20">
                         {weekTime.fri.length ? weekTime.fri.map((item, key) => {
-                            const startT: string = parseInt(item.startTime) / 100
-                            const stopT: string = parseInt(item.stopTime) / 100
+                            const startT: number = parseInt(item.startTime) / 100
+                            const stopT: number = parseInt(item.stopTime) / 100
                             const startRender = parseInt(startT - minTime) + 1
                             const period = parseInt(stopT - startT) + (((stopT - startT) % 1) / 0.6)
                             return (
                                 <a
                                     key={key}
-                                    className="absolute bg-blue-300 h-[60px] hover:border rounded-md"
+                                    className="absolute h-[60px] hover:border rounded-md"
                                     style={{ left: `${startRender * 120}px`, width: `${period * 120}px`, backgroundColor: `#${item.subjectId.slice(0, 6)}` }}
                                 >
                                     {item.subjectNameThai}
