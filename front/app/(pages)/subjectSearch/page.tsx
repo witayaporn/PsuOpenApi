@@ -5,8 +5,11 @@ import SubjectCard from "./subjectCard";
 import SearchBar from "@/app/components/searchBar";
 import facultyData from "@/public/faculty-data.json"
 import { AnimatePresence, motion } from "framer-motion"
+import { useSearchParams } from "next/navigation";
 
 export default function SubjectSearchPage() {
+    const seachParams = useSearchParams()
+    
     const [showModal, setShowModal] = useState(false)
     const [faculty, setFaculty] = useState(facultyData)
     const [selectFaculty, setSelectFaculty] = useState([])
@@ -74,6 +77,26 @@ export default function SubjectSearchPage() {
 
     }
     
+    useEffect(()=>{
+        const subjectId= seachParams.get('subjectId')
+        const term = seachParams.get('term')
+        const year = seachParams.get('year')
+        console.log(term)
+        subjectId
+        ? fetch(`https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/01/${term}/${year}/${subjectId}?offset=0&limit=1000`, {
+            method: 'GET',
+            cache: 'force-cache',
+            headers: {
+                "credential": process.env.NEXT_PUBLIC_API_KEY
+            }
+        })
+            .then((res) => res.json())
+            .then((json) => {
+                const data = json.data
+                setCourseData(data)
+        })
+        : null
+    }, [])
 
     return (
         <section>

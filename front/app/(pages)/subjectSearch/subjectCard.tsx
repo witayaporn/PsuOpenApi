@@ -50,11 +50,11 @@ export default function SubjectCard(prop: any) {
                 .then((data) => setSectionDate(data.data))
 
             html.classList.add("overflow-hidden")
+            router.push(`/subjectSearch/?subjectId=${data.subjectId}&term=${data.eduTerm}&year=${data.eduYear}`, undefined, { shallow: true })
         } else {
             html.classList.remove("overflow-hidden")
+            router.push('/subjectSearch', undefined, { shallow: true })
         }
-
-        router.push(`/subjectSearch/?subjectId=${data.subjectId}?term=${data.eduTerm}?year=${data.eduYear}`, undefined, { shallow: true })
         setShowModal(!showModal)
     }
 
