@@ -54,28 +54,27 @@ export default function SubjectSearchPage() {
         setTermYear(newTermYear)
     }
 
-    const handleFilterClick = (e: any) => {
-        console.log(e.target.id.split('-')[1])
+    const handleFilterClick = (e: any, mode: string) => {
+        // console.log(e.target.id.split('-')[1])
         const key: number = e.target.id.split('-')[1]
         const tmpFaculty = [...faculty]
         const tmpSelectFaculty = [...selectFaculty]
-        const selectFac = tmpFaculty.splice(key, 1)
-        setFaculty(tmpFaculty)
-        tmpSelectFaculty.push(selectFac[0])
+        var selectFac
+        if(mode == "select"){
+            selectFac = tmpFaculty.splice(key, 1)
+            setFaculty(tmpFaculty)
+            tmpSelectFaculty.push(selectFac[0])
+        }else{
+            selectFac = tmpSelectFaculty.splice(key, 1)
+            tmpFaculty.push(selectFac[0])
+            setFaculty(tmpFaculty)
+        }
+        
         setSelectFaculty(tmpSelectFaculty)
 
     }
+    
 
-    const handleDeSelectClick = (e: any) => {
-        console.log(e.target.id.split('-')[1])
-        const key: number = e.target.id.split('-')[1]
-        const tmpFaculty = [...faculty]
-        const tmpSelectFaculty = [...selectFaculty]
-        const selectFac = tmpSelectFaculty.splice(key, 1)
-        tmpFaculty.push(selectFac[0])
-        setFaculty(tmpFaculty)
-        setSelectFaculty(tmpSelectFaculty)
-    }
     return (
         <section>
             <div className="grid grid-rows-1 gap-4 mb-4">
@@ -120,7 +119,7 @@ export default function SubjectSearchPage() {
                                                             {
                                                                 selectFaculty.map((fac: any, key: number) => (
                                                                     <div key={key}>
-                                                                        <input type="checkbox" id={`${fac.facNameThai}-${key}`} value={`${fac.facNameThai}`} className="hidden peer" onClick={handleDeSelectClick}></input>
+                                                                        <input type="checkbox" id={`${fac.facNameThai}-${key}`} value={`${fac.facNameThai}`} className="hidden peer" onClick={(e)=> handleFilterClick(e, "deselect")}></input>
                                                                         <label
                                                                             for={`${fac.facNameThai}-${key}`}
                                                                             className="flex p-1 text-black text-sm border-2 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60"
@@ -138,7 +137,7 @@ export default function SubjectSearchPage() {
                                                             {
                                                                 faculty.map((fac: any, key: number) => (
                                                                     <div>
-                                                                        <input type="checkbox" id={`${fac.facNameThai}-${key}`} value={`${fac.facNameThai}`} className="hidden peer" onClick={handleFilterClick}></input>
+                                                                        <input type="checkbox" id={`${fac.facNameThai}-${key}`} value={`${fac.facNameThai}`} className="hidden peer" onClick={(e)=> handleFilterClick(e, "select")}></input>
                                                                         <label
                                                                             for={`${fac.facNameThai}-${key}`}
                                                                             className="flex p-1 text-black text-sm border-2 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60"

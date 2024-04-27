@@ -3,12 +3,15 @@ import { useEffect, useState } from "react"
 import SectionCard from "./sectionCard"
 import facultyData from '@/public/faculty-data.json'
 import { AnimatePresence, motion } from "framer-motion"
+import BarChart from "./barChart"
+import { useRouter } from "next/navigation"
 
 export default function SubjectCard(prop: any) {
     const data = prop.data
     const subjectNameEN = data.subjectCode + " " + data.subjectNameEng
     const subjectShortNameEN = data.subjectCode + " " + data.shortNameEng
 
+    const router = useRouter()
     const [showModal, setShowModal] = useState(false);
     const [courseDetail, setCourseDetail] = useState({});
     const [courseSection, setCourseSection] = useState([]);
@@ -16,15 +19,15 @@ export default function SubjectCard(prop: any) {
     const handleCardClick = () => {
         const html = document.getElementsByTagName('html')[0]
         if (!showModal) {
-            fetch(`https://api-gateway.psu.ac.th/Test/regist/Subject/${data.subjectId}?campusID=&offset=0&limit=100`, {
-                method: 'GET',
-                cache: 'force-cache',
-                headers: {
-                    "credential": process.env.NEXT_PUBLIC_API_KEY
-                }
-            })
-                .then((res) => res.json())
-                .then((data) => setCourseDetail(data.data[0]))
+            // fetch(`https://api-gateway.psu.ac.th/Test/regist/Subject/${data.subjectId}?campusID=&offset=0&limit=100`, {
+            //     method: 'GET',
+            //     cache: 'force-cache',
+            //     headers: {
+            //         "credential": process.env.NEXT_PUBLIC_API_KEY
+            //     }
+            // })
+            //     .then((res) => res.json())
+            //     .then((data) => setCourseDetail(data.data[0]))
 
             fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionOfferCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`, {
                 method: 'GET',
@@ -50,6 +53,8 @@ export default function SubjectCard(prop: any) {
         } else {
             html.classList.remove("overflow-hidden")
         }
+
+        router.push(`/subjectSearch/?subjectId=${data.subjectId}?term=${data.eduTerm}?year=${data.eduYear}`, undefined, { shallow: true })
         setShowModal(!showModal)
     }
 
@@ -62,9 +67,9 @@ export default function SubjectCard(prop: any) {
     return (
         <>
             {/* {console.log(facColor)} */}
-            <a 
-                className="md:h-44 pl-2 border rounded-lg shadow hover:shadow-md hover:scale-[1.01] transition-all" 
-                style={{ background: `linear-gradient(to bottom, ${facColor.primary}, ${facColor.secondary})`, }} 
+            <a
+                className="md:h-44 pl-2 border rounded-lg shadow hover:shadow-md hover:scale-[1.01] transition-all"
+                style={{ background: `linear-gradient(to bottom, ${facColor.primary}, ${facColor.secondary})`, }}
                 onClick={handleCardClick}
             >
                 <div className="p-4 h-full bg-white rounded-r-md">
@@ -101,6 +106,7 @@ export default function SubjectCard(prop: any) {
                                         <p className="inline-flex py-1 px-2 mx-2 md:mt-2 md:m-0 text-black text-xs bg-gray-100 border-gray-400 rounded-lg">
                                             {data.subjectTypeDesc}
                                         </p>
+                                        <p>{data.subjectId}</p>
                                     </div>
                                     <div className="relative px-5 grid grid-cols-1 gap-y-2">
                                         <div className="flex-auto">
@@ -120,6 +126,13 @@ export default function SubjectCard(prop: any) {
                                             <p className="font-bold">คำอธิบายรายวิชา</p>
                                             <p className="text-gray-900 text-sm leading-relaxed">
                                                 {/* {console.log(courseDetail)} */}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p className="font-bold">ข้อมูลจำนวนนักศึกษาที่สนใจ</p>
+                                            <p className="text-gray-900 text-sm leading-relaxed">
+                                                {/* {console.log(courseDetail)} */}
+                                                <BarChart></BarChart>
                                             </p>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2">

@@ -2,10 +2,10 @@
 export default function HomePage() {
     return (
         <section>
-            <div className="grid md:grid-rows-2 grid-cols-1 md:grid-cols-3 gap-1 items-start">
+            <div className="grid md:grid-rows-2 grid-rows-3 md:grid-cols-3 gap-1 items-start">
                 <a
                     href="/subjectSearch"
-                    className="md:h-80 p-8 text-white text-center bg-[#074173] box-border rounded bg-cover hover:shadow hover:scale-[1.01] transition-all "
+                    className="h-full md:h-80 p-8 text-white text-center bg-[#074173] box-border rounded bg-cover hover:shadow hover:scale-[1.01] transition-all "
                 >
                     <h1 className="text-4xl font-bold mb-8 ">ค้นหารายวิชา</h1>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-24 h-24 m-auto">
@@ -14,7 +14,7 @@ export default function HomePage() {
                 </a>
                 <a
                     href="/mapSearch"
-                    className="md:h-80 p-8 text-white text-center bg-[#1679AB] box-border bg-cover rounded hover:shadow hover:scale-[1.01] transition-all "
+                    className="h-full md:h-80 p-8 text-white text-center bg-[#1679AB] box-border bg-cover rounded hover:shadow hover:scale-[1.01] transition-all "
                 >
                     <h1 className="text-4xl font-bold mb-8">เเผนที่เเละอาคาร</h1>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-24 h-24 m-auto">
@@ -25,7 +25,7 @@ export default function HomePage() {
                 </a>
                 <a 
                     href="/plan" 
-                    className="md:h-80 p-8 text-white text-center bg-[#1A4D2E] box-border rounded hover:shadow hover:scale-[1.01] transition-all"
+                    className="h-full md:h-80 p-8 text-white text-center bg-[#1A4D2E] box-border rounded hover:shadow hover:scale-[1.01] transition-all"
                 >
                     <h1 className="text-4xl font-bold mb-8">วางเเผนตารางเรียน</h1>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-24 h-24 m-auto">

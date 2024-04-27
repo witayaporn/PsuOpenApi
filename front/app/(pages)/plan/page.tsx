@@ -37,14 +37,14 @@ export default function PlanPage() {
     return (
         <section>
             {/* {console.log(classDate)} */}
-            <div className="grid grid-cols-1 gap-5 mb-3">
+            <div className="grid grid-cols-1 gap-5">
                 <div className="grid grid-cols-1 gap-4">
                     <p className="text-4xl font-bold text-right">Your Plan</p>
                 </div>
                 <div>
                     <TimeTable data={selectSubject}/>
                 </div>
-                <div className="grid grid-cols-1 gap-2 px-6 py-4 mb-20 bg-white w-full border rounded-lg">
+                <div className="grid grid-cols-1 gap-2 px-6 py-4 mb-16 bg-white w-full border rounded-lg">
                     <p className="text-3xl font-bold">Your Interests</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white w-full border-t-2 p-2">
                         {

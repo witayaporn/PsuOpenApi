@@ -7,8 +7,8 @@ import "leaflet-defaulticon-compatibility";
 import { useEffect, useState } from 'react';
 import DetailCard from "./detailCard";
 import { motion } from "framer-motion"
-import buildingData from '../../../public/building-data.json'
-import parkingData from '../../../public/parking-data.json'
+import buildingData from '@/public/building-data.json'
+import parkingData from '@/public/parking-data.json'
 
 
 
@@ -148,7 +148,7 @@ export default function Map() {
                         animate={{ opacity: 1, scale: 1, y: 0, transition: { ease: "easeOut", duration: 0.20 } }}
                         exit={{ opacity: 0, scale: 0.75, transition: { ease: "easeIn", duration: 0.10 } }}
                         onAnimationComplete={() => window.scrollTo({ top: 1000, behavior: "smooth" })}
-                        className="mb-32"
+                        className="mb-2 md:mb-24"
                     >
                         <DetailCard data={selectedPlace.properties} />
                     </motion.div>
