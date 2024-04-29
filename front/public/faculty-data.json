@@ -8,28 +8,12 @@
     "website": "https://www.psu.ac.th/"
   },
   {
-    "facId": "28",
-    "facNameEng": "Marine and Coastal Resources Institute:MACORIN",
-    "facNameThai": "สถาบันทรัพยากรทะเลและชายฝั่ง",
-    "primaryColor": null,
-    "secondaryColor": null,
-    "website": null
-  },
-  {
     "facId": "65",
     "facNameEng": "International College",
-    "facNameThai": "วิทยาลัยนานาชาติ วิทยาเขตหาดใหญ่",
+    "facNameThai": "วิทยาลัยนานาชาติ",
     "primaryColor": "#000080",
     "secondaryColor": "#C0C0C0",
     "website": "https://www.facebook.com/PSUInternationalCollege/?locale=th_TH"
-  },
-  {
-    "facId": "52",
-    "facNameEng": "Institute for Peace Studies",
-    "facNameThai": "สถาบันสันติศึกษา",
-    "primaryColor": null,
-    "secondaryColor": null,
-    "website": "https://dmhost6.psu.ac.th/~ips/index.php/th/"
   },
   {
     "facId": "77",

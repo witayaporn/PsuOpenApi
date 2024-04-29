@@ -1,10 +1,11 @@
 import { Bar } from "react-chartjs-2"
 import { Chart, registerables } from "chart.js";
+import facultyData from '@/public/faculty-data.json'
 
 export default function BarChart() {
     
     Chart.register(...registerables);
-    const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    const labels = facultyData.filter((fac) => fac.facNameThai != 'ส่วนกลางมหาวิทยาลัย').map((filtered) => filtered.facNameThai);
     const data = {
         labels: labels,
         datasets: [{
