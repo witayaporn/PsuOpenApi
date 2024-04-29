@@ -2,9 +2,7 @@
 
 import { Player } from "@lottiefiles/react-lottie-player";
 import planningAnimation from "@/public/planning.json"
-
-
-
+import { signIn } from "next-auth/react";
 export default function LoginPage() {
   return (
     <div className="md:px-24 xl:px-72 md:py-80 xl:py-20 w-full h-screen">
@@ -17,7 +15,11 @@ export default function LoginPage() {
             <p className="font-bold text-4xl">สวัสดี!</p>
             <p className="text-xl">ลงชื่อเข้าใช้ผ่าน PSU Passport เพื่อเริ่มต้นใช้งาน</p>
           </div>
-          <button type="button" className="p-4 m-auto bg-blue-900 text-white rounded-lg shadow hover:shadow-lg hover:scale-110 transition-all">
+          <button 
+            type="button" 
+            className="p-4 m-auto bg-blue-900 text-white rounded-lg shadow hover:shadow-lg hover:scale-110 transition-all"
+            onClick={() => signIn("authentik",  { callbackUrl: 'http://localhost:3000/' })}
+          >
             Log-in with PSU
           </button>
         </div>
