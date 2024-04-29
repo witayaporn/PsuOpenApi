@@ -13,13 +13,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="main-font">
-        <HeadNavbar/>
-        <div className="pt-24 px-6 md:px-20 lg:px-40 xl:px-80 mb-20 md:mb-0 ">
-          <SessionProvider>
+        <SessionProvider>
+          <HeadNavbar />
+          <div className="pt-24 px-6 md:px-20 lg:px-40 xl:px-80 mb-20 md:mb-0 ">
             {children}
-          </SessionProvider>
-        </div>
-        <BottomNavbar/>
+          </div>
+          <BottomNavbar />
+        </SessionProvider>
       </body>
     </html>
   );
