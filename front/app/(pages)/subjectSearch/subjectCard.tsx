@@ -13,22 +13,12 @@ export default function SubjectCard(prop: any) {
 
     const router = useRouter()
     const [showModal, setShowModal] = useState(false);
-    const [courseDetail, setCourseDetail] = useState({});
+    const [examDate, setExamDate] = useState([]);
     const [courseSection, setCourseSection] = useState([]);
     const [sectionDate, setSectionDate] = useState([]);
     const handleCardClick = () => {
         const html = document.getElementsByTagName('html')[0]
         if (!showModal) {
-            // fetch(`https://api-gateway.psu.ac.th/Test/regist/Subject/${data.subjectId}?campusID=&offset=0&limit=100`, {
-            //     method: 'GET',
-            //     cache: 'force-cache',
-            //     headers: {
-            //         "credential": process.env.NEXT_PUBLIC_API_KEY
-            //     }
-            // })
-            //     .then((res) => res.json())
-            //     .then((data) => setCourseDetail(data.data[0]))
-
             fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionOfferCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`, {
                 method: 'GET',
                 cache: 'force-cache',
@@ -48,6 +38,16 @@ export default function SubjectCard(prop: any) {
             })
                 .then((res) => res.json())
                 .then((data) => setSectionDate(data.data))
+
+            fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}?section=&offset=0&limit=100`, {
+                method: 'GET',
+                cache: 'force-cache',
+                headers: {
+                    "credential": process.env.NEXT_PUBLIC_API_KEY
+                }
+            })
+                .then((res) => res.json())
+                .then((data) => setExamDate(data.data))
 
             html.classList.add("overflow-hidden")
             router.push(`/subjectSearch/?subjectId=${data.subjectId}&term=${data.eduTerm}&year=${data.eduYear}`, undefined, { shallow: true })
@@ -136,11 +136,12 @@ export default function SubjectCard(prop: any) {
                                             </p>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2">
-                                            {console.log(sectionDate)}
+                                            {/* {console.log(sectionDate)} */}
                                             <p className="font-bold">ตอน</p>
                                             {courseSection ? courseSection.map((section: any, key: number) => {
                                                 const dateData = sectionDate ? sectionDate.filter((data) => data.section == section.section) : sectionDate
-                                                return <SectionCard key={key} data={[section, dateData]} />
+                                                const examData = examDate ? examDate.filter((data) => data.section == section.section) : examDate
+                                                return <SectionCard key={key} data={[section, dateData, examData]} />
                                             }) : "ไม่มีข้อมูล"}
                                         </div>
                                     </div>

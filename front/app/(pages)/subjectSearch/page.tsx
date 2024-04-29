@@ -194,7 +194,7 @@ export default function SubjectSearchPage() {
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-20">
                 {
                     courseData ? courseData.map((course, key) => <SubjectCard key={key} data={course} />) : <p>ไม่มีข้อมูล</p>
                 }

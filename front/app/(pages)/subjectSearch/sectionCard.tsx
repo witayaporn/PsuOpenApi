@@ -1,19 +1,25 @@
 
 const timeFormatter = (time: string) => {
-    const h = time.slice(0, 2)
-    const m = time.slice(2, 4)
-    return h + ":" + m + " น."
+    if(time){
+        const h = time.slice(0, 2)
+        const m = time.slice(2, 4)
+        return h + ":" + m + " น."
+    }
+    return "-"
 }
 
 export default function SectionCard(prop: any) {
     const data = prop.data[0]
     const dateData = prop.data[1]
+    const examData = prop.data[2]
+    const midExam = examData ? examData.filter((data) => data.examdateType == 'M')[0] : null
+    const finalExam = examData ? examData.filter((data) => data.examdateType == 'F')[0] : null
     const noInterest: number = 143
     const percentage: number = (data.noOffer / noInterest) * 100
     return (
         <div className="w-full p-4 grid grid-cols-1 gap-3 rounded-lg bg-slate-200 ">
             <div className="grid grid-cols-2 ">
-                {console.log(dateData)}
+                {/* {console.log(dateData)} */}
                 <p className="font-bold text-sm text-gray-800">ตอน {data.section}</p>
                 <p className="text-sm text-right text-gray-800">โอกาส {percentage.toFixed(2)} %</p>
             </div>
@@ -55,8 +61,10 @@ export default function SectionCard(prop: any) {
                     <p>สอบปลายภาค</p>
                 </div>
                 <div className="grid grid-cols-2 text-sm text-gray-600">
-                    <p>{ }</p>
-                    <p>{ }</p>
+                    {console.log(examData)}
+                    {console.log(midExam)}
+                    {midExam ? <p>{`${timeFormatter(midExam.examStartTime)} - ${timeFormatter(midExam.examStopTime)} ห้อง ${midExam.roomName ? midExam.roomName : "-"}`}</p> : <p>-</p>}
+                    {finalExam ? <p>{`${timeFormatter(finalExam.examStartTime)} - ${timeFormatter(finalExam.examStopTime)} ห้อง ${finalExam.roomName ? finalExam.roomName : "-"}`}</p> : <p>-</p>}
                 </div>
             </div>
             <div className="grid grid-cols-1 px-auto">
