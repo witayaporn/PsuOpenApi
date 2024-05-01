@@ -9,6 +9,7 @@ import DetailCard from "./detailCard";
 import { motion } from "framer-motion"
 import buildingData from '@/public/building-data.json'
 import parkingData from '@/public/parking-data.json'
+import { useSearchParams } from 'next/navigation';
 
 
 
@@ -21,6 +22,7 @@ export default function Map() {
         },
         properties: null
     }
+    const seachParams = useSearchParams()
     const [selectedPlace, setSelectedPlace] = useState(defaultGEO);
     const [keyGeoJson, setKeyGeoJson] = useState(0)
     // useEffect(() =>{
@@ -88,9 +90,19 @@ export default function Map() {
         );
     }
 
-    // useEffect(() => {
-    //     setSelectedPlace(defaultGEO)
-    // }, [])
+    useEffect(() => {
+        const buildingName = seachParams.get("search")?.toLowerCase()
+        if (buildingName && buildingName != '') {
+            console.log(buildingName)
+            const searchBuilding = buildingData.features.filter((data: any) => {
+                const byName = data.properties.name?.toLowerCase().includes(buildingName)
+                const byNameEng = data.properties.nameEng?.toLowerCase().includes(buildingName)
+                return byName || byNameEng
+            })
+            searchBuilding.length ? setSelectedPlace(searchBuilding[0]) : null
+            console.log(searchBuilding)
+        }
+    }, [])
     return (
         <div className="grid grid-cols-1 gap-4">
             <div className="relative flex flex-wrap items-center space-x-2 w-full">
@@ -127,7 +139,7 @@ export default function Map() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                         </svg>
                         <p className="hidden sm:inline">ตำเเหน่งของฉัน</p>
-                        
+
                     </button>
                 </div>
             </div>

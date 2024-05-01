@@ -4,22 +4,26 @@ import { useEffect, useMemo, useState } from "react"
 import SearchBar from "../../components/searchBar";
 import dynamic from "next/dynamic";
 import Map from "./map";
+import { useRouter } from "next/navigation";
 
 
 export default function MapSearchPage() {
-    // const [mapData, setMapData] = useState(null)
+    const router = useRouter()
     const Map = dynamic(() => import("./map"), {
         ssr: false,
         loading: () => <p>Loading...</p>,
     });
     // const mapMemo = useMemo(() => <Map mapData={mapData} setMapData={setMapData} />, [])
-    
+    // const [search, setSearch] = useState("") 
     const handleSearchChange = (e: any) => {
-        console.log(e.target.value)
+        // console.log(e.target.value)
+        // setSearch(e.target.value)
     }
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
+        // console.log(e.target[0].value)
+        router.push(`/mapSearch/?search=${e.target[0].value}`)
     }
 
 
