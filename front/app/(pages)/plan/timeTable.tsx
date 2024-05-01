@@ -144,35 +144,35 @@ export default function TimeTable(prop: any) {
         <>
             <div className="relative w-full text-xs bg-white rounded-lg border-2 border-slate-300 overflow-x-scroll">
                 <div className="absolute z-[2000] inline-block" style={{ width: `${(maxTime - minTime + 2) * 120}px` }}>
-                    <div className="relative h-[57px] bg-green-100 opacity-20">
+                    <div className="relative h-[56px] bg-green-100 opacity-20">
                     </div>
                     {
                         weekDay.map((day) =>
                             <div
-                                className="relative py-1 pl-[120px] opacity-20"
+                                className="relative py-1 pl-[120px]"
                                 style={{ height: `${(subjectOverlap[day.shortEng] + 1) * 66}px` }}
                             >
                                 {weekTime[day.shortEng].length ? weekTime[day.shortEng].map((item, key) => {
-                                    const renderData = calculateSubjectPanel(parseInt(item.startTime), parseInt(item.stopTime), minTime)
+                                    const renderData: any = calculateSubjectPanel(parseInt(item.startTime), parseInt(item.stopTime), minTime)
                                     var countOverlap: number = 0
                                     weekTime[day.shortEng].slice(0, key).map((prevItem) => {
                                         if (item.subjectId == prevItem.subjectId && item.section == prevItem.section) {
                                             return
                                         }
-                                        const isOverlap = checkTimeOverlap(item.startTime, item.stopTime, prevItem.startTime, prevItem.stopTime)
+                                        const isOverlap: boolean = checkTimeOverlap(item.startTime, item.stopTime, prevItem.startTime, prevItem.stopTime)
                                         if (isOverlap) {
                                             countOverlap += 1
                                         }
                                     })
-                                    console.log(day.day + " " + countOverlap)
-                                    console.log(weekTime[day.shortEng].slice(0, key - 1))
-                                    console.log(item)
+                                    // console.log(day.day + " " + countOverlap)
+                                    // console.log(weekTime[day.shortEng].slice(0, key - 1))
+                                    // console.log(item)
 
                                     return (
                                         <a
                                             key={key}
-                                            className="absolute h-[60px] hover:border rounded-md"
-                                            style={{ left: `${renderData.startRender * 120}px`, marginTop: `${countOverlap * 66}px`, width: `${renderData.period * 120}px`, backgroundColor: `#${item.subjectId.slice(0, 6)}` }}
+                                            className="absolute h-[60px] p-2 hover:border rounded-md"
+                                            style={{ left: `${renderData.startRender * 120}px`, marginTop: `${countOverlap * 66}px`, width: `${renderData.period * 120}px`, backgroundColor: `#${item.subjectId.slice(0, 6)}80` }}
                                         >
                                             {item.subjectNameThai}
                                         </a>
