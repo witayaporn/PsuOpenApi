@@ -1,11 +1,11 @@
 'use client'
 
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 
 export default function HeadNavbar() {
     const [userData, setUserData] = useState()
-    const { data: session} = useSession()
+    const { data: session, status} = useSession()
     useEffect(()=> {
         fetch("https://api-gateway.psu.ac.th/Test/regist/level2/StudentDetailCampus/01/token", {
             method: 'GET',
@@ -31,19 +31,22 @@ export default function HeadNavbar() {
                 </a>
                 <div className="flex md:order-2 space-x-3 md:space-x-3 ltr:space-x-reverse">
                     {
-                        userData ?
+                        status == "authenticated" ?
                             <>
                                 <p className="self-center text-lg">{userData.studNameEng}</p>
                                 <p className="self-center text-lg">{`${userData.studSnameEng[0]}.`}</p>
                                 <svg className="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
+                                <button className="p-2 text-red-500" onClick={()=> signOut()}>Log Out</button>
                             </>
                             :
                             <>
+                                <a className="p-2 shadow-md rounded-lg bg-blue-900 text-white hover:shadow-lg hover:scale-105 transition-all" href="/login">ลงชื่อเข้าใช้งาน</a>
                             </>
                     }
-                    {console.log(userData)}
+                    {/* {console.log(userData)} */}
+                    {console.log(status)}
                 </div>
             </div>
         </nav>
