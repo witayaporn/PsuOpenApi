@@ -181,7 +181,7 @@ class comment(BaseModel):
             }
         }
 
-class comment(BaseModel):
+class commentUpdate(BaseModel):
     commentId: Optional[int]
     studentId: Optional[int]
     comment: Optional[str]
