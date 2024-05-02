@@ -92,20 +92,30 @@ export default function Map() {
     }
 
     useEffect(() => {
-        var buildingName = seachParams.get("search")?.toLowerCase()
-        if (buildingName && buildingName != '') {
-            console.log(buildingName.slice(0, 4))
-            if(buildingName.slice(0, 4) == "ห้อง"){
-                const roomCode = buildingName.slice(4).replace(/[0-9]/g, '').trim()
+        var searchStr = seachParams.get("search")?.toLowerCase()
+        if (searchStr&& searchStr!= '') {
+            console.log(searchStr)
+            const abNdg = /^[\p{L}\u0E00-\u0E7F]+\d+$/
+            const abNdgNab = /^[\p{L}\u0E00-\u0E7F]+[0-9]+[\p{L}\u0E00-\u0E7F]+$/
+            const abNdgNdashAb = /^[\p{L}\u0E00-\u0E7F]+(?:-[\p{L}\u0E00-\u0E7F]+)*[0-9]+(?:-[\p{L}\u0E00-\u0E7F]+)*$/
+            console.log(abNdg.test(searchStr) || abNdgNab.test(searchStr) || abNdgNdashAb.test(searchStr))
+            if(abNdg.test(searchStr) || abNdgNab.test(searchStr) || abNdgNdashAb.test(searchStr)){
+                var roomCode: string
+                console.log("Here")
+                if(searchStr.slice(0, 4) == "ห้อง"){
+                    roomCode = searchStr.slice(4)
+                }else{
+                    roomCode = searchStr
+                }
                 console.log(roomCode)
-                // console.log(roomCode.replace(/^\s+|\s+$[0-9]/g, ''))
+                roomCode = roomCode.replace(/\d+/, '')
+                console.log(roomCode)
                 const building = roomData.filter((room: any) => room.buildingCode.some((code: string) => code.toLowerCase() == roomCode.toLowerCase()))[0]
-                // console.log(building)
-                buildingName = building.building
+                searchStr= building.building
             }
             const searchBuilding = buildingData.features.filter((data: any) => {
-                const byName = data.properties.name?.toLowerCase().includes(buildingName)
-                const byNameEng = data.properties.nameEng?.toLowerCase().includes(buildingName)
+                const byName = data.properties.name?.toLowerCase().includes(searchStr)
+                const byNameEng = data.properties.nameEng?.toLowerCase().includes(searchStr)
                 return byName || byNameEng
             })
             searchBuilding.length ? setSelectedPlace(searchBuilding[0]) : null
