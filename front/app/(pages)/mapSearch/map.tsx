@@ -93,26 +93,18 @@ export default function Map() {
 
     useEffect(() => {
         var searchStr = seachParams.get("search")?.toLowerCase()
-        if (searchStr&& searchStr!= '') {
+        if (searchStr && searchStr != '') {
             console.log(searchStr)
-            const abNdg = /^[\p{L}\u0E00-\u0E7F]+\d+$/
-            const abNdgNab = /^[\p{L}\u0E00-\u0E7F]+[0-9]+[\p{L}\u0E00-\u0E7F]+$/
-            const abNdgNdashAb = /^[\p{L}\u0E00-\u0E7F]+(?:-[\p{L}\u0E00-\u0E7F]+)*[0-9]+(?:-[\p{L}\u0E00-\u0E7F]+)*$/
-            console.log(abNdg.test(searchStr) || abNdgNab.test(searchStr) || abNdgNdashAb.test(searchStr))
-            if(abNdg.test(searchStr) || abNdgNab.test(searchStr) || abNdgNdashAb.test(searchStr)){
-                var roomCode: string
-                console.log("Here")
-                if(searchStr.slice(0, 4) == "ห้อง"){
-                    roomCode = searchStr.slice(4)
-                }else{
-                    roomCode = searchStr
-                }
-                console.log(roomCode)
-                roomCode = roomCode.replace(/\d+/, '')
-                console.log(roomCode)
-                const building = roomData.filter((room: any) => room.buildingCode.some((code: string) => code.toLowerCase() == roomCode.toLowerCase()))[0]
-                searchStr= building.building
+            var roomCode: string
+            if (searchStr.slice(0, 4) == "ห้อง") {
+                roomCode = searchStr.slice(4)
+            } else {
+                roomCode = searchStr
             }
+            roomCode = roomCode.replace(/\d+/, '')
+            const building = roomData.filter((room: any) => room.buildingCode.some((code: string) => code.toLowerCase() == roomCode.toLowerCase()))[0]
+            searchStr = building ? building.building : searchStr
+
             const searchBuilding = buildingData.features.filter((data: any) => {
                 const byName = data.properties.name?.toLowerCase().includes(searchStr)
                 const byNameEng = data.properties.nameEng?.toLowerCase().includes(searchStr)
