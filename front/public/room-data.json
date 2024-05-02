@@ -1,0 +1,150 @@
+[
+    {
+      "buildingId": "way/62203997",
+      "building": "ตึกหุ่นยนต์",
+      "buildingCode": [
+        "R",
+        "R-A",
+        "R-B",
+        "หัวหุ่นยนต์"
+      ],
+      "faculty": "คณะวิศวกรรมศาสตร์"
+    },
+    {
+      "buildingId": "way/1157337958",
+      "building": "อาคารวิจัยวิศวกรรมประยุกต์ สิรินธร",
+      "buildingCode": [
+        "S",
+        "COMP"
+      ],
+      "faculty": "คณะวิศวกรรมศาสตร์"
+    },
+    {
+      "buildingId": "way/1271250662",
+      "building": "ตึกภาควิชาวิศวกรรมเคมี",
+      "buildingCode": [
+        "ChE",
+        "ChELAB"
+      ],
+      "faculty": "คณะวิศวกรรมศาสตร์"
+    },
+    {
+      "buildingId": "way/150262213",
+      "building": "อาคารเรียนและปฏิบัติการพื้นฐานทางวิทยาศาสตร์",
+      "buildingCode": [
+        "BSc",
+        "Bsc(LAB)"
+      ],
+      "faculty": "คณะวิทยาศาสตร์"
+    },
+    {
+      "buildingId": "way/149453827",
+      "building": "ตึกฟักทอง",
+      "buildingCode": [
+        "L"
+      ],
+      "faculty": "คณะวิทยาศาสตร์"
+    },
+    {
+      "buildingId": "way/149453729",
+      "building": "อาคารวิทยาการคอมพิวเตอร์",
+      "buildingCode": [
+        "CS"
+      ],
+      "faculty": "คณะวิทยาศาสตร์"
+    },
+    {
+      "buildingId": "way/149453707",
+      "building": "อาคารเคมี",
+      "buildingCode": [
+        "CH"
+      ],
+      "faculty": "คณะวิทยาศาสตร์"
+    },
+    {
+      "buildingId": "way/149453751",
+      "building": "อาคารคณิตศาสตร์",
+      "buildingCode": [
+        "M"
+      ],
+      "faculty": "คณะวิทยาศาสตร์"
+    },
+    {
+      "buildingId": "way/1051517060",
+      "building": "อาคารฟิสิกส์",
+      "buildingCode": [
+        "P"
+      ],
+      "faculty": "คณะวิทยาศาสตร์"
+    },
+    {
+      "buildingId": "way/150393158",
+      "building": "อาคารพรีคลินิค",
+      "buildingCode": [
+        "PR"
+      ],
+      "faculty": "คณะวิทยาศาสตร์"
+    },
+    {
+      "buildingId": "way/150393160",
+      "building": "อาคารวิทยาศาสตร์เทคโนโลยี",
+      "buildingCode": [
+        "วท"
+      ],
+      "faculty": "คณะวิทยาศาสตร์"
+    },
+    {
+      "buildingId": "way/858795529",
+      "building": "อาคารปฏิบัติการรวม",
+      "buildingCode": [
+        "ML"
+      ],
+      "faculty": "คณะวิทยาศาสตร์"
+    },
+    {
+      "buildingId": "way/150393157",
+      "building": "อาคารปฏิบัติการอาคารรวมใหม่",
+      "buildingCode": [
+        "NML"
+      ],
+      "faculty": "คณะวิทยาศาสตร์"
+    },
+    {
+      "buildingId": "way/150393155",
+      "building": "อาคารชีววิทยา",
+      "buildingCode": [
+        "B"
+      ],
+      "faculty": "คณะวิทยาศาสตร์"
+    },
+    {
+      "buildingId": "way/150262214",
+      "building": "อาคารศูนย์ทรัพยากรการเรียนรู้",
+      "buildingCode": [
+        "LRC"
+      ],
+      "faculty": "ส่วนกลางมหาวิทยาลัย"
+    },
+    {
+      "buildingId": "way/61904342",
+      "building": "ตึกสตางค์ มงคลสุข",
+      "buildingCode": [
+        "A",
+        "CE",
+        "EE",
+        "EELAB",
+        "IELAB",
+        "IE",
+        "BME",
+        "IEF",
+        "IELAB",
+        "IDL",
+        "MaELAB",
+        "MaE",
+        "ME",
+        "MELAB",
+        "MnE"
+      ],
+      "faculty": "คณะวิศวกรรมศาสตร์"
+    }
+  ]

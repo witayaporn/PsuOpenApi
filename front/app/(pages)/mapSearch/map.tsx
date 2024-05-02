@@ -9,6 +9,7 @@ import DetailCard from "./detailCard";
 import { motion } from "framer-motion"
 import buildingData from '@/public/building-data.json'
 import parkingData from '@/public/parking-data.json'
+import roomData from '@/public/room-data.json'
 import { useSearchParams } from 'next/navigation';
 
 
@@ -91,9 +92,17 @@ export default function Map() {
     }
 
     useEffect(() => {
-        const buildingName = seachParams.get("search")?.toLowerCase()
+        var buildingName = seachParams.get("search")?.toLowerCase()
         if (buildingName && buildingName != '') {
-            console.log(buildingName)
+            console.log(buildingName.slice(0, 4))
+            if(buildingName.slice(0, 4) == "ห้อง"){
+                const roomCode = buildingName.slice(4).replace(/[0-9]/g, '').trim()
+                console.log(roomCode)
+                // console.log(roomCode.replace(/^\s+|\s+$[0-9]/g, ''))
+                const building = roomData.filter((room: any) => room.buildingCode.some((code: string) => code.toLowerCase() == roomCode.toLowerCase()))[0]
+                // console.log(building)
+                buildingName = building.building
+            }
             const searchBuilding = buildingData.features.filter((data: any) => {
                 const byName = data.properties.name?.toLowerCase().includes(buildingName)
                 const byNameEng = data.properties.nameEng?.toLowerCase().includes(buildingName)
