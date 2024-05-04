@@ -2,16 +2,10 @@
 import { useEffect, useState } from "react"
 import SelectableSectionCard from "./selectableSubjectCard"
 import TimeTable from "./timeTable"
+import { timeFormatter, dateToTHstr, checkDateTimeOverlap } from "@/app/utils/timeUtils"
 import mockup from "@/public/interest-card-mock.json"
 
-const timeFormatter = (time: string) => {
-    if(time){
-        const h = time.slice(0, 2)
-        const m = time.slice(2, 4)
-        return h + ":" + m + " น."
-    }
-    return "-"
-}
+
 
 export default function PlanPage() {
     const [classDate, setClassDate] = useState([])
@@ -22,7 +16,6 @@ export default function PlanPage() {
     const handleSubjectSelect = (subjectId: string, select: boolean) => {
         var temp: any = [...selectSubject]
         var filterSubject: JSON[]
-        var examData: JSON[]
         if (select) {
             filterSubject = classDate.filter((item: any) => item[0].subjectId == subjectId)
             temp.push(filterSubject)
@@ -58,7 +51,7 @@ export default function PlanPage() {
                     const final = data.data?.filter((subject: any) => subject.examdateType == 'F')
                     setMidExamDate(midExamDate => [...midExamDate, mid])
                     setFinalExamDate(finalExamDate => [...finalExamDate, final])
-                    
+
                 })
         })
     }, [])
@@ -87,14 +80,45 @@ export default function PlanPage() {
                                 var finalExam: any = finalExamDate.filter((data: any) => data ? data[0].subjectId == subject[0][0].subjectId : null)
                                 midExam = midExam.length ? midExam[0][0] : null
                                 finalExam = finalExam.length ? finalExam[0][0] : null
-                                const isMidOverlap = midExamDate.map((data: any) => null)
-                                const date = new Date(`${midExam.examDate.slice(0, 10)}`).toLocaleDateString('th-TH', { dateStyle: 'short' })
-                                console.log(date)
+                                const midStr: string = midExam?.examDate.slice(0, 10)
+                                const finalStr: string = finalExam?.examDate.slice(0, 10)
+                                const midDateStr = dateToTHstr(midStr)
+                                const finalDateStr = dateToTHstr(finalStr)
+
+                                var midOverlap: any = []
+                                var finalOverlap: any = []
+                                if (midStr) {
+                                    midOverlap = midExamDate.filter((data: any) => {
+                                        // console.log(data[0])
+                                        if (data && data[0] !== midExam) {
+                                            const midDate = data[0].examDate.slice(0, 10)
+                                            const midStartT = data[0].examStartTime
+                                            const midStopT = data[0].examStopTime
+                                            return checkDateTimeOverlap(midExam.examDate, midExam.examStartTime, midExam.examStopTime, midDate, midStartT, midStopT)
+                                        }
+                                        return false
+                                    })
+                                }
+
+                                if (finalStr) {
+                                    finalOverlap = finalExamDate.filter((data: any) => {
+                                        // console.log(data[0])
+                                        if (data && data[0] !== midExam) {
+                                            const finalDate = data[0].examDate.slice(0, 10)
+                                            const finalStartT = data[0].examStartTime
+                                            const finalStopT = data[0].examStopTime
+                                            return checkDateTimeOverlap(finalExam.examDate, finalExam.examStartTime, finalExam.examStopTime, finalDate, finalStartT, finalStopT)
+                                        }
+                                        return false
+                                    })
+                                }
+
+                                // console.log(midOverlap)
                                 return (
                                     <>
                                         <p className="text-sm">{`${subject[0][0].subjectCode} ${subject[0][0].shortNameEng}`}</p>
-                                        {midExam ? <p>{`${timeFormatter(midExam?.examStartTime)} - ${timeFormatter(midExam?.examStopTime)} ห้อง ${midExam?.roomName ? midExam?.roomName : "-"}`}</p> : <p>-</p>}
-                                        {finalExam ? <p>{`${timeFormatter(finalExam?.examStartTime)} - ${timeFormatter(finalExam?.examStopTime)} ห้อง ${finalExam?.roomName ? finalExam?.roomName : "-"}`}</p> : <p>-</p>}
+                                        {midExam ? <p className="text-sm" style={{color: `${midOverlap.length ? 'red': 'black'}`}}>{`${midDateStr} เวลา ${timeFormatter(midExam?.examStartTime)} - ${timeFormatter(midExam?.examStopTime)} ห้อง ${midExam?.roomName ? midExam?.roomName : "-"}`}</p> : <p>-</p>}
+                                        {finalExam ? <p className="text-sm" style={{color: `${finalOverlap.length ? 'red': 'black'}`}}>{`${finalDateStr} เวลา ${timeFormatter(finalExam?.examStartTime)} - ${timeFormatter(finalExam?.examStopTime)} ห้อง ${finalExam?.roomName ? finalExam?.roomName : "-"}`}</p> : <p>-</p>}
                                     </>
                                 )
                             })
@@ -102,7 +126,7 @@ export default function PlanPage() {
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-2 px-6 py-4 mb-16 bg-white w-full border rounded-lg">
-                    <p className="text-3xl font-bold">วิชาที่คุณสนใจ</p>
+                    <p className="text-2xl font-bold">วิชาที่คุณสนใจ</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white w-full border-t-2 p-2">
                         {
                             classDate.map((subject, key) => <SelectableSectionCard key={key} data={subject} onClick={handleSubjectSelect} />)

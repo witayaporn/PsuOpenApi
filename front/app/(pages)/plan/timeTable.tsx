@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from "react"
+import { checkTimeOverlap } from "@/app/utils/timeUtils"
 
 interface SubjectOverlap {
     [key: string]: number
@@ -40,14 +41,7 @@ const calculateSubjectPanel = (startTime: number, stopTime: number, minTime: num
     return { "startRender": startRender, "period": period }
 }
 
-const checkTimeOverlap = (firstStartT: string, firstStopT: string, secondStartT: string, secondStopT: string) => {
-    const fStartT: number = parseInt(firstStartT) / 100
-    const fStopT: number = parseInt(firstStopT) / 100
-    const sStartT: number = parseInt(secondStartT) / 100
-    const sStopT: number = parseInt(secondStopT) / 100
 
-    return !(fStartT > sStopT || sStartT > fStopT)
-}
 
 export default function TimeTable(prop: any) {
     const data = prop.data
