@@ -1,12 +1,4 @@
-
-const timeFormatter = (time: string) => {
-    if (time) {
-        const h = time.slice(0, 2)
-        const m = time.slice(2, 4)
-        return h + ":" + m + " น."
-    }
-    return "-"
-}
+import { timeFormatter, dateToTHstr } from "@/app/utils/timeUtils"
 
 export default function SectionCard(prop: any) {
     const data = prop.data[0]
@@ -76,10 +68,8 @@ export default function SectionCard(prop: any) {
                     <p>สอบปลายภาค</p>
                 </div>
                 <div className="grid grid-cols-2 text-sm break-words text-gray-600">
-                    {console.log(examData)}
-                    {console.log(midExam)}
-                    {midExam ? <p>{`${timeFormatter(midExam.examStartTime)} - ${timeFormatter(midExam.examStopTime)} ห้อง ${midExam.roomName ? midExam.roomName : "-"}`}</p> : <p>-</p>}
-                    {finalExam ? <p>{`${timeFormatter(finalExam.examStartTime)} - ${timeFormatter(finalExam.examStopTime)} ห้อง ${finalExam.roomName ? finalExam.roomName : "-"}`}</p> : <p>-</p>}
+                    {midExam ? <p className="p-1">{`${dateToTHstr(midExam.examDate.slice(0, 10))} เวลา ${timeFormatter(midExam.examStartTime)} - ${timeFormatter(midExam.examStopTime)} ห้อง ${midExam.roomName ? midExam.roomName : "-"}`}</p> : <p>-</p>}
+                    {finalExam ? <p className="p-1">{`${dateToTHstr(finalExam.examDate.slice(0, 10))} เวลา ${timeFormatter(finalExam.examStartTime)} - ${timeFormatter(finalExam.examStopTime)} ห้อง ${finalExam.roomName ? finalExam.roomName : "-"}`}</p> : <p>-</p>}
                 </div>
             </div>
             <div className="grid grid-cols-1 px-auto">
