@@ -32,7 +32,8 @@ PydanticObjectId = Annotated[
 class Student(BaseModel):
     id: Optional[PydanticObjectId] = Field(alias='_id',default=ObjectId())
     studentId: int = Field(...)
-    interestSubject: int = Field(...)
+    studentFaculty: str = Field(...)
+    subjectId: str = Field(...)
     section: int = Field(...)
     term: int = Field(...)
     year: int = Field(...)
@@ -42,7 +43,8 @@ class Student(BaseModel):
         json_schema_extra = {
             "example": {
                 "studentId": 6410110123,
-                "interestSubject": 240,
+                "studentFaculty": "eng",
+                "subjectId": "00123456",
                 "section": 1,
                 "term": 1,
                 "year": 2567,
@@ -51,7 +53,8 @@ class Student(BaseModel):
 
 class StudentUpdate(BaseModel):
     studentId: Optional[int]
-    interestSubject: Optional[int]
+    studentFaculty: Optional[int]
+    subjectId: Optional[str]
     section: int = Field(...)
     term: int = Field(...)
     year: int = Field(...)
@@ -60,7 +63,8 @@ class StudentUpdate(BaseModel):
         json_schema_extra = {
             "example": {
                 "studentId": 6410110123,
-                "interestSubject": 200,
+                "studentFaculty": "eng",
+                "subjectId": "00123456",
                 "section": 1,
                 "term": 1,
                 "year": 2567
