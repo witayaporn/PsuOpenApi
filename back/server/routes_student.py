@@ -67,7 +67,7 @@ def find_student(subjectId: str, request: Request, year: int = None, term: int =
             return result
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Student with ID {subjectId} not found")
 
-@router_student.get("/getSubjectStat/{subjectId}", response_description="Get a student interest by subjectId, year and term", response_model=List)
+@router_student.get("/getSubjectStat/{subjectId}", response_description="Get a student interest by subjectId, year and term", response_model=List[Student])
 def find_student(subjectId: str, request: Request, year: int = None, term: int = None):
     if (year != None or term != None):
         try:
