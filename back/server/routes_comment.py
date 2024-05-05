@@ -9,7 +9,7 @@ router_comment = APIRouter()
 
 @router_comment.get("/", response_description="List all Comment", response_model=List[comment])
 def list_comment(request: Request):
-    comment = list(request.app.database["Comment"].find())
+    comment = list(request.app.database["comment"].find())
     return comment
 
 @router_comment.get("/{subjectId}", response_description="Get a Comment by subjectId", response_model=List[comment])
@@ -28,7 +28,7 @@ def create_comment(request: Request, comment: comment = Body(...)):
     return created_comment
 
 @router_comment.put("/{commentId}", response_description="Update a Comment", response_model=comment)
-def update_comment(commentId: str, request: Request, comment: commentUpdate = Body(...)):
+def update_comment(commentId: int, request: Request, comment: commentUpdate = Body(...)):
     comment = {k: v for k, v in comment.dict().items() if v is not None}
     if len(comment) >= 1:
         update_result = request.app.database["comment"].update_one(
@@ -48,7 +48,7 @@ def update_comment(commentId: str, request: Request, comment: commentUpdate = Bo
 @router_comment.delete("/{commentId}", response_description="Delete a Comment")
 def delete_comment(commentId: int, request: Request, response: Response):
     delete_result = request.app.database["comment"].delete_one({"commentId": commentId})
-
+    
     if delete_result.deleted_count == 1:
         response.status_code = status.HTTP_204_NO_CONTENT
         return response

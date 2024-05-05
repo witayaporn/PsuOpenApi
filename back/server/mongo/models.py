@@ -181,7 +181,7 @@ class comment(BaseModel):
                 "studentId": 6410110123,
                 "comment": "test",
                 "subjectId": 1,
-                "verifyInfo": 1
+                "verifyInfo": "test"
             }
         }
 
@@ -199,6 +199,6 @@ class commentUpdate(BaseModel):
                 "studentId": 6410110123,
                 "comment": "test",
                 "subjectId": 1,
-                "verifyInfo": 1
+                "verifyInfo": "test"
             }
         }

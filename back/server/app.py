@@ -36,7 +36,7 @@ def read_item(item_id: int, q: Union[str, None] = None):
 
 app.include_router(router_student, tags=["student"], prefix="/student")
 
-app.include_router(router_subjectinterest, tags=["SubjectInterest"], prefix="/SubjectInterest")
+#app.include_router(router_subjectinterest, tags=["SubjectInterest"], prefix="/SubjectInterest")
 
 app.include_router(router_comment, tags=["comment"], prefix="/Comment")
 

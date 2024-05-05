@@ -30,7 +30,7 @@ def create_student(request: Request, student: Student = Body(...)):
     return created_student
 
 @router_student.put("/{studentId}", response_description="Update a Student", response_model=Student)
-def update_student(studentId: str, request: Request, student: StudentUpdate = Body(...)):
+def update_student(studentId: int, request: Request, student: StudentUpdate = Body(...)):
     student = {k: v for k, v in student.dict().items() if v is not None}
     if len(student) >= 1:
         update_result = request.app.database["Student"].update_one(
