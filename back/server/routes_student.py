@@ -14,8 +14,8 @@ def list_student(request: Request):
     return student
 
 @router_student.get("/{studentId}", response_description="Get a single student by id", response_model=List[Student])
-def find_student(studentId: int, request: Request):
-    if (student := list(request.app.database["Student"].find({"studentId": studentId}))) is not None:
+def find_student(studentId: int, request: Request, term: int = None, year: int = None):
+    if (student := list(request.app.database["Student"].find({"studentId": studentId, "term": term, "year": year}))) is not None:
         return student
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Student with ID {studentId} not found")
 
