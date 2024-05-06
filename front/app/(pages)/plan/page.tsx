@@ -27,33 +27,42 @@ export default function PlanPage() {
     }
 
     useEffect(() => {
-        mockup.map((subject) => {
-            fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}/?section=${subject.section}&offset=0&limit=100`, {
-                method: 'GET',
-                cache: 'force-cache',
-                headers: {
-                    "credential": process.env.NEXT_PUBLIC_API_KEY
-                }
-            })
-                .then((res) => res.json())
-                .then((data) => setClassDate(classDate => [...classDate, data.data]))
-
-            fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}?section=&offset=0&limit=100`, {
-                method: 'GET',
-                cache: 'force-cache',
-                headers: {
-                    "credential": process.env.NEXT_PUBLIC_API_KEY
-                }
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    const mid = data.data?.filter((subject: any) => subject.examdateType == 'M')
-                    const final = data.data?.filter((subject: any) => subject.examdateType == 'F')
-                    setMidExamDate(midExamDate => [...midExamDate, mid])
-                    setFinalExamDate(finalExamDate => [...finalExamDate, final])
-
-                })
+        const studentId = "6410110123"
+        fetch(`http://localhost:8000/student/${studentId}?term=${1}&year=${2567}`, {
+            method: 'GET',
+            cache: 'force-cache',
         })
+            .then((res) => res.json())
+            .then((data) => {
+                data.map((subject: any) => {
+                    fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}/?section=${subject.section}&offset=0&limit=100`, {
+                        method: 'GET',
+                        cache: 'force-cache',
+                        headers: {
+                            "credential": process.env.NEXT_PUBLIC_API_KEY
+                        }
+                    })
+                        .then((res) => res.json())
+                        .then((data) => data.data ? setClassDate(classDate => [...classDate, data.data]) : null)
+
+                    fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}?section=&offset=0&limit=100`, {
+                        method: 'GET',
+                        cache: 'force-cache',
+                        headers: {
+                            "credential": process.env.NEXT_PUBLIC_API_KEY
+                        }
+                    })
+                        .then((res) => res.json())
+                        .then((data) => {
+                            const mid = data.data?.filter((subject: any) => subject.examdateType == 'M')
+                            const final = data.data?.filter((subject: any) => subject.examdateType == 'F')
+                            setMidExamDate(midExamDate => [...midExamDate, mid])
+                            setFinalExamDate(finalExamDate => [...finalExamDate, final])
+
+                        })
+                })
+            })
+
     }, [])
 
     return (
@@ -117,19 +126,20 @@ export default function PlanPage() {
                                 return (
                                     <>
                                         <p className="text-sm">{`${subject[0][0].subjectCode} ${subject[0][0].shortNameEng}`}</p>
-                                        {midExam ? <p className="text-sm" style={{color: `${midOverlap.length ? 'red': 'black'}`}}>{`${midDateStr} เวลา ${timeFormatter(midExam?.examStartTime)} - ${timeFormatter(midExam?.examStopTime)} ห้อง ${midExam?.roomName ? midExam?.roomName : "-"}`}</p> : <p>-</p>}
-                                        {finalExam ? <p className="text-sm" style={{color: `${finalOverlap.length ? 'red': 'black'}`}}>{`${finalDateStr} เวลา ${timeFormatter(finalExam?.examStartTime)} - ${timeFormatter(finalExam?.examStopTime)} ห้อง ${finalExam?.roomName ? finalExam?.roomName : "-"}`}</p> : <p>-</p>}
+                                        {midExam ? <p className="text-sm" style={{ color: `${midOverlap.length ? 'red' : 'black'}` }}>{`${midDateStr} เวลา ${timeFormatter(midExam?.examStartTime)} - ${timeFormatter(midExam?.examStopTime)} ห้อง ${midExam?.roomName ? midExam?.roomName : "-"}`}</p> : <p>-</p>}
+                                        {finalExam ? <p className="text-sm" style={{ color: `${finalOverlap.length ? 'red' : 'black'}` }}>{`${finalDateStr} เวลา ${timeFormatter(finalExam?.examStartTime)} - ${timeFormatter(finalExam?.examStopTime)} ห้อง ${finalExam?.roomName ? finalExam?.roomName : "-"}`}</p> : <p>-</p>}
                                     </>
                                 )
                             })
                         }
                     </div>
                 </div>
+                {/* {console.log(classDate)} */}
                 <div className="grid grid-cols-1 gap-2 px-6 py-4 mb-16 bg-white w-full border rounded-lg">
                     <p className="text-2xl font-bold">วิชาที่คุณสนใจ</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white w-full border-t-2 p-2">
                         {
-                            classDate.map((subject, key) => <SelectableSectionCard key={key} data={subject} onClick={handleSubjectSelect} />)
+                            classDate.length ? classDate.map((subject, key) => <SelectableSectionCard key={key} data={subject} onClick={handleSubjectSelect} />) : <></>
                         }
                     </div>
                 </div>

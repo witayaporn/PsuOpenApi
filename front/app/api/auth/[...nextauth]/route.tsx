@@ -1,7 +1,8 @@
+import { access } from "fs";
 import NextAuth from "next-auth";
 import AuthentikProvider from "next-auth/providers/authentik";
 
-const handler =  NextAuth({
+const handler = NextAuth({
   providers: [
     AuthentikProvider({
       clientId: process.env.NEXT_PUBLIC_AUTHENTIK_CLIENT_ID,
@@ -13,6 +14,7 @@ const handler =  NextAuth({
     async session({ session, token, user }) {
       session.user.id = token.id;
       session.accessToken = token.accessToken;
+      fetchUserData(session.accessToken)
       console.log(session)
       return session;
     },
@@ -29,4 +31,4 @@ const handler =  NextAuth({
   secret: "anythingstring"
 });
 
-export { handler as GET, handler as POST}
+export { handler as GET, handler as POST }
