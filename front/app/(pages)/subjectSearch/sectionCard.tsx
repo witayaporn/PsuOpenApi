@@ -8,6 +8,34 @@ export default function SectionCard(prop: any) {
     const finalExam = examData ? examData.filter((data) => data.examdateType == 'F')[0] : null
     const noInterest: number = 143
     const percentage: number = (data.noOffer / noInterest) * 100
+
+    const handleSectionClick = () => {
+        console.log(data)
+        const userData = JSON.parse(sessionStorage.getItem("userData"))
+        const body = {
+            "studentId": userData.studentId,
+            "studentFaculty": userData.majorNameEng,
+            "subjectId": data.subjectId,
+            "section": data.section,
+            "term": data.eduTerm,
+            "year": data.eduYear
+        }
+        console.log(JSON.stringify(body))
+        try {
+            fetch(`http://localhost:8000/student/`, {
+                method: 'POST',
+                mode: "no-cors",
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }).then((res) => console.log(res))
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
     return (
         <div className="w-full p-4 grid grid-cols-1 gap-3 rounded-lg bg-slate-200 ">
             <div className="grid grid-cols-2 ">
@@ -41,8 +69,8 @@ export default function SectionCard(prop: any) {
                                 {date.roomName ?
                                     <p className="block md:inline-flex p-1">
                                         <p className="py-1 md:mr-3">{date.roomName}</p>
-                                        <a 
-                                            className="inline-flex py-1 px-2 bg-gray-300 w-fit h-fit rounded-lg" 
+                                        <a
+                                            className="inline-flex py-1 px-2 bg-gray-300 w-fit h-fit rounded-lg"
                                             href={`/mapSearch/?search=${date.roomName}`}
                                             target="_blank" rel="noopener noreferrer"
                                         >
@@ -76,6 +104,7 @@ export default function SectionCard(prop: any) {
                 <button
                     className=" text-blue-500 p-2 border border-blue-500 rounded-lg font-bold uppercase text-sm hover:bg-blue-500 hover:text-white focus:outline-none ease-linear transition-all duration-150"
                     type="button"
+                    onClick={handleSectionClick}
                 >
                     Interest
                 </button>

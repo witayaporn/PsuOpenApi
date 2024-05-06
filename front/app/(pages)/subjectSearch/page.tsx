@@ -8,8 +8,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useSearchParams } from "next/navigation";
 
 export default function SubjectSearchPage() {
-    const seachParams = useSearchParams()
-    
+    const seachParams = useSearchParams() 
     const [showModal, setShowModal] = useState(false)
     const [faculty, setFaculty] = useState(facultyData)
     const [selectFaculty, setSelectFaculty] = useState([])
@@ -18,6 +17,7 @@ export default function SubjectSearchPage() {
         "term": "2",
         "year": "2564"
     })
+    const [studentInterest, setStudentInterest] = useState()
 
     const [searchInput, setSearchInput] = useState("")
     const handleSearchChange = (e: any) => {
@@ -47,8 +47,8 @@ export default function SubjectSearchPage() {
 
     const handleTermSelect = (e: any) => {
         e.preventDefault()
-        console.log(e.target.value)
-        console.log(e.target.value.split('/'))
+        // console.log(e.target.value)
+        // console.log(e.target.value.split('/'))
         const splitData = e.target.value.split('/')
         const newTermYear = {
             'term': splitData[0],
@@ -81,9 +81,9 @@ export default function SubjectSearchPage() {
         const subjectId= seachParams.get('subjectId')
         const term = seachParams.get('term')
         const year = seachParams.get('year')
-        console.log(term)
-        subjectId
-        ? fetch(`https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/01/${term}/${year}/${subjectId}?offset=0&limit=1000`, {
+        // console.log(term)
+        subjectId ?
+        fetch(`https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/01/${term}/${year}/${subjectId}?offset=0&limit=1000`, {
             method: 'GET',
             cache: 'force-cache',
             headers: {
@@ -96,10 +96,25 @@ export default function SubjectSearchPage() {
                 setCourseData(data)
         })
         : null
+
+        const userData = JSON.parse(sessionStorage.getItem("userData"))
+        console.log(userData)
+        userData ? 
+        fetch(`http://localhost:8000/student/${userData.studentId}`, {
+            method: 'GET',
+            cache: 'force-cache',
+            headers:{
+                'accept': 'application/json'
+            }
+        })
+            .then((res) => res.json())
+            .then((data) => setStudentInterest(data))
+        : null
     }, [])
 
     return (
         <section>
+            {console.log(studentInterest)}
             <div className="grid grid-rows-1 gap-4 mb-4">
                 <div className="grid grid-cols-1 gap-y-4">
                     <div>

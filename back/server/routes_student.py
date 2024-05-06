@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Body, Request, Response, HTTPException, status # type: ignore
 from fastapi.encoders import jsonable_encoder # type: ignore
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict, Any
 from bson import ObjectId  # type: ignore
 
 from mongo.models import Student, StudentUpdate
@@ -14,14 +14,19 @@ def list_student(request: Request):
     return student
 
 @router_student.get("/{studentId}", response_description="Get a single student by id", response_model=List[Student])
-def find_student(studentId: int, request: Request, term: int = None, year: int = None):
-    if (student := list(request.app.database["Student"].find({"studentId": studentId, "term": term, "year": year}))) is not None:
-        return student
+def find_student(studentId: str, request: Request, term: str = None, year: str = None):
+    if (term != None and year != None):
+        if (student := list(request.app.database["Student"].find({"studentId": studentId, "term": term, "year": year}))) is not None:
+            return student
+    else:
+        if (student := list(request.app.database["Student"].find({"studentId": studentId}))) is not None:
+            return student
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Student with ID {studentId} not found")
 
 @router_student.post("/", response_description="Create a new Student", status_code=status.HTTP_201_CREATED, response_model=Student)
-def create_student(request: Request, student: Student = Body(...)):
-    student = jsonable_encoder(student)
+async def create_student(request: Request):
+    # print(await request.json())
+    student = jsonable_encoder(await request.json())
     student['_id'] = ObjectId()
     new_student = request.app.database["Student"].insert_one(student)
     created_student = request.app.database["Student"].find_one(
@@ -30,7 +35,7 @@ def create_student(request: Request, student: Student = Body(...)):
     return created_student
 
 @router_student.put("/{studentId}", response_description="Update a Student", response_model=Student)
-def update_student(studentId: int, request: Request, student: StudentUpdate = Body(...)):
+def update_student(studentId: str, request: Request, student: StudentUpdate = Body(...)):
     student = {k: v for k, v in student.dict().items() if v is not None}
     if len(student) >= 1:
         update_result = request.app.database["Student"].update_one(
@@ -58,7 +63,7 @@ def delete_student(studentId: str, request: Request, response: Response):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Book with ID {studentId} not found")
 
 @router_student.get("/getInterestSubject/{subjectId}", response_description="Get a student interest by subjectId, year and term", response_model=List[Student])
-def find_student(subjectId: str, request: Request, year: int = None, term: int = None):
+def find_student(subjectId: str, request: Request, year: str = None, term: str = None):
     if (year != None or term != None):
         if (result := list(request.app.database["Student"].find({"subjectId": subjectId, "year": year, "term": term}))) is not None:
             return result
@@ -68,7 +73,7 @@ def find_student(subjectId: str, request: Request, year: int = None, term: int =
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Student with ID {subjectId} not found")
 
 @router_student.get("/getSubjectStat/{subjectId}", response_description="Get a student interest by subjectId, year and term", response_model=List[Student])
-def find_student(subjectId: str, request: Request, year: int = None, term: int = None):
+def find_student(subjectId: str, request: Request, year: str = None, term: str = None):
     if (year != None or term != None):
         try:
             result = request.app.database["Student"].aggregate([

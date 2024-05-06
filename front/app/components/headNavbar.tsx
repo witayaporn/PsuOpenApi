@@ -7,7 +7,7 @@ export default function HeadNavbar() {
     const [userData, setUserData] = useState()
     const { data: session, status } = useSession()
     useEffect(() => {
-        console.log(sessionStorage.getItem("userData"))
+        console.log(status)
         if (sessionStorage.getItem("userData") === null && status == "authenticated") {
             console.log("reload user data")
             fetch("https://api-gateway.psu.ac.th/Test/regist/level2/StudentDetailCampus/01/token", {
@@ -35,8 +35,6 @@ export default function HeadNavbar() {
                         sessionStorage.setItem("userData", JSON.stringify(userData))
                     }
                 })
-        } else if(status == "unauthenticated"){
-            sessionStorage.removeItem("userData")
         } else{
             setUserData(JSON.parse(sessionStorage.getItem("userData")))
         }
@@ -72,6 +70,7 @@ export default function HeadNavbar() {
                                     <p>Loading...</p>
                                 </>
                     }
+                    {console.log(status)}
                 </div>
             </div>
         </nav>

@@ -31,43 +31,43 @@ PydanticObjectId = Annotated[
 
 class Student(BaseModel):
     id: Optional[PydanticObjectId] = Field(alias='_id',default=ObjectId())
-    studentId: int = Field(...)
+    studentId: str = Field(...)
     studentFaculty: str = Field(...)
     subjectId: str = Field(...)
-    section: int = Field(...)
-    term: int = Field(...)
-    year: int = Field(...)
+    section: str = Field(...)
+    term: str = Field(...)
+    year: str = Field(...)
 
     class Config:
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "studentId": 6410110123,
+                "studentId": "6410110123",
                 "studentFaculty": "eng",
                 "subjectId": "00123456",
-                "section": 1,
-                "term": 1,
-                "year": 2567,
+                "section": "01",
+                "term": "1",
+                "year": "2567",
             }
         }
 
 class StudentUpdate(BaseModel):
-    studentId: Optional[int]
-    studentFaculty: Optional[int]
+    studentId: Optional[str]
+    studentFaculty: Optional[str]
     subjectId: Optional[str]
-    section: int = Field(...)
-    term: int = Field(...)
-    year: int = Field(...)
+    section: str = Field(...)
+    term: str = Field(...)
+    year: str = Field(...)
 
     class Config:
         json_schema_extra = {
             "example": {
-                "studentId": 6410110123,
+                "studentId": "6410110123",
                 "studentFaculty": "eng",
                 "subjectId": "00123456",
-                "section": 1,
-                "term": 1,
-                "year": 2567
+                "section": "1",
+                "term": "1",
+                "year": "2567"
             }
         }
 
