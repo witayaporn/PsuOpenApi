@@ -44,9 +44,9 @@ export default function HeadNavbar() {
         <nav className="bg-white border-b-4 border-blue-900 shadow-md fixed w-full top-0 start-0 z-[9999]">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="/home" className="flex items-center space-x-1 rtl:space-x-reverse">
-                    {/* <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo"/> */}
-                    <span className="self-center text-3xl font-semibold text-blue-900">PSU</span>
-                    <span className="self-center text-3xl whitespace-nowrap">Guide</span>
+                    <img src="/logo/psu-guide-logo.svg" className="h-12" alt="PSU GUIDE Logo"/>
+                    {/* <span className="self-center text-3xl font-semibold text-blue-900">PSU</span>
+                    <span className="self-center text-3xl whitespace-nowrap">Guide</span> */}
                 </a>
 
                 <div className="flex md:order-2 space-x-3 md:space-x-3 ltr:space-x-reverse">
