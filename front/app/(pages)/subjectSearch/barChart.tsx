@@ -1,28 +1,63 @@
 import { Bar } from "react-chartjs-2"
 import { Chart, registerables } from "chart.js";
 import facultyData from '@/public/faculty-data.json'
+import { useEffect, useState } from "react";
 
-export default function BarChart() {
-    
+export default function BarChart(prop: any) {
     Chart.register(...registerables);
-    const labels = facultyData.filter((fac) => fac.facNameThai != 'ส่วนกลางมหาวิทยาลัย').map((filtered) => filtered.facNameThai);
-    const data = {
-        labels: labels,
-        datasets: [{
-            data: [65, 59, 80, 81, 56, 55, 40, 21, 54, 78, 10, 25, 29],
-            borderWidth: 1
-        }]
-    };
+    const data = prop.data
+    const [subjectStat, setSubjectStat] = useState({ 'labels': [], 'datasets': [] })
+    const fetchSubjectStat = () => {
+        fetch(`http://localhost:8000/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`, {
+            method: 'GET',
+            headers: {
+                'accept': 'application/json'
+            }
+        })
+            .then((res) => res.json())
+            .then((stat) => {
+                console.log(subjectStat)
+                if (stat.length) {
+                    var labels: string[] = []
+                    const datasets = stat.map((data: any) => {
+                        console.log(data)
+                        const label = data._id
+                        const dataset = data.summary.map((item: any) => {
+                            labels.includes(item.studentFaculty) ? null : labels.push(item.studentFaculty)
+                            return { 'x': item.studentFaculty, 'y': item.count }
+                        })
+                        return { 'data': dataset, 'label': label }
+                    })
+                    setSubjectStat({ 'labels': labels, 'datasets': datasets })
+                } else {
+                    setSubjectStat({ 'labels': [], 'datasets': [] })
+                }
+            })
+    }
 
+    useEffect(() => {
+        fetchSubjectStat()
+    }, [])
     return (
         <>
             <Bar
-                data={data}
+                data={subjectStat}
                 width={"100%"}
                 height={"1rem"}
-                options={{ maintainAspectRatio: false }}
-            >
+                options={{
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    }
 
+                }}
+            >
+                {/* {console.log(prop.shareStage)} */}
             </Bar>
         </>
     )

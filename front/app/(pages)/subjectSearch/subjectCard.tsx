@@ -4,7 +4,7 @@ import SectionCard from "./sectionCard"
 import facultyData from '@/public/faculty-data.json'
 import { AnimatePresence, motion } from "framer-motion"
 import BarChart from "./barChart"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function SubjectCard(prop: any) {
     const data = prop.data
@@ -12,45 +12,111 @@ export default function SubjectCard(prop: any) {
     const subjectShortNameEN = data.subjectCode + " " + data.shortNameEng
 
     const router = useRouter()
+    const urlParam = useSearchParams()
     const [showModal, setShowModal] = useState(false);
     const [examDate, setExamDate] = useState([]);
     const [courseSection, setCourseSection] = useState([]);
     const [sectionDate, setSectionDate] = useState([]);
+    // const [subjectStat, setSubjectStat] = useState({ 'labels': [], 'datasets': [] })
+    const [shareStage, setShareStage] = useState(false)
+    // const [studentInterest, setStudentInterest] = useState([])
+
+    const fetchSectionOffer = () => {
+        fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionOfferCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`, {
+            method: 'GET',
+            cache: 'force-cache',
+            headers: {
+                "credential": process.env.NEXT_PUBLIC_API_KEY
+            }
+        })
+            .then((res) => res.json())
+            .then((data) => setCourseSection(data.data))
+    }
+
+    const fetchSectionClassDate = () => {
+        fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`, {
+            method: 'GET',
+            cache: 'force-cache',
+            headers: {
+                "credential": process.env.NEXT_PUBLIC_API_KEY
+            }
+        })
+            .then((res) => res.json())
+            .then((data) => setSectionDate(data.data))
+    }
+
+    const fetchSectionExamDate = () => {
+        fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}?section=&offset=0&limit=100`, {
+            method: 'GET',
+            cache: 'force-cache',
+            headers: {
+                "credential": process.env.NEXT_PUBLIC_API_KEY
+            }
+        })
+            .then((res) => res.json())
+            .then((data) => setExamDate(data.data))
+    }
+
+    // const fetchSubjectStat = () => {
+    //     fetch(`http://localhost:8000/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'accept': 'application/json'
+    //         }
+    //     })
+    //         .then((res) => res.json())
+    //         .then((stat) => {
+    //             console.log(subjectStat)
+    //             if (stat.length) {
+    //                 var labels: string[] = []
+    //                 const datasets = stat.map((data: any) => {
+    //                     console.log(data)
+    //                     const label = data._id
+    //                     const dataset = data.summary.map((item: any) => {
+    //                         labels.includes(item.studentFaculty) ? null : labels.push(item.studentFaculty)
+    //                         return { 'x': item.studentFaculty, 'y': item.count }
+    //                     })
+    //                     return { 'data': dataset, 'label': label }
+    //                 })
+    //                 setSubjectStat({ 'labels': labels, 'datasets': datasets })
+    //             } else {
+    //                 setSubjectStat({ 'labels': [], 'datasets': [] })
+    //             }
+    //         })
+    // }
+    
+    // const fetchStudentInterest = () => {
+    //     const userData = JSON.parse(sessionStorage.getItem("userData"))
+    //     console.log(userData)
+    //     userData ?
+    //         fetch(`http://localhost:8000/student/${userData.studentId}`, {
+    //             method: 'GET',
+    //             headers: {
+    //                 'accept': 'application/json'
+    //             }
+    //         })
+    //             .then((res) => res.json())
+    //             .then((studentIn) => {
+    //                 // console.log(studentIn.filter((item: any) => console.log(studentIn)))
+    //                 setStudentInterest(studentIn)
+    //                 // const isInInterest = studentIn.filter((item: any) => item.subjectId == data.subjectId && item.section == data.section && item.year == data.eduYear && item.term == data.eduTerm)
+    //                 // setIsInterest(isInInterest.length ? isInInterest[0] : null)
+    //                 // setStudentInterest(data)
+    //             })
+    //         : null
+    // }
+    
     const handleCardClick = () => {
         const html = document.getElementsByTagName('html')[0]
         if (!showModal) {
-            fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionOfferCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`, {
-                method: 'GET',
-                cache: 'force-cache',
-                headers: {
-                    "credential": process.env.NEXT_PUBLIC_API_KEY
-                }
-            })
-                .then((res) => res.json())
-                .then((data) => setCourseSection(data.data))
-
-            fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`, {
-                method: 'GET',
-                cache: 'force-cache',
-                headers: {
-                    "credential": process.env.NEXT_PUBLIC_API_KEY
-                }
-            })
-                .then((res) => res.json())
-                .then((data) => setSectionDate(data.data))
-
-            fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}?section=&offset=0&limit=100`, {
-                method: 'GET',
-                cache: 'force-cache',
-                headers: {
-                    "credential": process.env.NEXT_PUBLIC_API_KEY
-                }
-            })
-                .then((res) => res.json())
-                .then((data) => setExamDate(data.data))
+            try{
+                Promise.all([fetchSectionOffer(), fetchSectionClassDate(), fetchSectionExamDate(), fetchSubjectStat()])
+            }catch(e){
+                console.error(e)
+            }
 
             html.classList.add("overflow-hidden")
-            router.push(`/subjectSearch/?subjectId=${data.subjectId}&term=${data.eduTerm}&year=${data.eduYear}`, undefined, { shallow: true })
+            router.push(`/subjectSearch/?subjectId=${data.subjectId}&term=${data.eduTerm}&year=${data.eduYear}&modal=open`, undefined, { shallow: true })
         } else {
             html.classList.remove("overflow-hidden")
             router.push('/subjectSearch', undefined, { shallow: true })
@@ -63,6 +129,11 @@ export default function SubjectCard(prop: any) {
         "primary": faculty.primaryColor,
         "secondary": faculty.secondaryColor
     }
+
+    useEffect(() => {
+        const modal = urlParam.get("modal")
+        modal == "open" ? handleCardClick() : null
+    }, [])
 
     return (
         <>
@@ -131,8 +202,7 @@ export default function SubjectCard(prop: any) {
                                         <div>
                                             <p className="font-bold">ข้อมูลจำนวนนักศึกษาที่สนใจ</p>
                                             <p className="text-gray-900 text-sm leading-relaxed">
-                                                {/* {console.log(courseDetail)} */}
-                                                <BarChart></BarChart>
+                                                <BarChart data={data} shareStage={shareStage}/>
                                             </p>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2">
@@ -141,7 +211,7 @@ export default function SubjectCard(prop: any) {
                                             {courseSection ? courseSection.map((section: any, key: number) => {
                                                 const dateData = sectionDate ? sectionDate.filter((data) => data.section == section.section) : sectionDate
                                                 const examData = examDate ? examDate.filter((data) => data.section == section.section) : examDate
-                                                return <SectionCard key={key} data={[section, dateData, examData]} />
+                                                return <SectionCard key={key} data={[section, dateData, examData]} setShareStage={setShareStage} shareStage={shareStage}/>
                                             }) : "ไม่มีข้อมูล"}
                                         </div>
                                     </div>
