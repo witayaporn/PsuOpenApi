@@ -5,8 +5,6 @@ import TimeTable from "./timeTable"
 import { timeFormatter, dateToTHstr, checkDateTimeOverlap } from "@/app/utils/timeUtils"
 import mockup from "@/public/interest-card-mock.json"
 
-
-
 export default function PlanPage() {
     const [classDate, setClassDate] = useState([])
     const [midExamDate, setMidExamDate] = useState([])
@@ -27,8 +25,8 @@ export default function PlanPage() {
     }
 
     useEffect(() => {
-        const studentId = "6410110123"
-        fetch(`http://localhost:8000/student/${studentId}?term=${1}&year=${2567}`, {
+        const userData = JSON.parse(sessionStorage.getItem("userData"))
+        fetch(`http://localhost:8000/student/${userData.studentId}?term=${2}&year=${2563}`, {
             method: 'GET',
             cache: 'force-cache',
         })
@@ -58,7 +56,6 @@ export default function PlanPage() {
                             const final = data.data?.filter((subject: any) => subject.examdateType == 'F')
                             setMidExamDate(midExamDate => [...midExamDate, mid])
                             setFinalExamDate(finalExamDate => [...finalExamDate, final])
-
                         })
                 })
             })
@@ -67,7 +64,6 @@ export default function PlanPage() {
 
     return (
         <section>
-            {/* {console.log(classDate)} */}
             <div className="grid grid-cols-1 gap-5">
                 <div className="grid grid-cols-1 gap-4">
                     <p className="text-4xl font-bold text-right">Your Plan</p>
@@ -83,10 +79,11 @@ export default function PlanPage() {
                         <p>สอบปลายภาค</p>
                         {
                             selectSubject.map((subject: any) => {
-                                // console.log(subject[0][0])
+                                console.log(subject[0][0])
                                 console.log(midExamDate)
-                                var midExam: any = midExamDate.filter((data: any) => data ? data[0].subjectId == subject[0][0].subjectId : null)
-                                var finalExam: any = finalExamDate.filter((data: any) => data ? data[0].subjectId == subject[0][0].subjectId : null)
+                                finalExamDate.map((data: any) => console.log(data))
+                                var midExam: any = midExamDate.filter((data: any) => data.length ? data[0].subjectId == subject[0][0].subjectId : null)
+                                var finalExam: any = finalExamDate.filter((data: any) => data.length? data[0].subjectId == subject[0][0].subjectId : null)
                                 midExam = midExam.length ? midExam[0][0] : null
                                 finalExam = finalExam.length ? finalExam[0][0] : null
                                 const midStr: string = midExam?.examDate.slice(0, 10)
@@ -98,8 +95,7 @@ export default function PlanPage() {
                                 var finalOverlap: any = []
                                 if (midStr) {
                                     midOverlap = midExamDate.filter((data: any) => {
-                                        // console.log(data[0])
-                                        if (data && data[0] !== midExam) {
+                                        if (data.length && data[0] !== midExam) {
                                             const midDate = data[0].examDate.slice(0, 10)
                                             const midStartT = data[0].examStartTime
                                             const midStopT = data[0].examStopTime
@@ -111,8 +107,7 @@ export default function PlanPage() {
 
                                 if (finalStr) {
                                     finalOverlap = finalExamDate.filter((data: any) => {
-                                        // console.log(data[0])
-                                        if (data && data[0] !== midExam) {
+                                        if (data.length && data[0] !== finalExam) {
                                             const finalDate = data[0].examDate.slice(0, 10)
                                             const finalStartT = data[0].examStartTime
                                             const finalStopT = data[0].examStopTime
@@ -122,7 +117,6 @@ export default function PlanPage() {
                                     })
                                 }
 
-                                // console.log(midOverlap)
                                 return (
                                     <>
                                         <p className="text-sm">{`${subject[0][0].subjectCode} ${subject[0][0].shortNameEng}`}</p>
@@ -134,7 +128,6 @@ export default function PlanPage() {
                         }
                     </div>
                 </div>
-                {/* {console.log(classDate)} */}
                 <div className="grid grid-cols-1 gap-2 px-6 py-4 mb-16 bg-white w-full border rounded-lg">
                     <p className="text-2xl font-bold">วิชาที่คุณสนใจ</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white w-full border-t-2 p-2">
