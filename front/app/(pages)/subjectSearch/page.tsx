@@ -17,7 +17,6 @@ export default function SubjectSearchPage() {
         "term": "2",
         "year": "2564"
     })
-    const [studentInterest, setStudentInterest] = useState()
 
     const [searchInput, setSearchInput] = useState("")
     const handleSearchChange = (e: any) => {
@@ -97,24 +96,11 @@ export default function SubjectSearchPage() {
         })
         : null
 
-        const userData = JSON.parse(sessionStorage.getItem("userData"))
-        console.log(userData)
-        userData ? 
-        fetch(`http://localhost:8000/student/${userData.studentId}`, {
-            method: 'GET',
-            cache: 'force-cache',
-            headers:{
-                'accept': 'application/json'
-            }
-        })
-            .then((res) => res.json())
-            .then((data) => setStudentInterest(data))
-        : null
+
     }, [])
 
     return (
         <section>
-            {console.log(studentInterest)}
             <div className="grid grid-rows-1 gap-4 mb-4">
                 <div className="grid grid-cols-1 gap-y-4">
                     <div>

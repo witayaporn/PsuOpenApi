@@ -28,7 +28,7 @@ export default function PlanPage() {
         const userData = JSON.parse(sessionStorage.getItem("userData"))
         fetch(`http://localhost:8000/student/${userData.studentId}?term=${2}&year=${2563}`, {
             method: 'GET',
-            cache: 'force-cache',
+            // cache: 'cache',
         })
             .then((res) => res.json())
             .then((data) => {
@@ -82,8 +82,8 @@ export default function PlanPage() {
                                 console.log(subject[0][0])
                                 console.log(midExamDate)
                                 finalExamDate.map((data: any) => console.log(data))
-                                var midExam: any = midExamDate.filter((data: any) => data.length ? data[0].subjectId == subject[0][0].subjectId : null)
-                                var finalExam: any = finalExamDate.filter((data: any) => data.length? data[0].subjectId == subject[0][0].subjectId : null)
+                                var midExam: any = midExamDate.filter((data: any) => data?.length ? data[0].subjectId == subject[0][0].subjectId : null)
+                                var finalExam: any = finalExamDate.filter((data: any) => data?.length ? data[0].subjectId == subject[0][0].subjectId : null)
                                 midExam = midExam.length ? midExam[0][0] : null
                                 finalExam = finalExam.length ? finalExam[0][0] : null
                                 const midStr: string = midExam?.examDate.slice(0, 10)
@@ -95,7 +95,7 @@ export default function PlanPage() {
                                 var finalOverlap: any = []
                                 if (midStr) {
                                     midOverlap = midExamDate.filter((data: any) => {
-                                        if (data.length && data[0] !== midExam) {
+                                        if (data?.length && data[0] !== midExam) {
                                             const midDate = data[0].examDate.slice(0, 10)
                                             const midStartT = data[0].examStartTime
                                             const midStopT = data[0].examStopTime
@@ -107,7 +107,7 @@ export default function PlanPage() {
 
                                 if (finalStr) {
                                     finalOverlap = finalExamDate.filter((data: any) => {
-                                        if (data.length && data[0] !== finalExam) {
+                                        if (data?.length && data[0] !== finalExam) {
                                             const finalDate = data[0].examDate.slice(0, 10)
                                             const finalStartT = data[0].examStartTime
                                             const finalStopT = data[0].examStopTime

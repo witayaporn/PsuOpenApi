@@ -1,4 +1,5 @@
 import { timeFormatter, dateToTHstr } from "@/app/utils/timeUtils"
+import { useEffect, useState } from "react"
 
 export default function SectionCard(prop: any) {
     const data = prop.data[0]
@@ -8,8 +9,11 @@ export default function SectionCard(prop: any) {
     const finalExam = examData ? examData.filter((data) => data.examdateType == 'F')[0] : null
     const noInterest: number = 143
     const percentage: number = (data.noOffer / noInterest) * 100
+    const [isInterest, setIsInterest] = useState(false)
+    const [studentInterest, setStudentInterest] = useState()
 
-    const handleSectionClick = () => {
+
+    const handleInterestClick = () => {
         console.log(data)
         const userData = JSON.parse(sessionStorage.getItem("userData"))
         const body = {
@@ -30,16 +34,39 @@ export default function SectionCard(prop: any) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(body)
-            }).then((res) => console.log(res))
+            }).then((res) => setIsInterest(true))
         } catch (e) {
             console.error(e)
         }
     }
 
+    const handleRemoveInterestClick = () => {
+        
+    }
+
+    useEffect(() => {
+        const userData = JSON.parse(sessionStorage.getItem("userData"))
+        console.log(userData)
+        userData ?
+            fetch(`http://localhost:8000/student/${userData.studentId}`, {
+                method: 'GET',
+                headers: {
+                    'accept': 'application/json'
+                }
+            })
+                .then((res) => res.json())
+                .then((studentIn) => {
+                    // console.log(studentIn.filter((item: any) => console.log(studentIn)))
+                    setIsInterest(studentIn.filter((item: any) => item.subjectId == data.subjectId && item.section == data.section && item.year == data.eduYear && item.term == data.eduTerm).length > 0)
+                    setStudentInterest(data)
+                })
+            : null
+    }, [])
     return (
         <div className="w-full p-4 grid grid-cols-1 gap-3 rounded-lg bg-slate-200 ">
             <div className="grid grid-cols-2 ">
-                {/* {console.log(dateData)} */}
+                {console.log(studentInterest)}
+                {console.log(isInterest)}
                 <p className="font-bold text-sm text-gray-800">ตอน {data.section}</p>
                 <p className="text-sm text-right text-gray-800">โอกาส {percentage.toFixed(2)} %</p>
             </div>
@@ -101,13 +128,24 @@ export default function SectionCard(prop: any) {
                 </div>
             </div>
             <div className="grid grid-cols-1 px-auto">
-                <button
-                    className=" text-blue-500 p-2 border border-blue-500 rounded-lg font-bold uppercase text-sm hover:bg-blue-500 hover:text-white focus:outline-none ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={handleSectionClick}
-                >
-                    Interest
-                </button>
+                {
+                    isInterest ?
+                        <button
+                            className=" text-orange-600 p-2 border border-orange-600 rounded-lg font-bold uppercase text-sm hover:bg-orange-500 hover:text-white focus:outline-none ease-linear transition-all duration-150"
+                            type="button"
+                            onClick={handleRemoveInterestClick}
+                        >
+                            Remove From Interest
+                        </button>
+                        :
+                        <button
+                            className="text-blue-500 p-2 border border-blue-500 rounded-lg font-bold uppercase text-sm hover:bg-blue-500 hover:text-white focus:outline-none ease-linear transition-all duration-150"
+                            type="button"
+                            onClick={handleInterestClick}
+                        >
+                            Interest
+                        </button>
+                }
             </div>
 
         </div >

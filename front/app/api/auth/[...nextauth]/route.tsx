@@ -14,8 +14,6 @@ const handler = NextAuth({
     async session({ session, token, user }) {
       session.user.id = token.id;
       session.accessToken = token.accessToken;
-      fetchUserData(session.accessToken)
-      console.log(session)
       return session;
     },
     async jwt({ token, user, account, profile }) {
