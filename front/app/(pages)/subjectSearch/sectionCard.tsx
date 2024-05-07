@@ -5,11 +5,11 @@ export default function SectionCard(prop: any) {
     const data = prop.data[0]
     const dateData = prop.data[1]
     const examData = prop.data[2]
-    const midExam = examData ? examData.filter((data) => data.examdateType == 'M')[0] : null
-    const finalExam = examData ? examData.filter((data) => data.examdateType == 'F')[0] : null
+    const midExam = examData ? examData.filter((data: any) => data.examdateType == 'M')[0] : null
+    const finalExam = examData ? examData.filter((data: any) => data.examdateType == 'F')[0] : null
     const noInterest: number = 143
     const percentage: number = (data.noOffer / noInterest) * 100
-    const [isInterest, setIsInterest] = useState(false)
+    const [isInterest, setIsInterest] = useState({})
     const [studentInterest, setStudentInterest] = useState()
 
 
@@ -28,20 +28,30 @@ export default function SectionCard(prop: any) {
         try {
             fetch(`http://localhost:8000/student/`, {
                 method: 'POST',
-                mode: "no-cors",
-                headers: {
-                    'Accept': '*/*',
-                    'Content-Type': 'application/json'
-                },
+                // mode: "no-cors",
                 body: JSON.stringify(body)
-            }).then((res) => setIsInterest(true))
+            })
+                .then((res: any) => res.json())
+                .then((data) => setIsInterest(data))
         } catch (e) {
             console.error(e)
         }
     }
 
     const handleRemoveInterestClick = () => {
-        
+        console.log(isInterest)
+        try {
+            fetch(`http://localhost:8000/student/deleteSubjectInterest/${isInterest?._id}`, {
+                method: 'POST',
+                mode: "no-cors",
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json'
+                },
+            }).then((res) => setIsInterest(null))
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     useEffect(() => {
@@ -57,7 +67,8 @@ export default function SectionCard(prop: any) {
                 .then((res) => res.json())
                 .then((studentIn) => {
                     // console.log(studentIn.filter((item: any) => console.log(studentIn)))
-                    setIsInterest(studentIn.filter((item: any) => item.subjectId == data.subjectId && item.section == data.section && item.year == data.eduYear && item.term == data.eduTerm).length > 0)
+                    const isInInterest = studentIn.filter((item: any) => item.subjectId == data.subjectId && item.section == data.section && item.year == data.eduYear && item.term == data.eduTerm)
+                    setIsInterest(isInInterest.length ? isInInterest[0] : null)
                     setStudentInterest(data)
                 })
             : null
