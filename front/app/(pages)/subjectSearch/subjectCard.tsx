@@ -209,8 +209,8 @@ export default function SubjectCard(prop: any) {
                                             {/* {console.log(sectionDate)} */}
                                             <p className="font-bold">ตอน</p>
                                             {courseSection ? courseSection.map((section: any, key: number) => {
-                                                const dateData = sectionDate ? sectionDate.filter((data) => data.section == section.section) : sectionDate
-                                                const examData = examDate ? examDate.filter((data) => data.section == section.section) : examDate
+                                                const dateData = sectionDate ? sectionDate.filter((data: any) => data.section == section.section) : sectionDate
+                                                const examData = examDate ? examDate.filter((data: any) => data.section == section.section) : examDate
                                                 return <SectionCard key={key} data={[section, dateData, examData]} setShareStage={setShareStage} shareStage={shareStage}/>
                                             }) : "ไม่มีข้อมูล"}
                                         </div>

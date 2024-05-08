@@ -145,7 +145,7 @@ export default function SubjectSearchPage() {
                                                                     <div key={key}>
                                                                         <input type="checkbox" id={`${fac.facNameThai}-${key}`} value={`${fac.facNameThai}`} className="hidden peer" onClick={(e)=> handleFilterClick(e, "deselect")}></input>
                                                                         <label
-                                                                            for={`${fac.facNameThai}-${key}`}
+                                                                            htmlFor={`${fac.facNameThai}-${key}`}
                                                                             className="flex p-1 text-black text-sm border-2 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60"
                                                                             style={{ backgroundColor: `${fac.secondaryColor}`, borderColor: `${fac.primaryColor}` }}
                                                                         >
@@ -163,7 +163,7 @@ export default function SubjectSearchPage() {
                                                                     <div>
                                                                         <input type="checkbox" id={`${fac.facNameThai}-${key}`} value={`${fac.facNameThai}`} className="hidden peer" onClick={(e)=> handleFilterClick(e, "select")}></input>
                                                                         <label
-                                                                            for={`${fac.facNameThai}-${key}`}
+                                                                            htmlFor={`${fac.facNameThai}-${key}`}
                                                                             className="flex p-1 text-black text-sm border-2 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60"
                                                                             style={{ backgroundColor: `${fac.secondaryColor}`, borderColor: `${fac.primaryColor}` }}
                                                                         >
