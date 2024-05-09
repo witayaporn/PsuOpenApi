@@ -1,43 +1,50 @@
-import { Bar } from "react-chartjs-2"
-import { Chart, registerables } from "chart.js";
-import facultyData from '@/public/faculty-data.json'
+import { Bar } from "react-chartjs-2";
+import { Chart, ChartData, registerables } from "chart.js";
 import { useEffect, useState } from "react";
 
 export default function BarChart(prop: any) {
     Chart.register(...registerables);
-    const data = prop.data
-    const [subjectStat, setSubjectStat] = useState({ 'labels': [], 'datasets': [] })
+    const data = prop.data;
+    const [subjectStat, setSubjectStat] = useState<ChartData<"bar">>({
+        labels: [],
+        datasets: [],
+    });
     const fetchSubjectStat = () => {
-        fetch(`http://localhost:8000/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`, {
-            method: 'GET',
-            headers: {
-                'accept': 'application/json'
+        fetch(
+            `http://localhost:8000/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`,
+            {
+                method: "GET",
+                headers: {
+                    accept: "application/json",
+                },
             }
-        })
+        )
             .then((res) => res.json())
             .then((stat) => {
-                console.log(subjectStat)
+                console.log(subjectStat);
                 if (stat.length) {
-                    var labels: string[] = []
+                    var labels: string[] = [];
                     const datasets = stat.map((data: any) => {
-                        console.log(data)
-                        const label = data._id
+                        console.log(data);
+                        const label = data._id;
                         const dataset = data.summary.map((item: any) => {
-                            labels.includes(item.studentFaculty) ? null : labels.push(item.studentFaculty)
-                            return { 'x': item.studentFaculty, 'y': item.count }
-                        })
-                        return { 'data': dataset, 'label': label }
-                    })
-                    setSubjectStat({ 'labels': labels, 'datasets': datasets })
+                            labels.includes(item.studentFaculty)
+                                ? null
+                                : labels.push(item.studentFaculty);
+                            return { x: item.studentFaculty, y: item.count };
+                        });
+                        return { data: dataset, label: label };
+                    });
+                    setSubjectStat({ labels: labels, datasets: datasets });
                 } else {
-                    setSubjectStat({ 'labels': [], 'datasets': [] })
+                    setSubjectStat({ labels: [], datasets: [] });
                 }
-            })
-    }
+            });
+    };
 
     useEffect(() => {
-        fetchSubjectStat()
-    }, [])
+        fetchSubjectStat();
+    }, []);
     return (
         <>
             <Bar
@@ -51,14 +58,13 @@ export default function BarChart(prop: any) {
                             stacked: true,
                         },
                         y: {
-                            stacked: true
-                        }
-                    }
-
+                            stacked: true,
+                        },
+                    },
                 }}
             >
                 {/* {console.log(prop.shareStage)} */}
             </Bar>
         </>
-    )
+    );
 }

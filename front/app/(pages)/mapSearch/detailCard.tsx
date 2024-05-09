@@ -1,9 +1,11 @@
-import facultyData from "../../../public/faculty-data.json"
+import facultyData from "../../../public/faculty-data.json";
 
 export default function DetailCard(prop: any) {
-    const propData = prop.data
-    const facDetail = facultyData.filter((fac) => fac.facNameEng == propData.faculty)[0]
-    const buildingDetail = { ...propData, facDetail }
+    const propData = prop.data;
+    const facDetail = facultyData.filter(
+        (fac) => fac.facNameEng == propData.faculty
+    )[0];
+    const buildingDetail = { ...propData, facDetail };
     return (
         <div className="max-w-full overflow-hidden p-5 bg-white grid grid-cols-1 gap-y-3 rounded-lg border">
             <div className="text-center">
@@ -17,10 +19,12 @@ export default function DetailCard(prop: any) {
                 </div>
                 <div className="px-4 grid grid-cols-1 text-center">
                     <p className="font-bold">เว็บไซต์</p>
-                    <a href={buildingDetail.facDetail.website} className="">{buildingDetail.facDetail.website}</a>
+                    <a href={buildingDetail.facDetail.website} className="">
+                        {buildingDetail.facDetail.website}
+                    </a>
                 </div>
                 <p>Id {buildingDetail["@id"]}</p>
             </div>
         </div>
-    )
+    );
 }

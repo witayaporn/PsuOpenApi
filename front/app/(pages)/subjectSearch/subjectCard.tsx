@@ -1,61 +1,70 @@
-'use client'
-import { useEffect, useState } from "react"
-import SectionCard from "./sectionCard"
-import facultyData from '@/public/faculty-data.json'
-import { AnimatePresence, motion } from "framer-motion"
-import BarChart from "./barChart"
-import { useRouter, useSearchParams } from "next/navigation"
+"use client";
+import { useEffect, useState } from "react";
+import SectionCard from "./sectionCard";
+import facultyData from "@/public/faculty-data.json";
+import { AnimatePresence, motion } from "framer-motion";
+import BarChart from "./barChart";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SubjectCard(prop: any) {
-    const data = prop.data
-    const subjectNameEN = data.subjectCode + " " + data.subjectNameEng
-    const subjectShortNameEN = data.subjectCode + " " + data.shortNameEng
+    const data = prop.data;
+    const subjectNameEN = data.subjectCode + " " + data.subjectNameEng;
+    const subjectShortNameEN = data.subjectCode + " " + data.shortNameEng;
 
-    const router = useRouter()
-    const urlParam = useSearchParams()
-    const [showModal, setShowModal] = useState(false);
-    const [examDate, setExamDate] = useState([]);
-    const [courseSection, setCourseSection] = useState([]);
-    const [sectionDate, setSectionDate] = useState([]);
+    const router = useRouter();
+    const urlParam = useSearchParams();
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [examDate, setExamDate] = useState<any[]>([]);
+    const [courseSection, setCourseSection] = useState<any[]>([]);
+    const [sectionDate, setSectionDate] = useState<any[]>([]);
     // const [subjectStat, setSubjectStat] = useState({ 'labels': [], 'datasets': [] })
-    const [shareStage, setShareStage] = useState(false)
+    const [shareStage, setShareStage] = useState<boolean>(false);
     // const [studentInterest, setStudentInterest] = useState([])
 
     const fetchSectionOffer = () => {
-        fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionOfferCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`, {
-            method: 'GET',
-            cache: 'force-cache',
-            headers: {
-                "credential": process.env.NEXT_PUBLIC_API_KEY
+        fetch(
+            `https://api-gateway.psu.ac.th/Test/regist/SectionOfferCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`,
+            {
+                method: "GET",
+                cache: "force-cache",
+                headers: {
+                    credential: process.env.NEXT_PUBLIC_API_KEY,
+                },
             }
-        })
+        )
             .then((res) => res.json())
-            .then((data) => setCourseSection(data.data))
-    }
+            .then((data) => setCourseSection(data.data));
+    };
 
     const fetchSectionClassDate = () => {
-        fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`, {
-            method: 'GET',
-            cache: 'force-cache',
-            headers: {
-                "credential": process.env.NEXT_PUBLIC_API_KEY
+        fetch(
+            `https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`,
+            {
+                method: "GET",
+                cache: "force-cache",
+                headers: {
+                    credential: process.env.NEXT_PUBLIC_API_KEY,
+                },
             }
-        })
+        )
             .then((res) => res.json())
-            .then((data) => setSectionDate(data.data))
-    }
+            .then((data) => setSectionDate(data.data));
+    };
 
     const fetchSectionExamDate = () => {
-        fetch(`https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}?section=&offset=0&limit=100`, {
-            method: 'GET',
-            cache: 'force-cache',
-            headers: {
-                "credential": process.env.NEXT_PUBLIC_API_KEY
+        fetch(
+            `https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}?section=&offset=0&limit=100`,
+            {
+                method: "GET",
+                cache: "force-cache",
+                headers: {
+                    credential: process.env.NEXT_PUBLIC_API_KEY,
+                },
             }
-        })
+        )
             .then((res) => res.json())
-            .then((data) => setExamDate(data.data))
-    }
+            .then((data) => setExamDate(data.data));
+    };
 
     // const fetchSubjectStat = () => {
     //     fetch(`http://localhost:8000/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`, {
@@ -84,7 +93,7 @@ export default function SubjectCard(prop: any) {
     //             }
     //         })
     // }
-    
+
     // const fetchStudentInterest = () => {
     //     const userData = JSON.parse(sessionStorage.getItem("userData"))
     //     console.log(userData)
@@ -105,48 +114,65 @@ export default function SubjectCard(prop: any) {
     //             })
     //         : null
     // }
-    
+
     const handleCardClick = () => {
-        const html = document.getElementsByTagName('html')[0]
+        const html = document.getElementsByTagName("html")[0];
         if (!showModal) {
-            try{
-                Promise.all([fetchSectionOffer(), fetchSectionClassDate(), fetchSectionExamDate(), fetchSubjectStat()])
-            }catch(e){
-                console.error(e)
+            try {
+                Promise.all([
+                    fetchSectionOffer(),
+                    fetchSectionClassDate(),
+                    fetchSectionExamDate(),
+                    // fetchSubjectStat(),
+                ]);
+            } catch (e) {
+                console.error(e);
             }
 
-            html.classList.add("overflow-hidden")
-            router.push(`/subjectSearch/?subjectId=${data.subjectId}&term=${data.eduTerm}&year=${data.eduYear}&modal=open`, undefined, { shallow: true })
+            html.classList.add("overflow-hidden");
+            router.push(
+                `/subjectSearch/?subjectId=${data.subjectId}&term=${data.eduTerm}&year=${data.eduYear}&modal=open`,
+                undefined,
+                { shallow: true }
+            );
         } else {
-            html.classList.remove("overflow-hidden")
-            router.push('/subjectSearch', undefined, { shallow: true })
+            html.classList.remove("overflow-hidden");
+            router.push("/subjectSearch", undefined, { shallow: true });
         }
-        setShowModal(!showModal)
-    }
+        setShowModal(!showModal);
+    };
 
-    const faculty = facultyData.filter((fac) => fac.facId == data.facId)[0]
+    const faculty = facultyData.filter((fac) => fac.facId == data.facId)[0];
     const facColor = {
-        "primary": faculty.primaryColor,
-        "secondary": faculty.secondaryColor
-    }
+        primary: faculty.primaryColor,
+        secondary: faculty.secondaryColor,
+    };
 
     useEffect(() => {
-        const modal = urlParam.get("modal")
-        modal == "open" ? handleCardClick() : null
-    }, [])
+        const modal = urlParam.get("modal");
+        modal == "open" ? handleCardClick() : null;
+    }, []);
 
     return (
         <>
             {/* {console.log(facColor)} */}
             <a
                 className="md:h-44 pl-2 border rounded-lg shadow hover:shadow-md hover:scale-[1.01] transition-all"
-                style={{ background: `linear-gradient(to bottom, ${facColor.primary}, ${facColor.secondary})`, }}
+                style={{
+                    background: `linear-gradient(to bottom, ${facColor.primary}, ${facColor.secondary})`,
+                }}
                 onClick={handleCardClick}
             >
                 <div className="p-4 h-full bg-white rounded-r-md">
-                    <p className="font-bold text-green-950">{subjectShortNameEN}</p>
-                    <p className="text-gray-700 truncate max-h-6">{data.subjectNameThai}</p>
-                    <p className="text-gray-500 inline md:block">{data.credit}</p>
+                    <p className="font-bold text-green-950">
+                        {subjectShortNameEN}
+                    </p>
+                    <p className="text-gray-700 truncate max-h-6">
+                        {data.subjectNameThai}
+                    </p>
+                    <p className="text-gray-500 inline md:block">
+                        {data.credit}
+                    </p>
                     <p className="inline-flex py-1 px-2 mx-2 md:mt-2 md:m-0 text-black text-xs bg-gray-100 border-gray-400 rounded-lg">
                         {data.subjectTypeDesc}
                     </p>
@@ -160,8 +186,22 @@ export default function SubjectCard(prop: any) {
                                 <motion.div
                                     className="w-full h-fit grid grid-cols-1 gap-2 border-0 rounded-lg shadow-lg relative bg-white outline-none focus:outline-none"
                                     initial={{ opacity: 0, scale: 0.75 }}
-                                    animate={{ opacity: 1, scale: 1, transition: { ease: "easeOut", duration: 0.10 } }}
-                                    exit={{ opacity: 0, scale: 0.75, transition: { ease: "easeIn", duration: 0.10 } }}
+                                    animate={{
+                                        opacity: 1,
+                                        scale: 1,
+                                        transition: {
+                                            ease: "easeOut",
+                                            duration: 0.1,
+                                        },
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        scale: 0.75,
+                                        transition: {
+                                            ease: "easeIn",
+                                            duration: 0.1,
+                                        },
+                                    }}
                                 >
                                     <div className="items-start justify-between overflow-hidden p-5 border-b border-solid rounded-t">
                                         <button
@@ -171,9 +211,15 @@ export default function SubjectCard(prop: any) {
                                         >
                                             X
                                         </button>
-                                        <p className="font-bold text-lg text-green-950">{subjectNameEN}</p>
-                                        <p className="text-gray-700">{data.subjectNameThai}</p>
-                                        <p className="text-gray-500 inline md:block">{data.credit}</p>
+                                        <p className="font-bold text-lg text-green-950">
+                                            {subjectNameEN}
+                                        </p>
+                                        <p className="text-gray-700">
+                                            {data.subjectNameThai}
+                                        </p>
+                                        <p className="text-gray-500 inline md:block">
+                                            {data.credit}
+                                        </p>
                                         <p className="inline-flex py-1 px-2 mx-2 md:mt-2 md:m-0 text-black text-xs bg-gray-100 border-gray-400 rounded-lg">
                                             {data.subjectTypeDesc}
                                         </p>
@@ -181,10 +227,16 @@ export default function SubjectCard(prop: any) {
                                     </div>
                                     <div className="relative px-5 grid grid-cols-1 gap-y-2">
                                         <div className="flex-auto">
-                                            <p className="font-bold">รายละเอียด</p>
+                                            <p className="font-bold">
+                                                รายละเอียด
+                                            </p>
                                             <div className="grid grid-cols-2 sm:grid-cols-4 text-sm">
                                                 <p>ภาคการศึกษา</p>
-                                                <p>{data.eduTerm + '/' + data.eduYear}</p>
+                                                <p>
+                                                    {data.eduTerm +
+                                                        "/" +
+                                                        data.eduYear}
+                                                </p>
                                                 <p>ภาควิชา</p>
                                                 <p>{data.deptNameThai}</p>
                                                 <p>คณะ</p>
@@ -194,25 +246,72 @@ export default function SubjectCard(prop: any) {
                                             </div>
                                         </div>
                                         <div>
-                                            <p className="font-bold">คำอธิบายรายวิชา</p>
+                                            <p className="font-bold">
+                                                คำอธิบายรายวิชา
+                                            </p>
                                             <p className="text-gray-900 text-sm leading-relaxed">
                                                 {/* {console.log(courseDetail)} */}
                                             </p>
                                         </div>
                                         <div>
-                                            <p className="font-bold">ข้อมูลจำนวนนักศึกษาที่สนใจ</p>
+                                            <p className="font-bold">
+                                                ข้อมูลจำนวนนักศึกษาที่สนใจ
+                                            </p>
                                             <p className="text-gray-900 text-sm leading-relaxed">
-                                                <BarChart data={data} shareStage={shareStage}/>
+                                                <BarChart
+                                                    data={data}
+                                                    shareStage={shareStage}
+                                                />
                                             </p>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2">
                                             {/* {console.log(sectionDate)} */}
                                             <p className="font-bold">ตอน</p>
-                                            {courseSection ? courseSection.map((section: any, key: number) => {
-                                                const dateData = sectionDate ? sectionDate.filter((data: any) => data.section == section.section) : sectionDate
-                                                const examData = examDate ? examDate.filter((data: any) => data.section == section.section) : examDate
-                                                return <SectionCard key={key} data={[section, dateData, examData]} setShareStage={setShareStage} shareStage={shareStage}/>
-                                            }) : "ไม่มีข้อมูล"}
+                                            {courseSection
+                                                ? courseSection.map(
+                                                      (
+                                                          section: any,
+                                                          key: number
+                                                      ) => {
+                                                          const dateData =
+                                                              sectionDate
+                                                                  ? sectionDate.filter(
+                                                                        (
+                                                                            data: any
+                                                                        ) =>
+                                                                            data.section ==
+                                                                            section.section
+                                                                    )
+                                                                  : sectionDate;
+                                                          const examData =
+                                                              examDate
+                                                                  ? examDate.filter(
+                                                                        (
+                                                                            data: any
+                                                                        ) =>
+                                                                            data.section ==
+                                                                            section.section
+                                                                    )
+                                                                  : examDate;
+                                                          return (
+                                                              <SectionCard
+                                                                  key={key}
+                                                                  data={[
+                                                                      section,
+                                                                      dateData,
+                                                                      examData,
+                                                                  ]}
+                                                                  setShareStage={
+                                                                      setShareStage
+                                                                  }
+                                                                  shareStage={
+                                                                      shareStage
+                                                                  }
+                                                              />
+                                                          );
+                                                      }
+                                                  )
+                                                : "ไม่มีข้อมูล"}
                                         </div>
                                     </div>
                                     <div className="flex items-center justify-end p-1 border-t border-solid border-blueGray-200 rounded-b">
@@ -232,5 +331,5 @@ export default function SubjectCard(prop: any) {
                 )}
             </AnimatePresence>
         </>
-    )
+    );
 }
