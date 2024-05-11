@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web-ser:
+    container_name: web-ser
+    build: .
+    command: uvicorn app:app --host 0.0.0.0 --reload
+    ports:
+      - 127.0.0.1:8000:8000
+    networks:
+      - web-ser
+networks:
+  web-ser:
