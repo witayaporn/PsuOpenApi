@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { checkTimeOverlap } from "@/app/utils/timeUtils";
+import { Tooltip } from "react-tooltip";
 
 interface SubjectOverlap {
     [key: string]: number;
@@ -33,16 +34,11 @@ const weekDay = [
     },
 ];
 
-const calculateSubjectPanel = (
-    startTime: number,
-    stopTime: number,
-    minTime: number
-) => {
+const calculateSubjectPanel = (startTime: number, stopTime: number, minTime: number) => {
     const startT: number = startTime / 100;
     const stopT: number = stopTime / 100;
     const startRender: number = parseInt(startT - minTime) + 1;
-    const period: number =
-        parseInt(stopT - startT) + ((stopT - startT) % 1) / 0.6;
+    const period: number = parseInt(stopT - startT) + ((stopT - startT) % 1) / 0.6;
     return { startRender: startRender, period: period };
 };
 
@@ -63,9 +59,7 @@ export default function TimeTable(prop: any) {
         fri: 0,
     };
     const [weekTime, setWeekTime] = useState<WeekTime>(defaultWeekTime);
-    const [subjectOverlap, setSubjectOverlap] = useState<SubjectOverlap>(
-        defaultSubjectOverlap
-    );
+    const [subjectOverlap, setSubjectOverlap] = useState<SubjectOverlap>(defaultSubjectOverlap);
     const [maxTime, setMaxTime] = useState<number>(13);
     const [minTime, setMinTime] = useState<number>(8);
 
@@ -193,73 +187,69 @@ export default function TimeTable(prop: any) {
                         <div
                             className="relative py-1 pl-[120px]"
                             style={{
-                                height: `${
-                                    (subjectOverlap[day.shortEng] + 1) * 66
-                                }px`,
+                                height: `${(subjectOverlap[day.shortEng] + 1) * 66}px`,
                             }}
                         >
                             {weekTime[day.shortEng].length ? (
-                                weekTime[day.shortEng].map(
-                                    (item: any, key: number) => {
-                                        const renderData: any =
-                                            calculateSubjectPanel(
-                                                parseInt(item.startTime),
-                                                parseInt(item.stopTime),
-                                                minTime
-                                            );
-                                        var countOverlap: number = 0;
-                                        weekTime[day.shortEng]
-                                            .slice(0, key)
-                                            .map((prevItem: any) => {
-                                                if (
-                                                    item.subjectId ==
-                                                        prevItem.subjectId &&
-                                                    item.section ==
-                                                        prevItem.section
-                                                ) {
-                                                    return;
-                                                }
-                                                const isOverlap: boolean =
-                                                    checkTimeOverlap(
-                                                        item.startTime,
-                                                        item.stopTime,
-                                                        prevItem.startTime,
-                                                        prevItem.stopTime
-                                                    );
-                                                if (isOverlap) {
-                                                    countOverlap += 1;
-                                                }
-                                            });
-                                        // console.log(day.day + " " + countOverlap)
-                                        // console.log(weekTime[day.shortEng].slice(0, key - 1))
-                                        // console.log(item)
+                                weekTime[day.shortEng].map((item: any, key: number) => {
+                                    const renderData: any = calculateSubjectPanel(
+                                        parseInt(item.startTime),
+                                        parseInt(item.stopTime),
+                                        minTime
+                                    );
+                                    var countOverlap: number = 0;
+                                    weekTime[day.shortEng].slice(0, key).map((prevItem: any) => {
+                                        if (
+                                            item.subjectId == prevItem.subjectId &&
+                                            item.section == prevItem.section
+                                        ) {
+                                            return;
+                                        }
+                                        const isOverlap: boolean = checkTimeOverlap(
+                                            item.startTime,
+                                            item.stopTime,
+                                            prevItem.startTime,
+                                            prevItem.stopTime
+                                        );
+                                        if (isOverlap) {
+                                            countOverlap += 1;
+                                        }
+                                    });
+                                    // console.log(day.day + " " + countOverlap)
+                                    // console.log(weekTime[day.shortEng].slice(0, key - 1))
+                                    console.log(item)
 
-                                        return (
+                                    return (
+                                        <>
                                             <a
                                                 key={key}
+                                                data-tooltip-id={`tooltip-bottom-${item.subjectId}-${item.section}`}
                                                 className="absolute h-[60px] p-2 hover:border rounded-md"
                                                 style={{
-                                                    left: `${
-                                                        renderData.startRender *
-                                                        120
-                                                    }px`,
-                                                    marginTop: `${
-                                                        countOverlap * 66
-                                                    }px`,
-                                                    width: `${
-                                                        renderData.period * 120
-                                                    }px`,
-                                                    backgroundColor: `#${item.subjectId.slice(
-                                                        0,
-                                                        6
-                                                    )}80`,
+                                                    left: `${renderData.startRender * 120}px`,
+                                                    marginTop: `${countOverlap * 66}px`,
+                                                    maxWidth: `${renderData.period * 120}px`,
+                                                    backgroundColor: '#' + item.subjectCode.replace(/-/, '') + "80",
                                                 }}
                                             >
-                                                {item.subjectNameThai}
+                                                <p
+                                                    className="text-xs font-bold text-gray-900 truncate"
+                                                    style={{
+                                                        maxWidth: `${renderData.period * 120}px`,
+                                                    }}
+                                                >{`${item.subjectCode} ${item.shortNameEng}`}</p>
+                                                <p className="text-xs text-gray-800">
+                                                    {item.credit}
+                                                </p>
                                             </a>
-                                        );
-                                    }
-                                )
+                                            <Tooltip id={`tooltip-bottom-${item.subjectId}-${item.section}`} place="bottom">
+                                                <p className="text-sm">{`${item.subjectCode} ${item.shortNameEng}`}</p>
+                                                <p className="text-sm">{`${item.credit} ตอน ${item.section} `}</p>
+                                                <p className="text-sm">{`ห้อง ${item?.roomName ? item.roomName : "-"}`}</p>
+                                            </Tooltip>
+                                        </>
+                                    );
+                                })
                             ) : (
                                 <></>
                             )}
@@ -267,10 +257,7 @@ export default function TimeTable(prop: any) {
                     ))}
                 </div>
                 <div className="relative" id="classTableParent">
-                    <table
-                        className="border-collapse rounded-lg"
-                        id="classTable"
-                    >
+                    <table className="border-collapse rounded-lg" id="classTable">
                         <thead className="text-left">
                             <tr>
                                 <th
@@ -279,16 +266,14 @@ export default function TimeTable(prop: any) {
                                 >
                                     วัน/เวลาเรียน
                                 </th>
-                                {[...Array(maxTime - minTime + 1)].map(
-                                    (x, i) => (
-                                        <th
-                                            key={i}
-                                            className="min-w-[120px] pl-2 p-5 border border-slate-300"
-                                        >
-                                            {("0" + (minTime + i)).slice(-2)}:00
-                                        </th>
-                                    )
-                                )}
+                                {[...Array(maxTime - minTime + 1)].map((x, i) => (
+                                    <th
+                                        key={i}
+                                        className="min-w-[120px] pl-2 p-5 border border-slate-300"
+                                    >
+                                        {("0" + (minTime + i)).slice(-2)}:00
+                                    </th>
+                                ))}
                             </tr>
                         </thead>
                         <tbody className="text-center">
@@ -297,23 +282,17 @@ export default function TimeTable(prop: any) {
                                     <th
                                         className="min-w-[120px] p-5 border border-slate-300"
                                         style={{
-                                            height: `${
-                                                (subjectOverlap[day.shortEng] +
-                                                    1) *
-                                                66
-                                            }px`,
+                                            height: `${(subjectOverlap[day.shortEng] + 1) * 66}px`,
                                         }}
                                     >
                                         {day.day}
                                     </th>
-                                    {[...Array(maxTime - minTime + 1)].map(
-                                        (x, i) => (
-                                            <td
-                                                key={i}
-                                                className="min-w-[120px] p-5 border border-slate-300"
-                                            ></td>
-                                        )
-                                    )}
+                                    {[...Array(maxTime - minTime + 1)].map((x, i) => (
+                                        <td
+                                            key={i}
+                                            className="min-w-[120px] p-5 border border-slate-300"
+                                        ></td>
+                                    ))}
                                 </tr>
                             ))}
                         </tbody>

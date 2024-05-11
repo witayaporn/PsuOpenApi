@@ -50,9 +50,7 @@ export default function SubjectSearchPage() {
             .then((json) => {
                 const data = json.data;
                 const filteredData = filterFac.length
-                    ? data.filter((course: any) =>
-                          filterFac.includes(course.facId)
-                      )
+                    ? data.filter((course: any) => filterFac.includes(course.facId))
                     : data;
                 setCourseData(filteredData);
             });
@@ -115,15 +113,10 @@ export default function SubjectSearchPage() {
             <div className="grid grid-rows-1 gap-4 mb-4">
                 <div className="grid grid-cols-1 gap-y-4">
                     <div>
-                        <p className="text-4xl font-bold text-right">
-                            Subject Search
-                        </p>
+                        <p className="text-4xl font-bold text-right">Subject Search</p>
                     </div>
                     <div>
-                        <SearchBar
-                            onSubmit={handleSubmit}
-                            onChange={handleSearchChange}
-                        />
+                        <SearchBar onSubmit={handleSubmit} onChange={handleSearchChange} />
                     </div>
                     <div className="flex justify-end space-x-2">
                         <div className="col-span-8 flex space-x-2 overflow-x-hidden"></div>
@@ -191,23 +184,14 @@ export default function SubjectSearchPage() {
                                                     <div className="items-start justify-between overflow-hidden p-5 border-b border-solid rounded-t">
                                                         <div className="col-span-9 flex flex-wrap space-x-2 space-y-1">
                                                             {selectFaculty.map(
-                                                                (
-                                                                    fac: any,
-                                                                    key: number
-                                                                ) => (
-                                                                    <div
-                                                                        key={
-                                                                            key
-                                                                        }
-                                                                    >
+                                                                (fac: any, key: number) => (
+                                                                    <div key={key}>
                                                                         <input
                                                                             type="checkbox"
                                                                             id={`${fac.facNameThai}-${key}`}
                                                                             value={`${fac.facNameThai}`}
                                                                             className="hidden peer"
-                                                                            onClick={(
-                                                                                e
-                                                                            ) =>
+                                                                            onClick={(e) =>
                                                                                 handleFilterClick(
                                                                                     e,
                                                                                     "deselect"
@@ -222,9 +206,7 @@ export default function SubjectSearchPage() {
                                                                                 borderColor: `${fac.primaryColor}`,
                                                                             }}
                                                                         >
-                                                                            {
-                                                                                fac.facNameThai
-                                                                            }
+                                                                            {fac.facNameThai}
                                                                         </label>
                                                                     </div>
                                                                 )
@@ -234,19 +216,14 @@ export default function SubjectSearchPage() {
                                                     <div className="items-start justify-between overflow-hidden p-5 border-b border-solid rounded-t">
                                                         <div className="col-span-9 flex flex-wrap space-x-2 space-y-1">
                                                             {faculty.map(
-                                                                (
-                                                                    fac: any,
-                                                                    key: number
-                                                                ) => (
+                                                                (fac: any, key: number) => (
                                                                     <div>
                                                                         <input
                                                                             type="checkbox"
                                                                             id={`${fac.facNameThai}-${key}`}
                                                                             value={`${fac.facNameThai}`}
                                                                             className="hidden peer"
-                                                                            onClick={(
-                                                                                e
-                                                                            ) =>
+                                                                            onClick={(e) =>
                                                                                 handleFilterClick(
                                                                                     e,
                                                                                     "select"
@@ -261,9 +238,7 @@ export default function SubjectSearchPage() {
                                                                                 borderColor: `${fac.primaryColor}`,
                                                                             }}
                                                                         >
-                                                                            {
-                                                                                fac.facNameThai
-                                                                            }
+                                                                            {fac.facNameThai}
                                                                         </label>
                                                                     </div>
                                                                 )
@@ -274,11 +249,7 @@ export default function SubjectSearchPage() {
                                                         <button
                                                             className=" text-red-500 p-4 rounded-lg font-bold uppercase text-sm outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                                                             type="button"
-                                                            onClick={() =>
-                                                                setShowModal(
-                                                                    !showModal
-                                                                )
-                                                            }
+                                                            onClick={() => setShowModal(!showModal)}
                                                         >
                                                             Close
                                                         </button>
@@ -296,9 +267,7 @@ export default function SubjectSearchPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-20">
                 {courseData ? (
-                    courseData.map((course, key) => (
-                        <SubjectCard key={key} data={course} />
-                    ))
+                    courseData.map((course, key) => <SubjectCard key={key} data={course} />)
                 ) : (
                     <p>ไม่มีข้อมูล</p>
                 )}
