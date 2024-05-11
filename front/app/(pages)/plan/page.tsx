@@ -4,8 +4,12 @@ import SelectableSectionCard from "./selectableSubjectCard";
 import TimeTable from "./timeTable";
 import { timeFormatter, dateToTHstr, checkDateTimeOverlap } from "@/app/utils/timeUtils";
 import mockup from "@/public/interest-card-mock.json";
+import { useSession } from "next-auth/react";
+import { AnimatePresence } from "framer-motion";
+import ProtectPageModel from "@/app/components/protectPageModal";
 
 export default function PlanPage() {
+    const { status } = useSession();
     const [classDate, setClassDate] = useState<any[]>([]);
     const [midExamDate, setMidExamDate] = useState<any[]>([]);
     const [finalExamDate, setFinalExamDate] = useState<any[]>([]);
@@ -29,60 +33,62 @@ export default function PlanPage() {
 
     useEffect(() => {
         const userData = JSON.parse(sessionStorage.getItem("userData"));
-        fetch(`http://localhost:8000/student/${userData.studentId}?term=${2}&year=${2563}`, {
-            method: "GET",
-            // cache: 'cache',
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                data.map((subject: any) => {
-                    fetch(
-                        `https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}/?section=${subject.section}&offset=0&limit=100`,
-                        {
-                            method: "GET",
-                            cache: "force-cache",
-                            headers: {
-                                credential: process.env.NEXT_PUBLIC_API_KEY,
-                            },
-                        }
-                    )
-                        .then((res) => res.json())
-                        .then((data) =>
-                            data.data
-                                ? setClassDate((classDate) => [...classDate, data.data])
-                                : null
-                        );
+        if (userData != null && status == "authenticated") {
+            fetch(`http://localhost:8000/student/${userData.studentId}?term=${2}&year=${2563}`, {
+                method: "GET",
+                // cache: 'cache',
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    data.map((subject: any) => {
+                        fetch(
+                            `https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}/?section=${subject.section}&offset=0&limit=100`,
+                            {
+                                method: "GET",
+                                cache: "force-cache",
+                                headers: {
+                                    credential: process.env.NEXT_PUBLIC_API_KEY,
+                                },
+                            }
+                        )
+                            .then((res) => res.json())
+                            .then((data) =>
+                                data.data
+                                    ? setClassDate((classDate) => [...classDate, data.data])
+                                    : null
+                            );
 
-                    fetch(
-                        `https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}?section=&offset=0&limit=100`,
-                        {
-                            method: "GET",
-                            cache: "force-cache",
-                            headers: {
-                                credential: process.env.NEXT_PUBLIC_API_KEY,
-                            },
-                        }
-                    )
-                        .then((res) => res.json())
-                        .then((data) => {
-                            const mid = data.data?.filter(
-                                (subject: any) => subject.examdateType == "M"
-                            );
-                            const final = data.data?.filter(
-                                (subject: any) => subject.examdateType == "F"
-                            );
-                            setMidExamDate((midExamDate) => [...midExamDate, mid]);
-                            setFinalExamDate((finalExamDate) => [...finalExamDate, final]);
-                        });
+                        fetch(
+                            `https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}?section=&offset=0&limit=100`,
+                            {
+                                method: "GET",
+                                cache: "force-cache",
+                                headers: {
+                                    credential: process.env.NEXT_PUBLIC_API_KEY,
+                                },
+                            }
+                        )
+                            .then((res) => res.json())
+                            .then((data) => {
+                                const mid = data.data?.filter(
+                                    (subject: any) => subject.examdateType == "M"
+                                );
+                                const final = data.data?.filter(
+                                    (subject: any) => subject.examdateType == "F"
+                                );
+                                setMidExamDate((midExamDate) => [...midExamDate, mid]);
+                                setFinalExamDate((finalExamDate) => [...finalExamDate, final]);
+                            });
+                    });
                 });
-            });
+        }
     }, []);
 
     return (
         <section>
             <div className="grid grid-cols-1 gap-5">
                 <div className="grid grid-cols-1 gap-4">
-                    <p className="text-4xl font-bold text-right">Your Plan</p>
+                    <p className="text-4xl font-bold text-right">วางเเผนตารางเรียน</p>
                 </div>
                 <div>
                     <TimeTable data={selectSubject} />
@@ -203,7 +209,9 @@ export default function PlanPage() {
                     </div>
                 </div>
             </div>
-            <div></div>
+            <AnimatePresence>
+                {status == "unauthenticated" ? <ProtectPageModel /> : null}
+            </AnimatePresence>
         </section>
     );
 }

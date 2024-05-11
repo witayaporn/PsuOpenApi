@@ -1,7 +1,7 @@
 "use client";
 
 import { Player } from "@lottiefiles/react-lottie-player";
-import planningAnimation from "@/public/planning.json";
+import planningAnimation from "@/public/svg-animation/planning.json";
 import { signIn } from "next-auth/react";
 export default function LoginPage() {
     return (
