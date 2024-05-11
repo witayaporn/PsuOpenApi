@@ -3,7 +3,7 @@ services:
   web-ser:
     container_name: web-ser
     build: .
-    command: uvicorn app:app --host 0.0.0.0 --reload
+    command: gunicorn --bind=0.0.0.0 --workers=4 --worker-class=uvicorn.workers.UvicornH11Worker app:app
     ports:
       - 127.0.0.1:8000:8000
     networks:
