@@ -83,12 +83,11 @@ export default function SubjectCard(prop: any) {
         )
             .then((res) => res.json())
             .then((stat) => {
-                console.log(subjectStat);
                 if (stat.length) {
                     var labels: string[] = [];
                     const datasets = stat.map((data: any) => {
                         console.log(data);
-                        const label = data._id;
+                        const label = "ตอน " + data._id;
                         const dataset = data.summary.map((item: any) => {
                             labels.includes(item.studentFaculty)
                                 ? null
@@ -227,7 +226,6 @@ export default function SubjectCard(prop: any) {
                                         <p className="inline-flex py-1 px-2 mx-2 md:mt-2 md:m-0 text-black text-xs bg-gray-100 border-gray-400 rounded-lg">
                                             {data.subjectTypeDesc}
                                         </p>
-                                        <p>{data.subjectId}</p>
                                     </div>
                                     <div className="relative px-5 grid grid-cols-1 gap-y-2">
                                         <div className="flex-auto">
@@ -246,7 +244,7 @@ export default function SubjectCard(prop: any) {
                                         <div>
                                             <p className="font-bold">คำอธิบายรายวิชา</p>
                                             <p className="text-gray-900 text-sm leading-relaxed">
-                                                {/* {console.log(courseDetail)} */}
+                                                {console.log(courseSection)}
                                             </p>
                                         </div>
                                         <div>

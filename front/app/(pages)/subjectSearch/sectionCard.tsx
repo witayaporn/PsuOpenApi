@@ -10,7 +10,7 @@ export default function SectionCard(prop: any) {
     const midExam = examData ? examData.filter((data: any) => data.examdateType == "M")[0] : null;
     const finalExam = examData ? examData.filter((data: any) => data.examdateType == "F")[0] : null;
     const noInterest = statData.length ? statData[0].totalCount : 0;
-    const percentage = noInterest ? (data.noOffer / noInterest) * 100 : 100;
+    const percentage = noInterest ? (data.noOffer + 1 / noInterest) * 100 : 100;
 
     const [isInterest, setIsInterest] = useState<any>();
     // const [studentInterest, setStudentInterest] = useState()
@@ -91,12 +91,14 @@ export default function SectionCard(prop: any) {
     }, []);
     return (
         <div className="w-full p-4 grid grid-cols-1 gap-3 rounded-lg bg-slate-200 ">
-            <div className="grid grid-cols-2 ">
+            <div className="flex justify-between">
                 {/* {console.log(studentInterest)} */}
                 {/* {console.log(isInterest)} */}
                 {console.log(statData)}
-                <p className="font-bold text-sm text-gray-800">ตอน {data.section}</p>
-                <p className="text-sm text-right text-gray-800">
+                <p className="font-bold text-md text-gray-800">ตอน {data.section}</p>
+                <p className="text-sm text-right bg-white p-2 border rounded-lg"
+                    style={{color: `hsl(${percentage > 100 ? 100.0 : percentage.toFixed(2)}, 70%, 40%)`}}
+                >
                     โอกาส {percentage > 100 ? 100.0 : percentage.toFixed(2)} %
                 </p>
             </div>

@@ -27,7 +27,7 @@ export default function MapSearchPage() {
                 <div className="grid grid-cols-1 gap-4">
                     <div>
                         <p className="text-4xl font-bold text-right">
-                            Building/Room Search
+                            เเผนที่เเละอาคาร
                         </p>
                     </div>
                     <SearchBar

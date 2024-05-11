@@ -23,7 +23,6 @@ export default function DetailCard(prop: any) {
                         {buildingDetail.facDetail.website}
                     </a>
                 </div>
-                <p>Id {buildingDetail["@id"]}</p>
             </div>
         </div>
     );

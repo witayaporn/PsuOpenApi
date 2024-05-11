@@ -113,7 +113,7 @@ export default function SubjectSearchPage() {
             <div className="grid grid-rows-1 gap-4 mb-4">
                 <div className="grid grid-cols-1 gap-y-4">
                     <div>
-                        <p className="text-4xl font-bold text-right">Subject Search</p>
+                        <p className="text-4xl font-bold text-right">ค้นหารายวิชา</p>
                     </div>
                     <div>
                         <SearchBar onSubmit={handleSubmit} onChange={handleSearchChange} />

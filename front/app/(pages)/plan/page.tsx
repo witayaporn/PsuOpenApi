@@ -82,7 +82,7 @@ export default function PlanPage() {
                     });
                 });
         }
-    }, []);
+    }, [status]);
 
     return (
         <section>
