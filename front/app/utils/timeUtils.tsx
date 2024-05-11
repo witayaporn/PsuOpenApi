@@ -45,10 +45,7 @@ const checkDateTimeOverlap = (
     sStartT: string,
     sStopT: string
 ) => {
-    return (
-        firstDate == secondDate &&
-        checkTimeOverlap(fStartT, fStopT, sStartT, sStopT)
-    );
+    return firstDate == secondDate && checkTimeOverlap(fStartT, fStopT, sStartT, sStopT);
 };
 
 export { timeFormatter, dateToTHstr, checkTimeOverlap, checkDateTimeOverlap };

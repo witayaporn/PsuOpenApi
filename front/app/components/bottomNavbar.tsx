@@ -9,10 +9,7 @@ export default function BottomNavbar() {
                     href="/home"
                     className="inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:bg-gray-200"
                     style={{
-                        color:
-                            router == "/home"
-                                ? "rgb(23 37 84)"
-                                : "rgb(156 169 175)",
+                        color: router == "/home" ? "rgb(23 37 84)" : "rgb(156 169 175)",
                     }}
                 >
                     <svg
@@ -29,10 +26,7 @@ export default function BottomNavbar() {
                     href="/subjectSearch"
                     className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-200"
                     style={{
-                        color:
-                            router == "/subjectSearch"
-                                ? "rgb(23 37 84)"
-                                : "rgb(156 169 175)",
+                        color: router == "/subjectSearch" ? "rgb(23 37 84)" : "rgb(156 169 175)",
                     }}
                 >
                     <svg
@@ -53,10 +47,7 @@ export default function BottomNavbar() {
                     href="/mapSearch"
                     className="inline-flex flex-col text-blue-950 items-center justify-center px-5 hover:bg-gray-200"
                     style={{
-                        color:
-                            router == "/mapSearch"
-                                ? "rgb(23 37 84)"
-                                : "rgb(156 169 175)",
+                        color: router == "/mapSearch" ? "rgb(23 37 84)" : "rgb(156 169 175)",
                     }}
                 >
                     <svg
@@ -76,10 +67,7 @@ export default function BottomNavbar() {
                     href="/plan"
                     className="inline-flex flex-col text-blue-950 items-center justify-center px-5 rounded-r-full hover:bg-gray-200"
                     style={{
-                        color:
-                            router == "/plan"
-                                ? "rgb(23 37 84)"
-                                : "rgb(156 169 175)",
+                        color: router == "/plan" ? "rgb(23 37 84)" : "rgb(156 169 175)",
                     }}
                 >
                     <svg

@@ -6,17 +6,13 @@ export default function SectionCard(prop: any) {
     const data = prop.data[0];
     const dateData = prop.data[1];
     const examData = prop.data[2];
-    const studentInData = prop.data[3];
-    const midExam = examData
-        ? examData.filter((data: any) => data.examdateType == "M")[0]
-        : null;
-    const finalExam = examData
-        ? examData.filter((data: any) => data.examdateType == "F")[0]
-        : null;
-    const noInterest: number = 143;
-    const percentage: number = (data.noOffer / noInterest) * 100;
+    const statData = prop.data[3];
+    const midExam = examData ? examData.filter((data: any) => data.examdateType == "M")[0] : null;
+    const finalExam = examData ? examData.filter((data: any) => data.examdateType == "F")[0] : null;
+    const noInterest = statData.length ? statData[0].totalCount : 0;
+    const percentage = noInterest ? (data.noOffer / noInterest) * 100 : 100;
 
-    const [isInterest, setIsInterest] = useState<any>({});
+    const [isInterest, setIsInterest] = useState<any>();
     // const [studentInterest, setStudentInterest] = useState()
     const { status } = useSession();
 
@@ -51,17 +47,14 @@ export default function SectionCard(prop: any) {
     const handleRemoveInterestClick = () => {
         console.log(isInterest);
         try {
-            fetch(
-                `http://localhost:8000/student/deleteSubjectInterest/${isInterest?._id}`,
-                {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: {
-                        Accept: "*/*",
-                        "Content-Type": "application/json",
-                    },
-                }
-            ).then((res) => {
+            fetch(`http://localhost:8000/student/deleteSubjectInterest/${isInterest?._id}`, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    Accept: "*/*",
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
                 setIsInterest(null);
                 prop.setShareStage(!prop.shareStage);
             });
@@ -71,6 +64,7 @@ export default function SectionCard(prop: any) {
     };
 
     useEffect(() => {
+        console.log(statData);
         const userData = JSON.parse(sessionStorage.getItem("userData"));
         console.log(userData);
         userData
@@ -90,26 +84,20 @@ export default function SectionCard(prop: any) {
                               item.year == data.eduYear &&
                               item.term == data.eduTerm
                       );
-                      setIsInterest(
-                          isInInterest.length ? isInInterest[0] : null
-                      );
+                      setIsInterest(isInInterest.length ? isInInterest[0] : null);
                       // setStudentInterest(data)
                   })
             : null;
-        // console.log(studentInData)
-        // const isInterest = studentInData.filter((item: any) => item.subjectId == data.subjectId && item.section == data.section && item.year == data.eduYear && item.term == data.eduTerm)
-        // setIsInterest(isInterest.length ? isInterest[0] : null)
     }, []);
     return (
         <div className="w-full p-4 grid grid-cols-1 gap-3 rounded-lg bg-slate-200 ">
             <div className="grid grid-cols-2 ">
                 {/* {console.log(studentInterest)} */}
                 {/* {console.log(isInterest)} */}
-                <p className="font-bold text-sm text-gray-800">
-                    ตอน {data.section}
-                </p>
+                {console.log(statData)}
+                <p className="font-bold text-sm text-gray-800">ตอน {data.section}</p>
                 <p className="text-sm text-right text-gray-800">
-                    โอกาส {percentage.toFixed(2)} %
+                    โอกาส {percentage > 100 ? 100.0 : percentage.toFixed(2)} %
                 </p>
             </div>
             <div>
@@ -142,9 +130,7 @@ export default function SectionCard(prop: any) {
                                   </p>
                                   {date.roomName ? (
                                       <p className="block md:inline-flex p-1">
-                                          <p className="py-1 md:mr-3">
-                                              {date.roomName}
-                                          </p>
+                                          <p className="py-1 md:mr-3">{date.roomName}</p>
                                           <a
                                               className="inline-flex py-1 px-2 bg-gray-300 w-fit h-fit rounded-lg"
                                               href={`/mapSearch/?search=${date.roomName}`}
@@ -187,22 +173,18 @@ export default function SectionCard(prop: any) {
                     {midExam ? (
                         <p className="p-1">{`${dateToTHstr(
                             midExam.examDate.slice(0, 10)
-                        )} เวลา ${timeFormatter(
-                            midExam.examStartTime
-                        )} - ${timeFormatter(midExam.examStopTime)} ห้อง ${
-                            midExam.roomName ? midExam.roomName : "-"
-                        }`}</p>
+                        )} เวลา ${timeFormatter(midExam.examStartTime)} - ${timeFormatter(
+                            midExam.examStopTime
+                        )} ห้อง ${midExam.roomName ? midExam.roomName : "-"}`}</p>
                     ) : (
                         <p>-</p>
                     )}
                     {finalExam ? (
                         <p className="p-1">{`${dateToTHstr(
                             finalExam.examDate.slice(0, 10)
-                        )} เวลา ${timeFormatter(
-                            finalExam.examStartTime
-                        )} - ${timeFormatter(finalExam.examStopTime)} ห้อง ${
-                            finalExam.roomName ? finalExam.roomName : "-"
-                        }`}</p>
+                        )} เวลา ${timeFormatter(finalExam.examStartTime)} - ${timeFormatter(
+                            finalExam.examStopTime
+                        )} ห้อง ${finalExam.roomName ? finalExam.roomName : "-"}`}</p>
                     ) : (
                         <p>-</p>
                     )}

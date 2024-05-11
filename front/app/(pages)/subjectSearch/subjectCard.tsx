@@ -5,6 +5,7 @@ import facultyData from "@/public/faculty-data.json";
 import { AnimatePresence, motion } from "framer-motion";
 import BarChart from "./barChart";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ChartData } from "chart.js";
 
 export default function SubjectCard(prop: any) {
     const data = prop.data;
@@ -17,9 +18,13 @@ export default function SubjectCard(prop: any) {
     const [examDate, setExamDate] = useState<any[]>([]);
     const [courseSection, setCourseSection] = useState<any[]>([]);
     const [sectionDate, setSectionDate] = useState<any[]>([]);
-    // const [subjectStat, setSubjectStat] = useState({ 'labels': [], 'datasets': [] })
+    const [subjectStatSerialize, setSubjectStatSerialize] = useState<ChartData>({
+        labels: [],
+        datasets: [],
+    });
+    const [subjectStat, setSubjectStat] = useState<any[]>([]);
     const [shareStage, setShareStage] = useState<boolean>(false);
-    // const [studentInterest, setStudentInterest] = useState([])
+    const [studentInterest, setStudentInterest] = useState<any[]>([]);
 
     const fetchSectionOffer = () => {
         fetch(
@@ -66,54 +71,61 @@ export default function SubjectCard(prop: any) {
             .then((data) => setExamDate(data.data));
     };
 
-    // const fetchSubjectStat = () => {
-    //     fetch(`http://localhost:8000/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'accept': 'application/json'
-    //         }
-    //     })
-    //         .then((res) => res.json())
-    //         .then((stat) => {
-    //             console.log(subjectStat)
-    //             if (stat.length) {
-    //                 var labels: string[] = []
-    //                 const datasets = stat.map((data: any) => {
-    //                     console.log(data)
-    //                     const label = data._id
-    //                     const dataset = data.summary.map((item: any) => {
-    //                         labels.includes(item.studentFaculty) ? null : labels.push(item.studentFaculty)
-    //                         return { 'x': item.studentFaculty, 'y': item.count }
-    //                     })
-    //                     return { 'data': dataset, 'label': label }
-    //                 })
-    //                 setSubjectStat({ 'labels': labels, 'datasets': datasets })
-    //             } else {
-    //                 setSubjectStat({ 'labels': [], 'datasets': [] })
-    //             }
-    //         })
-    // }
+    const fetchSubjectStat = () => {
+        fetch(
+            `http://localhost:8000/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`,
+            {
+                method: "GET",
+                headers: {
+                    accept: "application/json",
+                },
+            }
+        )
+            .then((res) => res.json())
+            .then((stat) => {
+                console.log(subjectStat);
+                if (stat.length) {
+                    var labels: string[] = [];
+                    const datasets = stat.map((data: any) => {
+                        console.log(data);
+                        const label = data._id;
+                        const dataset = data.summary.map((item: any) => {
+                            labels.includes(item.studentFaculty)
+                                ? null
+                                : labels.push(item.studentFaculty);
+                            return { x: item.studentFaculty, y: item.count };
+                        });
+                        return { data: dataset, label: label };
+                    });
+                    setSubjectStat(stat);
+                    setSubjectStatSerialize({ labels: labels, datasets: datasets });
+                } else {
+                    setSubjectStatSerialize({ labels: [], datasets: [] });
+                }
+            });
+    };
 
     // const fetchStudentInterest = () => {
-    //     const userData = JSON.parse(sessionStorage.getItem("userData"))
-    //     console.log(userData)
-    //     userData ?
-    //         fetch(`http://localhost:8000/student/${userData.studentId}`, {
-    //             method: 'GET',
-    //             headers: {
-    //                 'accept': 'application/json'
-    //             }
-    //         })
-    //             .then((res) => res.json())
-    //             .then((studentIn) => {
-    //                 // console.log(studentIn.filter((item: any) => console.log(studentIn)))
-    //                 setStudentInterest(studentIn)
-    //                 // const isInInterest = studentIn.filter((item: any) => item.subjectId == data.subjectId && item.section == data.section && item.year == data.eduYear && item.term == data.eduTerm)
-    //                 // setIsInterest(isInInterest.length ? isInInterest[0] : null)
-    //                 // setStudentInterest(data)
-    //             })
-    //         : null
-    // }
+    //     const userData = JSON.parse(sessionStorage.getItem("userData"));
+    //     console.log(userData);
+    //     userData
+    //         ? fetch(`http://localhost:8000/student/${userData.studentId}`, {
+    //               method: "GET",
+    //               cache: "only-if-cached",
+    //               headers: {
+    //                   accept: "application/json",
+    //               },
+    //           })
+    //               .then((res) => res.json())
+    //               .then((studentIn) => {
+    //                   // console.log(studentIn.filter((item: any) => console.log(studentIn)))
+    //                   setStudentInterest(studentIn);
+    //                   // const isInInterest = studentIn.filter((item: any) => item.subjectId == data.subjectId && item.section == data.section && item.year == data.eduYear && item.term == data.eduTerm)
+    //                   // setIsInterest(isInInterest.length ? isInInterest[0] : null)
+    //                   // setStudentInterest(data)
+    //               })
+    //         : null;
+    // };
 
     const handleCardClick = () => {
         const html = document.getElementsByTagName("html")[0];
@@ -123,7 +135,7 @@ export default function SubjectCard(prop: any) {
                     fetchSectionOffer(),
                     fetchSectionClassDate(),
                     fetchSectionExamDate(),
-                    // fetchSubjectStat(),
+                    fetchSubjectStat(),
                 ]);
             } catch (e) {
                 console.error(e);
@@ -164,15 +176,9 @@ export default function SubjectCard(prop: any) {
                 onClick={handleCardClick}
             >
                 <div className="p-4 h-full bg-white rounded-r-md">
-                    <p className="font-bold text-green-950">
-                        {subjectShortNameEN}
-                    </p>
-                    <p className="text-gray-700 truncate max-h-6">
-                        {data.subjectNameThai}
-                    </p>
-                    <p className="text-gray-500 inline md:block">
-                        {data.credit}
-                    </p>
+                    <p className="font-bold text-green-950">{subjectShortNameEN}</p>
+                    <p className="text-gray-700 truncate max-h-6">{data.subjectNameThai}</p>
+                    <p className="text-gray-500 inline md:block">{data.credit}</p>
                     <p className="inline-flex py-1 px-2 mx-2 md:mt-2 md:m-0 text-black text-xs bg-gray-100 border-gray-400 rounded-lg">
                         {data.subjectTypeDesc}
                     </p>
@@ -214,9 +220,7 @@ export default function SubjectCard(prop: any) {
                                         <p className="font-bold text-lg text-green-950">
                                             {subjectNameEN}
                                         </p>
-                                        <p className="text-gray-700">
-                                            {data.subjectNameThai}
-                                        </p>
+                                        <p className="text-gray-700">{data.subjectNameThai}</p>
                                         <p className="text-gray-500 inline md:block">
                                             {data.credit}
                                         </p>
@@ -227,16 +231,10 @@ export default function SubjectCard(prop: any) {
                                     </div>
                                     <div className="relative px-5 grid grid-cols-1 gap-y-2">
                                         <div className="flex-auto">
-                                            <p className="font-bold">
-                                                รายละเอียด
-                                            </p>
+                                            <p className="font-bold">รายละเอียด</p>
                                             <div className="grid grid-cols-2 sm:grid-cols-4 text-sm">
                                                 <p>ภาคการศึกษา</p>
-                                                <p>
-                                                    {data.eduTerm +
-                                                        "/" +
-                                                        data.eduYear}
-                                                </p>
+                                                <p>{data.eduTerm + "/" + data.eduYear}</p>
                                                 <p>ภาควิชา</p>
                                                 <p>{data.deptNameThai}</p>
                                                 <p>คณะ</p>
@@ -246,20 +244,16 @@ export default function SubjectCard(prop: any) {
                                             </div>
                                         </div>
                                         <div>
-                                            <p className="font-bold">
-                                                คำอธิบายรายวิชา
-                                            </p>
+                                            <p className="font-bold">คำอธิบายรายวิชา</p>
                                             <p className="text-gray-900 text-sm leading-relaxed">
                                                 {/* {console.log(courseDetail)} */}
                                             </p>
                                         </div>
                                         <div>
-                                            <p className="font-bold">
-                                                ข้อมูลจำนวนนักศึกษาที่สนใจ
-                                            </p>
+                                            <p className="font-bold">ข้อมูลจำนวนนักศึกษาที่สนใจ</p>
                                             <p className="text-gray-900 text-sm leading-relaxed">
                                                 <BarChart
-                                                    data={data}
+                                                    data={subjectStatSerialize}
                                                     shareStage={shareStage}
                                                 />
                                             </p>
@@ -268,49 +262,40 @@ export default function SubjectCard(prop: any) {
                                             {/* {console.log(sectionDate)} */}
                                             <p className="font-bold">ตอน</p>
                                             {courseSection
-                                                ? courseSection.map(
-                                                      (
-                                                          section: any,
-                                                          key: number
-                                                      ) => {
-                                                          const dateData =
-                                                              sectionDate
-                                                                  ? sectionDate.filter(
-                                                                        (
-                                                                            data: any
-                                                                        ) =>
-                                                                            data.section ==
-                                                                            section.section
-                                                                    )
-                                                                  : sectionDate;
-                                                          const examData =
-                                                              examDate
-                                                                  ? examDate.filter(
-                                                                        (
-                                                                            data: any
-                                                                        ) =>
-                                                                            data.section ==
-                                                                            section.section
-                                                                    )
-                                                                  : examDate;
-                                                          return (
-                                                              <SectionCard
-                                                                  key={key}
-                                                                  data={[
-                                                                      section,
-                                                                      dateData,
-                                                                      examData,
-                                                                  ]}
-                                                                  setShareStage={
-                                                                      setShareStage
-                                                                  }
-                                                                  shareStage={
-                                                                      shareStage
-                                                                  }
-                                                              />
-                                                          );
-                                                      }
-                                                  )
+                                                ? courseSection.map((section: any, key: number) => {
+                                                      const dateData = sectionDate
+                                                          ? sectionDate.filter(
+                                                                (data: any) =>
+                                                                    data.section == section.section
+                                                            )
+                                                          : sectionDate;
+                                                      const examData = examDate
+                                                          ? examDate.filter(
+                                                                (data: any) =>
+                                                                    data.section == section.section
+                                                            )
+                                                          : examDate;
+                                                      console.log(section.section);
+                                                      const statData = subjectStat
+                                                          ? subjectStat.filter(
+                                                                (data: any) =>
+                                                                    data?._id == section.section
+                                                            )
+                                                          : {};
+                                                      return (
+                                                          <SectionCard
+                                                              key={key}
+                                                              data={[
+                                                                  section,
+                                                                  dateData,
+                                                                  examData,
+                                                                  statData,
+                                                              ]}
+                                                              setShareStage={setShareStage}
+                                                              shareStage={shareStage}
+                                                          />
+                                                      );
+                                                  })
                                                 : "ไม่มีข้อมูล"}
                                         </div>
                                     </div>

@@ -6,26 +6,30 @@ import { useEffect, useState } from "react";
 
 export default function HeadNavbar() {
     const router = usePathname();
-    const [userData, setUserData] = useState();
+    const [userData, setUserData] = useState<any>();
+    const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false);
+    const [studentImg, setStudentImg] = useState<any>();
     const { data: session, status } = useSession();
+
+    const handleSignOut = () => {
+        sessionStorage.removeItem("userData");
+        if (sessionStorage.getItem("userData") == null) {
+            signOut();
+        }
+    };
+
     useEffect(() => {
         console.log(status);
-        if (
-            sessionStorage.getItem("userData") === null &&
-            status == "authenticated"
-        ) {
+        if (sessionStorage.getItem("userData") == null && status == "authenticated") {
             console.log("reload user data");
-            fetch(
-                "https://api-gateway.psu.ac.th/Test/regist/level2/StudentDetailCampus/01/token",
-                {
-                    method: "GET",
-                    cache: "force-cache",
-                    headers: {
-                        credential: process.env.NEXT_PUBLIC_API_KEY,
-                        token: session?.accessToken,
-                    },
-                }
-            )
+            fetch("https://api-gateway.psu.ac.th/Test/regist/level2/StudentDetailCampus/01/token", {
+                method: "GET",
+                cache: "force-cache",
+                headers: {
+                    credential: process.env.NEXT_PUBLIC_API_KEY,
+                    token: session?.accessToken,
+                },
+            })
                 .then((res) => res.json())
                 .then((json) => {
                     if (json.data) {
@@ -40,33 +44,38 @@ export default function HeadNavbar() {
                             majorNameEng: json.data[0]?.majorNameEng,
                             majorNameThai: json.data[0]?.majorNameThai,
                         };
-                        sessionStorage.setItem(
-                            "userData",
-                            JSON.stringify(userData)
-                        );
+                        sessionStorage.setItem("userData", JSON.stringify(userData));
                     }
                 });
+
+            fetch("https://api-gateway.psu.ac.th/Test/regist/level2/StudentImage/token/string", {
+                method: "GET",
+                cache: "force-cache",
+                headers: {
+                    credential: process.env.NEXT_PUBLIC_API_KEY,
+                    token: session?.accessToken,
+                },
+            })
+                .then((res) => res.text())
+                .then((image) => sessionStorage.setItem("userImg", image?.replace(/[""]+/g, "")));
         } else {
             setUserData(JSON.parse(sessionStorage.getItem("userData")));
+            setStudentImg(sessionStorage.getItem("userImg"));
         }
-    }, [status]);
+    }, [status, session]);
     return (
         <nav className="bg-white border-b-4 border-blue-900 shadow-md fixed w-full top-0 start-0 z-[9999]">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <div className="flex space-x-1">
                     <a href="/home" className="flex items-center mr-4">
-                        <img
-                            src="/logo/psu-guide-logo.svg"
-                            className="h-12"
-                            alt="PSU GUIDE Logo"
-                        />
+                        <img src="/logo/psu-guide-logo.svg" className="h-12" alt="PSU GUIDE Logo" />
                     </a>
+                    {console.log(studentImg)}
                     <a
                         href="/home"
-                        className="hidden lg:flex text-blue-950 px-3 items-center space-x-2 rounded-lg hover:bg-gray-200"
+                        className="hidden xl:flex text-blue-950 px-3 items-center space-x-2 rounded-lg hover:bg-gray-200"
                         style={{
-                            backgroundColor:
-                                router == "/home" ? "rgb(229 231 235)" : "",
+                            backgroundColor: router == "/home" ? "rgb(229 231 235)" : "",
                         }}
                     >
                         <svg
@@ -82,12 +91,9 @@ export default function HeadNavbar() {
                     </a>
                     <a
                         href="/subjectSearch"
-                        className="hidden lg:flex text-blue-950 px-3 items-center space-x-2 rounded-lg hover:bg-gray-200"
+                        className="hidden xl:flex text-blue-950 px-3 items-center space-x-2 rounded-lg hover:bg-gray-200"
                         style={{
-                            backgroundColor:
-                                router == "/subjectSearch"
-                                    ? "rgb(229 231 235)"
-                                    : "",
+                            backgroundColor: router == "/subjectSearch" ? "rgb(229 231 235)" : "",
                         }}
                     >
                         <svg
@@ -107,12 +113,9 @@ export default function HeadNavbar() {
                     </a>
                     <a
                         href="/mapSearch"
-                        className="hidden lg:flex text-blue-950 px-3 items-center space-x-2 rounded-lg hover:bg-gray-200"
+                        className="hidden xl:flex text-blue-950 px-3 items-center space-x-2 rounded-lg hover:bg-gray-200"
                         style={{
-                            backgroundColor:
-                                router == "/mapSearch"
-                                    ? "rgb(229 231 235)"
-                                    : "",
+                            backgroundColor: router == "/mapSearch" ? "rgb(229 231 235)" : "",
                         }}
                     >
                         <svg
@@ -131,10 +134,9 @@ export default function HeadNavbar() {
                     </a>
                     <a
                         href="/plan"
-                        className="hidden lg:flex text-blue-950 px-3 items-center space-x-2 rounded-lg hover:bg-gray-200"
+                        className="hidden xl:flex text-blue-950 px-3 items-center space-x-2 rounded-lg hover:bg-gray-200"
                         style={{
-                            backgroundColor:
-                                router == "/plan" ? "rgb(229 231 235)" : "",
+                            backgroundColor: router == "/plan" ? "rgb(229 231 235)" : "",
                         }}
                     >
                         <svg
@@ -154,26 +156,53 @@ export default function HeadNavbar() {
                 </div>
 
                 <div className="flex md:order-2 space-x-3 md:space-x-3 ltr:space-x-reverse">
-                    {userData ? (
+                    {status == "authenticated" && userData ? (
                         <>
-                            <p className="self-center text-lg">
-                                {userData?.studNameEng}
-                            </p>
-                            <p className="self-center text-lg">{`${userData?.studSnameEng[0]}.`}</p>
-                            <svg
-                                className="w-7 h-7"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
+                            <button
+                                className="flex items-center text-gray-800 font-bold rounded-lg border-[1px] border-gray-200"
+                                type="button"
+                                onClick={() => setIsShowDropdown(!isShowDropdown)}
                             >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                <p className="m-2 hidden md:block">
+                                    {`${userData?.studNameEng} ${userData?.studSnameEng[0]}.`}
+                                </p>
+                                <img
+                                    src={`data:image/png;base64,${studentImg}`}
+                                    className="max-w-8 rounded-md border border-gray-700"
                                 />
-                            </svg>
+                            </button>
+
+                            <div
+                                className="absolute right-2 mt-12 bg-white border border-blue-950 divide-gray-100 rounded-lg shadow w-46"
+                                style={{
+                                    display: isShowDropdown ? "block" : "none",
+                                }}
+                            >
+                                <ul
+                                    className="py-2 text-sm text-gray-700"
+                                    aria-labelledby="dropdownDefaultButton"
+                                >
+                                    <li className="block text-wrap px-4 py-2">
+                                        <p className="text-md">เข้าสู่ระบบในชื่อ</p>
+                                        <p className="text-sm font-bold mt-2">
+                                            {`${userData?.titleNameThai} ${userData?.studNameThai} ${userData?.studSnameThai}`}
+                                        </p>
+                                        <p className="text-sm font-bold">
+                                            {`รหัสนักศึกษา ${userData?.studentId}`}
+                                        </p>
+                                    </li>
+                                    <li className="border-t-2">
+                                        <button
+                                            className="block w-full px-4 py-2 text-red-400 hover:bg-red-400 hover:text-white"
+                                            type="button"
+                                            onClick={handleSignOut}
+                                        >
+                                            Sign Out
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+
                             {/* <button className="p-2 text-red-500" onClick={() => signOut()}>Log Out</button> */}
                         </>
                     ) : status == "unauthenticated" ? (
