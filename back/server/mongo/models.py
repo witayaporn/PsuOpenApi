@@ -1,6 +1,7 @@
 from typing import Annotated, Any, Callable, Optional
 from pydantic import BaseModel, Field  # type: ignore
-from pydantic_core import core_schema # type: ignore
+from pydantic_core import core_schema, PydanticOmit # type: ignore
+from pydantic.json_schema import GenerateJsonSchema, JsonSchemaValue # type: ignore
 from bson import ObjectId # type: ignore
 
 
@@ -202,3 +203,21 @@ class commentUpdate(BaseModel):
                 "verifyInfo": "test"
             }
         }
+
+class MyGenerateJsonSchema(GenerateJsonSchema):
+    def handle_invalid_for_json_schema(self, schema: core_schema.CoreSchema, error_info: str) -> JsonSchemaValue:
+        raise PydanticOmit
+
+Student.model_json_schema(mode='serialization')
+StudentUpdate.model_json_schema(mode='serialization')
+SubjectInterest.model_json_schema(mode='serialization')
+SubjectInterestUpdate.model_json_schema(mode='serialization')
+comment.model_json_schema(mode='serialization')
+commentUpdate.model_json_schema(mode='serialization')
+
+#Student.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
+#StudentUpdate.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
+#SubjectInterest.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
+#SubjectInterestUpdate.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
+#comment.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
+#commentUpdate.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
