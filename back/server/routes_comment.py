@@ -8,18 +8,18 @@ from mongo.models import comment, commentUpdate
 router_comment = APIRouter()
 
 @router_comment.get("/", response_description="List all Comment", response_model=List[comment])
-def list_comment(request: Request):
+async def list_comment(request: Request):
     comment = list(request.app.database["comment"].find())
     return comment
 
 @router_comment.get("/{subjectId}", response_description="Get a Comment by subjectId", response_model=List[comment])
-def find_comment(subjectId: int, request: Request):
+async def find_comment(subjectId: int, request: Request):
     if (comment := list(request.app.database["comment"].find({"subjectId": subjectId}))) is not None:
         return comment
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Student with ID {subjectId} not found")
 
 @router_comment.post("/", response_description="Create a new Comment", status_code=status.HTTP_201_CREATED, response_model=comment)
-def create_comment(request: Request, comment: comment = Body(...)):
+async def create_comment(request: Request, comment: comment = Body(...)):
     comment = jsonable_encoder(comment)
     new_comment = request.app.database["comment"].insert_one(comment)
     created_comment = request.app.database["comment"].find_one(
@@ -28,7 +28,7 @@ def create_comment(request: Request, comment: comment = Body(...)):
     return created_comment
 
 @router_comment.put("/{commentId}", response_description="Update a Comment", response_model=comment)
-def update_comment(commentId: int, request: Request, comment: commentUpdate = Body(...)):
+async def update_comment(commentId: int, request: Request, comment: commentUpdate = Body(...)):
     comment = {k: v for k, v in comment.dict().items() if v is not None}
     if len(comment) >= 1:
         update_result = request.app.database["comment"].update_one(
@@ -46,7 +46,7 @@ def update_comment(commentId: int, request: Request, comment: commentUpdate = Bo
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Student with ID {commentId} not found")
 
 @router_comment.delete("/{commentId}", response_description="Delete a Comment")
-def delete_comment(commentId: int, request: Request, response: Response):
+async def delete_comment(commentId: int, request: Request, response: Response):
     delete_result = request.app.database["comment"].delete_one({"commentId": commentId})
     
     if delete_result.deleted_count == 1:

@@ -8,13 +8,13 @@ from mongo.models import Student, StudentUpdate
 router_student = APIRouter()
 
 @router_student.get("/", response_description="List all Student", response_model=List[Student])
-def list_student(request: Request):
+async def list_student(request: Request):
     # print(list(request.app.database["Student"].find()))
     student = list(request.app.database["Student"].find({}))
     return student
 
 @router_student.get("/{studentId}", response_description="Get a single student by id", response_model=List[Student])
-def find_student(studentId: str, request: Request, term: str = None, year: str = None):
+async def find_student(studentId: str, request: Request, term: str = None, year: str = None):
     if (term != None and year != None):
         if (student := list(request.app.database["Student"].find({"studentId": studentId, "term": term, "year": year}))) is not None:
             return student
@@ -53,7 +53,7 @@ async def create_student(request: Request):
 #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Student with ID {studentId} not found")
 
 @router_student.post("/deleteSubjectInterest/{dataId}", response_description="Delete a student interest")
-def delete_student(dataId: str, request: Request, response: Response):
+async def delete_student(dataId: str, request: Request, response: Response):
     delete_result = request.app.database["Student"].delete_one({"_id": ObjectId(dataId)})
 
     if delete_result.deleted_count == 1:
@@ -63,7 +63,7 @@ def delete_student(dataId: str, request: Request, response: Response):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Book with ID {studentId} not found")
 
 @router_student.get("/getInterestSubject/{subjectId}", response_description="Get a student interest by subjectId, year and term", response_model=List[Student])
-def find_student(subjectId: str, request: Request, year: str = None, term: str = None):
+async def find_student(subjectId: str, request: Request, year: str = None, term: str = None):
     if (year != None or term != None):
         if (result := list(request.app.database["Student"].find({"subjectId": subjectId, "year": year, "term": term}))) is not None:
             return result
@@ -73,7 +73,7 @@ def find_student(subjectId: str, request: Request, year: str = None, term: str =
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Student with ID {subjectId} not found")
 
 @router_student.get("/getSubjectStat/{subjectId}", response_description="Get a student interest by subjectId, year and term", response_model=List)
-def find_student(subjectId: str, request: Request, year: str = None, term: str = None):
+async def find_student(subjectId: str, request: Request, year: str = None, term: str = None):
     if (year != None or term != None):
         try:
             result = request.app.database["Student"].aggregate([
