@@ -16,7 +16,6 @@ export default function SectionCard(prop: any) {
     const { status } = useSession();
 
     const handleInterestClick = () => {
-        console.log(data);
         const userData = JSON.parse(sessionStorage.getItem("userData"));
         const body = {
             studentId: userData.studentId,
@@ -26,7 +25,6 @@ export default function SectionCard(prop: any) {
             term: data.eduTerm,
             year: data.eduYear,
         };
-        console.log(JSON.stringify(body));
         try {
             fetch(`${config.apiUrlPrefix}/student/`, {
                 method: "POST",
@@ -44,7 +42,6 @@ export default function SectionCard(prop: any) {
     };
 
     const handleRemoveInterestClick = () => {
-        console.log(isInterest);
         try {
             fetch(`${config.apiUrlPrefix}/student/deleteSubjectInterest/${isInterest?._id}`, {
                 method: "POST",
@@ -63,9 +60,7 @@ export default function SectionCard(prop: any) {
     };
 
     useEffect(() => {
-        console.log(statData);
         const userData = JSON.parse(sessionStorage.getItem("userData"));
-        console.log(userData);
         userData
             ? fetch(`${config.apiUrlPrefix}/student/${userData.studentId}`, {
                   method: "GET",

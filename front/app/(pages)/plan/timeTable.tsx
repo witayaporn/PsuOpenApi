@@ -168,7 +168,6 @@ export default function TimeTable(prop: any) {
         setMaxTime(maxT);
         setMinTime(minT);
         setSubjectOverlap(tempOverlap);
-        console.log(temp);
     };
 
     useEffect(() => {
@@ -217,7 +216,7 @@ export default function TimeTable(prop: any) {
                                     });
                                     // console.log(day.day + " " + countOverlap)
                                     // console.log(weekTime[day.shortEng].slice(0, key - 1))
-                                    console.log(item)
+                                    console.log(item);
 
                                     return (
                                         <>
@@ -229,7 +228,10 @@ export default function TimeTable(prop: any) {
                                                     left: `${renderData.startRender * 120}px`,
                                                     marginTop: `${countOverlap * 66}px`,
                                                     maxWidth: `${renderData.period * 120}px`,
-                                                    backgroundColor: '#' + item.subjectCode.replace(/-/, '') + "80",
+                                                    backgroundColor:
+                                                        "#" +
+                                                        item.subjectCode.replace(/-/, "") +
+                                                        "80",
                                                 }}
                                             >
                                                 <p
@@ -242,10 +244,15 @@ export default function TimeTable(prop: any) {
                                                     {item.credit}
                                                 </p>
                                             </a>
-                                            <Tooltip id={`tooltip-bottom-${item.subjectId}-${item.section}`} place="bottom">
+                                            <Tooltip
+                                                id={`tooltip-bottom-${item.subjectId}-${item.section}`}
+                                                place="bottom"
+                                            >
                                                 <p className="text-sm">{`${item.subjectCode} ${item.shortNameEng}`}</p>
                                                 <p className="text-sm">{`${item.credit} ตอน ${item.section} `}</p>
-                                                <p className="text-sm">{`ห้อง ${item?.roomName ? item.roomName : "-"}`}</p>
+                                                <p className="text-sm">{`ห้อง ${
+                                                    item?.roomName ? item.roomName : "-"
+                                                }`}</p>
                                             </Tooltip>
                                         </>
                                     );
