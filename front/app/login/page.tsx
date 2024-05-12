@@ -24,14 +24,14 @@ export default function LoginPage() {
                     </div>
                     <button
                         type="button"
-                        className="p-4 m-auto bg-blue-900 text-white rounded-lg shadow hover:shadow-lg hover:scale-110 transition-all"
+                        className="p-4 m-auto bg-blue-900 text-white rounded-lg shadow hover:shadow-lg hover:scale-110 transition-all w-full max-w-96"
                         onClick={() =>
                             signIn("authentik", {
                                 callbackUrl: "http://localhost:3000/",
                             })
                         }
                     >
-                        Log-in with PSU
+                        <img src="/logo/PSUOauth.svg" alt="test" /> 
                     </button>
                 </div>
             </div>
