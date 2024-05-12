@@ -7,7 +7,7 @@ import facultyData from "@/public/faculty-data.json";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 
-interface TermYearJSON {
+export interface TermYearJSON {
     term: string;
     year: string;
 }

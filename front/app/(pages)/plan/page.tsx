@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import SelectableSectionCard from "./selectableSubjectCard";
 import TimeTable from "./timeTable";
 import { timeFormatter, dateToTHstr, checkDateTimeOverlap } from "@/app/utils/timeUtils";
-import mockup from "@/public/interest-card-mock.json";
+import { TermYearJSON } from "../subjectSearch/page";
 import { useSession } from "next-auth/react";
 import { AnimatePresence } from "framer-motion";
 import ProtectPageModel from "@/app/components/protectPageModal";
@@ -14,6 +14,63 @@ export default function PlanPage() {
     const [midExamDate, setMidExamDate] = useState<any[]>([]);
     const [finalExamDate, setFinalExamDate] = useState<any[]>([]);
     const [selectSubject, setSelectSubject] = useState<any[]>([]);
+    const [termYear, setTermYear] = useState<TermYearJSON>({
+        term: "2",
+        year: "2564",
+    });
+
+    const fetchStudentInterest = (userData: any) => {
+        fetch(
+            `http://localhost:8000/student/${userData.studentId}?term=${termYear.term}&year=${termYear.year}`,
+            {
+                method: "GET",
+                // cache: 'cache',
+            }
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                data.map((subject: any) => {
+                    fetch(
+                        `https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}/?section=${subject.section}&offset=0&limit=100`,
+                        {
+                            method: "GET",
+                            cache: "force-cache",
+                            headers: {
+                                credential: process.env.NEXT_PUBLIC_API_KEY,
+                            },
+                        }
+                    )
+                        .then((res) => res.json())
+                        .then((data) =>
+                            data.data
+                                ? setClassDate((classDate) => [...classDate, data.data])
+                                : null
+                        );
+
+                    fetch(
+                        `https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}?section=&offset=0&limit=100`,
+                        {
+                            method: "GET",
+                            cache: "force-cache",
+                            headers: {
+                                credential: process.env.NEXT_PUBLIC_API_KEY,
+                            },
+                        }
+                    )
+                        .then((res) => res.json())
+                        .then((data) => {
+                            const mid = data.data?.filter(
+                                (subject: any) => subject.examdateType == "M"
+                            );
+                            const final = data.data?.filter(
+                                (subject: any) => subject.examdateType == "F"
+                            );
+                            setMidExamDate((midExamDate) => [...midExamDate, mid]);
+                            setFinalExamDate((finalExamDate) => [...finalExamDate, final]);
+                        });
+                });
+            });
+    };
 
     const handleSubjectSelect = (subjectId: string, section: string, select: boolean) => {
         var temp: any = [...selectSubject];
@@ -25,64 +82,29 @@ export default function PlanPage() {
             temp.push(filterSubject);
         } else {
             temp = temp.filter(
-                (item: any) => item[0][0].subjectId != subjectId && item[0][0].section != section
+                (item: any) => item[0][0].subjectId != subjectId || item[0][0].section != section
             );
         }
         setSelectSubject(temp);
     };
 
+    const handleTermSelect = (e: any) => {
+        e.preventDefault();
+        const splitData = e.target.value.split("/");
+        const newTermYear = {
+            term: splitData[0],
+            year: "25" + splitData[1],
+        };
+        setTermYear(newTermYear);
+    };
+
     useEffect(() => {
         const userData = JSON.parse(sessionStorage.getItem("userData"));
         if (userData != null && status == "authenticated") {
-            fetch(`http://localhost:8000/student/${userData.studentId}?term=${2}&year=${2563}`, {
-                method: "GET",
-                // cache: 'cache',
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    data.map((subject: any) => {
-                        fetch(
-                            `https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}/?section=${subject.section}&offset=0&limit=100`,
-                            {
-                                method: "GET",
-                                cache: "force-cache",
-                                headers: {
-                                    credential: process.env.NEXT_PUBLIC_API_KEY,
-                                },
-                            }
-                        )
-                            .then((res) => res.json())
-                            .then((data) =>
-                                data.data
-                                    ? setClassDate((classDate) => [...classDate, data.data])
-                                    : null
-                            );
-
-                        fetch(
-                            `https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}?section=&offset=0&limit=100`,
-                            {
-                                method: "GET",
-                                cache: "force-cache",
-                                headers: {
-                                    credential: process.env.NEXT_PUBLIC_API_KEY,
-                                },
-                            }
-                        )
-                            .then((res) => res.json())
-                            .then((data) => {
-                                const mid = data.data?.filter(
-                                    (subject: any) => subject.examdateType == "M"
-                                );
-                                const final = data.data?.filter(
-                                    (subject: any) => subject.examdateType == "F"
-                                );
-                                setMidExamDate((midExamDate) => [...midExamDate, mid]);
-                                setFinalExamDate((finalExamDate) => [...finalExamDate, final]);
-                            });
-                    });
-                });
+            setClassDate([])
+            fetchStudentInterest(userData)
         }
-    }, [status]);
+    }, [status, termYear]);
 
     return (
         <section>
@@ -193,7 +215,20 @@ export default function PlanPage() {
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-2 px-6 py-4 mb-16 bg-white w-full border rounded-lg">
-                    <p className="text-2xl font-bold">วิชาที่คุณสนใจ</p>
+                    <div className="flex justify-between">
+                        <p className="text-2xl font-bold">วิชาที่คุณสนใจ</p>
+                        <select
+                            id="term"
+                            onChange={handleTermSelect}
+                            className="h-full bg-gray-50 p-1 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block"
+                        >
+                            <option value="2/64">2/64</option>
+                            <option value="1/64">1/64</option>
+                            <option value="3/63">3/63</option>
+                            <option value="2/63">2/63</option>
+                            <option value="1/63">1/63</option>
+                        </select>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white w-full border-t-2 p-2">
                         {classDate.length ? (
                             classDate.map((subject, key) => (
@@ -204,7 +239,7 @@ export default function PlanPage() {
                                 />
                             ))
                         ) : (
-                            <></>
+                            <p className="font-bold">ไม่มีข้อมูล</p>
                         )}
                     </div>
                 </div>
