@@ -100,10 +100,11 @@ export default function PlanPage() {
     };
 
     useEffect(() => {
+        "use client";
         const userData = JSON.parse(sessionStorage.getItem("userData"));
         if (userData != null && status == "authenticated") {
-            setClassDate([])
-            fetchStudentInterest(userData)
+            setClassDate([]);
+            fetchStudentInterest(userData);
         }
     }, [status, termYear]);
 

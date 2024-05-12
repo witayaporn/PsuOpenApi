@@ -3,7 +3,11 @@
 import { Player } from "@lottiefiles/react-lottie-player";
 import planningAnimation from "@/public/svg-animation/planning.json";
 import { signIn } from "next-auth/react";
+import { useEffect } from "react";
 export default function LoginPage() {
+    useEffect(()=>{
+        "use client"
+    },[])
     return (
         <div className="md:px-24 xl:px-72 md:py-80 xl:py-20 w-full h-screen">
             <div className="relative grid grid-cols-1 md:grid-rows-1 md:grid-cols-7 w-full h-full rounded-lg border bg-white">
