@@ -7,6 +7,7 @@ import {
     GeoJSON,
     Marker,
     Popup,
+    GeoJSONProps,
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -21,17 +22,18 @@ import roomData from "@/public/room-data.json";
 import { useSearchParams } from "next/navigation";
 
 export default function Map() {
+    const startPoint: any[] = [100.5006, 7.0078]
     const defaultGEO: GeoJSON.Feature = {
         type: "Feature",
         geometry: {
             type: "Polygon",
-            coordinates: [100.5006, 7.0078],
+            coordinates: startPoint,
         },
         properties: null,
     };
     const seachParams = useSearchParams();
     const [selectedPlace, setSelectedPlace] =
-        useState<GeoJSON.Feature>(defaultGEO);
+        useState<GeoJSON.Feature | any>(defaultGEO);
     const [keyGeoJson, setKeyGeoJson] = useState<number>(0);
     const [filter, setFilter] = useState<string>("building");
     const [keyMap, setKeyMap] = useState<number>(0);
@@ -53,7 +55,7 @@ export default function Map() {
     });
 
     const LocationMarker = () => {
-        const [position, setPosition] = useState(null);
+        const [position, setPosition] = useState<any>(null);
         const map = useMap();
         useEffect(() => {
             map.locate().on("locationfound", (e) => {
