@@ -7,6 +7,7 @@ import { TermYearJSON } from "../subjectSearch/page";
 import { useSession } from "next-auth/react";
 import { AnimatePresence } from "framer-motion";
 import ProtectPageModel from "@/app/components/protectPageModal";
+import config from "@/app/config";
 
 export default function PlanPage() {
     const { status } = useSession();
@@ -21,7 +22,7 @@ export default function PlanPage() {
 
     const fetchStudentInterest = (userData: any) => {
         fetch(
-            `http://localhost:8000/student/${userData.studentId}?term=${termYear.term}&year=${termYear.year}`,
+            `${config.apiUrlPrefix}/student/${userData.studentId}?term=${termYear.term}&year=${termYear.year}`,
             {
                 method: "GET",
                 // cache: 'cache',

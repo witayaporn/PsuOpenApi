@@ -1,6 +1,7 @@
 import { timeFormatter, dateToTHstr } from "@/app/utils/timeUtils";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import config from "@/app/config";
 
 export default function SectionCard(prop: any) {
     const data = prop.data[0];
@@ -27,7 +28,7 @@ export default function SectionCard(prop: any) {
         };
         console.log(JSON.stringify(body));
         try {
-            fetch(`http://localhost:8000/student/`, {
+            fetch(`${config.apiUrlPrefix}/student/`, {
                 method: "POST",
                 // mode: "no-cors",
                 body: JSON.stringify(body),
@@ -45,7 +46,7 @@ export default function SectionCard(prop: any) {
     const handleRemoveInterestClick = () => {
         console.log(isInterest);
         try {
-            fetch(`http://localhost:8000/student/deleteSubjectInterest/${isInterest?._id}`, {
+            fetch(`${config.apiUrlPrefix}/student/deleteSubjectInterest/${isInterest?._id}`, {
                 method: "POST",
                 mode: "no-cors",
                 headers: {
@@ -66,7 +67,7 @@ export default function SectionCard(prop: any) {
         const userData = JSON.parse(sessionStorage.getItem("userData"));
         console.log(userData);
         userData
-            ? fetch(`http://localhost:8000/student/${userData.studentId}`, {
+            ? fetch(`${config.apiUrlPrefix}/student/${userData.studentId}`, {
                   method: "GET",
                   headers: {
                       accept: "application/json",

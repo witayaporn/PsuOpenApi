@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import BarChart from "./barChart";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChartData } from "chart.js";
+import config from "@/app/config";
 
 export default function SubjectCard(prop: any) {
     const data = prop.data;
@@ -88,7 +89,7 @@ export default function SubjectCard(prop: any) {
 
     const fetchSubjectStat = () => {
         fetch(
-            `http://localhost:8000/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`,
+            `${config.apiUrlPrefix}/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`,
             {
                 method: "GET",
                 headers: {
