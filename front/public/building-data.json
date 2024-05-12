@@ -809,7 +809,8 @@
         "@id": "way/101939922",
         "building": "university",
         "faculty": "Faculty of Algo Industry",
-        "name": "อาคารคณะอุตสาหกรรมเกษตร"
+        "name": "อาคารคณะอุตสาหกรรมเกษตร",
+        "nameEng": "Faculty of Agro-Industry Building"
       },
       "geometry": {
         "type": "Polygon",
