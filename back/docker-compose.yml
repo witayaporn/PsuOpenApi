@@ -5,7 +5,7 @@ services:
     build: .
     command: gunicorn --bind=0.0.0.0 --workers=4 --worker-class=uvicorn.workers.UvicornH11Worker app:app
     ports:
-      - 127.0.0.1:8000:8000
+      - 8000:8000
     networks:
       - web-ser
 networks:
