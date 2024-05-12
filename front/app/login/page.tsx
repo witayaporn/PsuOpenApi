@@ -30,7 +30,7 @@ export default function LoginPage() {
                         className="p-4 m-auto bg-blue-900 text-white rounded-lg shadow hover:shadow-lg hover:scale-110 transition-all w-full max-w-60"
                         onClick={() =>
                             signIn("authentik", {
-                                callbackUrl: "http://localhost:3000/",
+                                callbackUrl: "https://psuguide.maliwan.cloud/",
                             })
                         }
                     >
