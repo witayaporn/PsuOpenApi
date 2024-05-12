@@ -70,7 +70,6 @@ export default function HeadNavbar() {
                     <a href="/home" className="flex items-center mr-4">
                         <img src="/logo/psu-guide-logo.svg" className="h-12" alt="PSU GUIDE Logo" />
                     </a>
-                    {console.log(studentImg)}
                     <a
                         href="/home"
                         className="hidden xl:flex text-blue-950 px-3 items-center space-x-2 rounded-lg hover:bg-gray-200"
