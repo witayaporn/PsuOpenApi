@@ -24,7 +24,22 @@ export default function SubjectCard(prop: any) {
     });
     const [subjectStat, setSubjectStat] = useState<any[]>([]);
     const [shareStage, setShareStage] = useState<boolean>(false);
-    const [studentInterest, setStudentInterest] = useState<any[]>([]);
+    const [subject, setSubject] = useState<any>();
+
+    const fetchSubjectDetail = () => {
+        fetch(
+            `https://api-gateway.psu.ac.th/Test/regist/SubjectCampus/01/${data.subjectId}?offset=0&limit=1`,
+            {
+                method: "GET",
+                cache: "force-cache",
+                headers: {
+                    credential: process.env.NEXT_PUBLIC_API_KEY,
+                },
+            }
+        )
+            .then((res) => res.json())
+            .then((data) => setSubject(data.data));
+    };
 
     const fetchSectionOffer = () => {
         fetch(
@@ -86,7 +101,6 @@ export default function SubjectCard(prop: any) {
                 if (stat.length) {
                     var labels: string[] = [];
                     const datasets = stat.map((data: any) => {
-                        console.log(data);
                         const label = "ตอน " + data._id;
                         const dataset = data.summary.map((item: any) => {
                             labels.includes(item.studentFaculty)
@@ -131,6 +145,7 @@ export default function SubjectCard(prop: any) {
         if (!showModal) {
             try {
                 Promise.all([
+                    fetchSubjectDetail(),
                     fetchSectionOffer(),
                     fetchSectionClassDate(),
                     fetchSectionExamDate(),
@@ -166,7 +181,6 @@ export default function SubjectCard(prop: any) {
 
     return (
         <>
-            {/* {console.log(facColor)} */}
             <a
                 className="md:h-44 pl-2 border rounded-lg shadow hover:shadow-md hover:scale-[1.01] transition-all"
                 style={{
@@ -243,13 +257,19 @@ export default function SubjectCard(prop: any) {
                                         </div>
                                         <div>
                                             <p className="font-bold">คำอธิบายรายวิชา</p>
-                                            <p className="text-gray-900 text-sm leading-relaxed">
-                                                {console.log(courseSection)}
-                                            </p>
+                                            {subject ? (
+                                                <p className="text-gray-900 bg-gray-100 text-sm p-2 border-2 rounded-lg break-words"
+                                                >
+                                                    {subject[0].subjectDescThai ? subject[0].subjectDescThai : "ไม่มีข้อมูล"}
+                                                    {/* {console.log(subject[0].subjectDescThai?.length)} */}
+                                                </p>
+                                            ) : (
+                                                <></>
+                                            )}
                                         </div>
                                         <div>
                                             <p className="font-bold">ข้อมูลจำนวนนักศึกษาที่สนใจ</p>
-                                            <p className="text-gray-900 text-sm leading-relaxed">
+                                            <p className="text-gray-900 text-xs">
                                                 <BarChart
                                                     data={subjectStatSerialize}
                                                     shareStage={shareStage}
@@ -257,7 +277,6 @@ export default function SubjectCard(prop: any) {
                                             </p>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2">
-                                            {/* {console.log(sectionDate)} */}
                                             <p className="font-bold">ตอน</p>
                                             {courseSection
                                                 ? courseSection.map((section: any, key: number) => {
@@ -273,7 +292,6 @@ export default function SubjectCard(prop: any) {
                                                                     data.section == section.section
                                                             )
                                                           : examDate;
-                                                      console.log(section.section);
                                                       const statData = subjectStat
                                                           ? subjectStat.filter(
                                                                 (data: any) =>

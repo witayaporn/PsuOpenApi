@@ -10,10 +10,8 @@ export default function SectionCard(prop: any) {
     const midExam = examData ? examData.filter((data: any) => data.examdateType == "M")[0] : null;
     const finalExam = examData ? examData.filter((data: any) => data.examdateType == "F")[0] : null;
     const noInterest = statData.length ? statData[0].totalCount : 0;
-    const percentage = noInterest ? (data.noOffer + 1 / noInterest) * 100 : 100;
-
+    const percentage = noInterest ? (data.noOffer / (noInterest + 1)) * 100 : 100;
     const [isInterest, setIsInterest] = useState<any>();
-    // const [studentInterest, setStudentInterest] = useState()
     const { status } = useSession();
 
     const handleInterestClick = () => {
@@ -76,7 +74,6 @@ export default function SectionCard(prop: any) {
               })
                   .then((res) => res.json())
                   .then((studentIn) => {
-                      // console.log(studentIn.filter((item: any) => console.log(studentIn)))
                       const isInInterest = studentIn.filter(
                           (item: any) =>
                               item.subjectId == data.subjectId &&
@@ -85,16 +82,12 @@ export default function SectionCard(prop: any) {
                               item.term == data.eduTerm
                       );
                       setIsInterest(isInInterest.length ? isInInterest[0] : null);
-                      // setStudentInterest(data)
                   })
             : null;
     }, []);
     return (
         <div className="w-full p-4 grid grid-cols-1 gap-3 rounded-lg bg-slate-200 ">
             <div className="flex justify-between">
-                {/* {console.log(studentInterest)} */}
-                {/* {console.log(isInterest)} */}
-                {console.log(statData)}
                 <p className="font-bold text-md text-gray-800">ตอน {data.section}</p>
                 <p className="text-sm text-right bg-white p-2 border rounded-lg"
                     style={{color: `hsl(${percentage > 100 ? 100.0 : percentage.toFixed(2)}, 70%, 40%)`}}
