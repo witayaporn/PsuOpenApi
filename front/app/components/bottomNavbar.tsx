@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 export default function BottomNavbar() {
     const router = usePathname();
     return (
-        <div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-full shadow-lg bottom-4 left-1/2 md:hidden">
+        <div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-full shadow-lg bottom-4 left-1/2 xl:hidden">
             <div className="grid h-full max-w-lg grid-cols-4 mx-auto">
                 <a
                     href="/home"
