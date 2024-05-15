@@ -1,3 +1,3 @@
 # PsuOpenApi
-แนะนำ
-  - https://youtu.be/utSOTVc_q_I
+แนะนำการทำงาน
+  - https://youtu.be/xComi0u5Ymw
