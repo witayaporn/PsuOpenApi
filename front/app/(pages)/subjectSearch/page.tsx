@@ -35,24 +35,26 @@ export default function SubjectSearchPage() {
     const handleSubmit = (e: any) => {
         e.preventDefault();
         const filterFac = selectFaculty.map((selFac: any) => selFac.facId);
-        fetch(
-            `https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/${campusID}/${termYear.term}/${termYear.year}?facID=&deptID=&keySearch=${searchInput}&offset=0&limit=1000`,
-            {
-                method: "GET",
-                cache: "force-cache",
-                headers: {
-                    credential: process.env.NEXT_PUBLIC_API_KEY,
-                },
-            }
-        )
-            .then((res) => res.json())
-            .then((json) => {
-                const data = json.data;
-                const filteredData = filterFac.length
-                    ? data.filter((course: any) => filterFac.includes(course.facId))
-                    : data;
-                setCourseData(filteredData);
-            });
+        try {
+            fetch(
+                `https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/${campusID}/${termYear.term}/${termYear.year}?facID=&deptID=&keySearch=${searchInput}&offset=0&limit=1000`,
+                {
+                    method: "GET",
+                    cache: "force-cache",
+                    headers: {
+                        credential: process.env.NEXT_PUBLIC_API_KEY,
+                    },
+                }
+            )
+                .then((res) => res.json())
+                .then((json) => {
+                    const data = json.data;
+                    const filteredData = filterFac.length ? data.filter((course: any) => filterFac.includes(course.facId)) : data;
+                    setCourseData(filteredData);
+                });
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const handleTermSelect = (e: any) => {
@@ -87,23 +89,24 @@ export default function SubjectSearchPage() {
         const subjectId = seachParams.get("subjectId");
         const term = seachParams.get("term");
         const year = seachParams.get("year");
-        subjectId
-            ? fetch(
-                  `https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/01/${term}/${year}/${subjectId}?offset=0&limit=1000`,
-                  {
+        try {
+            subjectId
+                ? fetch(`https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/01/${term}/${year}/${subjectId}?offset=0&limit=1000`, {
                       method: "GET",
                       cache: "force-cache",
                       headers: {
                           credential: process.env.NEXT_PUBLIC_API_KEY,
                       },
-                  }
-              )
-                  .then((res) => res.json())
-                  .then((json) => {
-                      const data = json.data;
-                      setCourseData(data);
                   })
-            : null;
+                      .then((res) => res.json())
+                      .then((json) => {
+                          const data = json.data;
+                          setCourseData(data);
+                      })
+                : null;
+        } catch (e) {
+            console.error(e);
+        }
     }, []);
 
     return (
@@ -132,10 +135,7 @@ export default function SubjectSearchPage() {
                             </select>
                         </div>
                         <div className="col-span-2">
-                            <button
-                                className="h-full p-[5px] bg-gray-50 border border-black rounded-lg"
-                                onClick={() => setShowModal(!showModal)}
-                            >
+                            <button className="h-full p-[5px] bg-gray-50 border border-black rounded-lg" onClick={() => setShowModal(!showModal)}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -181,66 +181,52 @@ export default function SubjectSearchPage() {
                                                 >
                                                     <div className="items-start justify-between overflow-hidden p-5 border-b border-solid rounded-t">
                                                         <div className="col-span-9 flex flex-wrap space-x-2 space-y-1">
-                                                            {selectFaculty.map(
-                                                                (fac: any, key: number) => (
-                                                                    <div key={key}>
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            id={`${fac.facNameThai}-${key}`}
-                                                                            value={`${fac.facNameThai}`}
-                                                                            className="hidden peer"
-                                                                            onClick={(e) =>
-                                                                                handleFilterClick(
-                                                                                    e,
-                                                                                    "deselect"
-                                                                                )
-                                                                            }
-                                                                        ></input>
-                                                                        <label
-                                                                            htmlFor={`${fac.facNameThai}-${key}`}
-                                                                            className="flex p-1 text-black text-sm border-2 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60"
-                                                                            style={{
-                                                                                backgroundColor: `${fac.secondaryColor}`,
-                                                                                borderColor: `${fac.primaryColor}`,
-                                                                            }}
-                                                                        >
-                                                                            {fac.facNameThai}
-                                                                        </label>
-                                                                    </div>
-                                                                )
-                                                            )}
+                                                            {selectFaculty.map((fac: any, key: number) => (
+                                                                <div key={key}>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={`${fac.facNameThai}-${key}`}
+                                                                        value={`${fac.facNameThai}`}
+                                                                        className="hidden peer"
+                                                                        onClick={(e) => handleFilterClick(e, "deselect")}
+                                                                    ></input>
+                                                                    <label
+                                                                        htmlFor={`${fac.facNameThai}-${key}`}
+                                                                        className="flex p-1 text-black text-sm border-2 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60"
+                                                                        style={{
+                                                                            backgroundColor: `${fac.secondaryColor}`,
+                                                                            borderColor: `${fac.primaryColor}`,
+                                                                        }}
+                                                                    >
+                                                                        {fac.facNameThai}
+                                                                    </label>
+                                                                </div>
+                                                            ))}
                                                         </div>
                                                     </div>
                                                     <div className="items-start justify-between overflow-hidden p-5 border-b border-solid rounded-t">
                                                         <div className="col-span-9 flex flex-wrap space-x-2 space-y-1">
-                                                            {faculty.map(
-                                                                (fac: any, key: number) => (
-                                                                    <div>
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            id={`${fac.facNameThai}-${key}`}
-                                                                            value={`${fac.facNameThai}`}
-                                                                            className="hidden peer"
-                                                                            onClick={(e) =>
-                                                                                handleFilterClick(
-                                                                                    e,
-                                                                                    "select"
-                                                                                )
-                                                                            }
-                                                                        ></input>
-                                                                        <label
-                                                                            htmlFor={`${fac.facNameThai}-${key}`}
-                                                                            className="flex p-1 text-black text-sm border-2 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60"
-                                                                            style={{
-                                                                                backgroundColor: `${fac.secondaryColor}`,
-                                                                                borderColor: `${fac.primaryColor}`,
-                                                                            }}
-                                                                        >
-                                                                            {fac.facNameThai}
-                                                                        </label>
-                                                                    </div>
-                                                                )
-                                                            )}
+                                                            {faculty.map((fac: any, key: number) => (
+                                                                <div>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={`${fac.facNameThai}-${key}`}
+                                                                        value={`${fac.facNameThai}`}
+                                                                        className="hidden peer"
+                                                                        onClick={(e) => handleFilterClick(e, "select")}
+                                                                    ></input>
+                                                                    <label
+                                                                        htmlFor={`${fac.facNameThai}-${key}`}
+                                                                        className="flex p-1 text-black text-sm border-2 rounded-lg cursor-pointer peer-checked:border-[#2d505b] peer-checked:text-gray-60"
+                                                                        style={{
+                                                                            backgroundColor: `${fac.secondaryColor}`,
+                                                                            borderColor: `${fac.primaryColor}`,
+                                                                        }}
+                                                                    >
+                                                                        {fac.facNameThai}
+                                                                    </label>
+                                                                </div>
+                                                            ))}
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center justify-end p-1">
@@ -264,11 +250,7 @@ export default function SubjectSearchPage() {
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-20">
-                {courseData ? (
-                    courseData.map((course, key) => <SubjectCard key={key} data={course} />)
-                ) : (
-                    <p>ไม่มีข้อมูล</p>
-                )}
+                {courseData ? courseData.map((course, key) => <SubjectCard key={key} data={course} />) : <p>ไม่มีข้อมูล</p>}
             </div>
         </section>
     );

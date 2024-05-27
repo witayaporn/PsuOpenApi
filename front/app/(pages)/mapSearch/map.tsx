@@ -1,13 +1,5 @@
 "use client";
-import {
-    MapContainer,
-    TileLayer,
-    Polygon,
-    useMap,
-    GeoJSON,
-    Marker,
-    Popup,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Polygon, useMap, GeoJSON, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
@@ -21,7 +13,7 @@ import roomData from "@/public/room-data.json";
 import { useSearchParams } from "next/navigation";
 
 export default function Map() {
-    const startPoint: any[] = [100.5006, 7.0078]
+    const startPoint: any[] = [100.5006, 7.0078];
     const defaultGEO: GeoJSON.Feature = {
         type: "Feature",
         geometry: {
@@ -31,8 +23,7 @@ export default function Map() {
         properties: null,
     };
     const seachParams = useSearchParams();
-    const [selectedPlace, setSelectedPlace] =
-        useState<GeoJSON.Feature | any>(defaultGEO);
+    const [selectedPlace, setSelectedPlace] = useState<GeoJSON.Feature | any>(defaultGEO);
     const [keyGeoJson, setKeyGeoJson] = useState<number>(0);
     const [filter, setFilter] = useState<string>("building");
     const [keyMap, setKeyMap] = useState<number>(0);
@@ -80,20 +71,13 @@ export default function Map() {
             }
             roomCode = roomCode.replace(/\d+/, "");
             const building = roomData.filter((room: any) =>
-                room.buildingCode.some(
-                    (code: string) =>
-                        code.toLowerCase() == roomCode.toLowerCase()
-                )
+                room.buildingCode.some((code: string) => code.toLowerCase() == roomCode.toLowerCase())
             )[0];
             searchStr = building ? building.building : searchStr;
 
             const searchBuilding = buildingData.features.filter((data: any) => {
-                const byName = data.properties.name
-                    ?.toLowerCase()
-                    .includes(searchStr);
-                const byNameEng = data.properties.nameEng
-                    ?.toLowerCase()
-                    .includes(searchStr);
+                const byName = data.properties.name?.toLowerCase().includes(searchStr);
+                const byNameEng = data.properties.nameEng?.toLowerCase().includes(searchStr);
                 return byName || byNameEng;
             });
             searchBuilding.length ? setSelectedPlace(searchBuilding[0]) : null;
@@ -103,13 +87,7 @@ export default function Map() {
         <div className="grid grid-cols-1 gap-4">
             <div className="relative flex flex-wrap items-center space-x-2 w-full">
                 <div>
-                    <input
-                        type="checkbox"
-                        id="building"
-                        checked={filter == "building"}
-                        className="hidden peer"
-                        onChange={handleCheckBox}
-                    ></input>
+                    <input type="checkbox" id="building" checked={filter == "building"} className="hidden peer" onChange={handleCheckBox}></input>
                     <label
                         htmlFor="building"
                         className="inline-flex p-1 text-gray-800 border-2 bg-white border-gray-200 rounded-lg cursor-pointer peer-checked:bg-blue-100 peer-checked:border-blue-900 peer-checked:text-black"
@@ -132,25 +110,12 @@ export default function Map() {
                     </label>
                 </div>
                 <div>
-                    <input
-                        type="checkbox"
-                        id="parking"
-                        checked={filter == "parking"}
-                        className="hidden peer"
-                        onChange={handleCheckBox}
-                    ></input>
+                    <input type="checkbox" id="parking" checked={filter == "parking"} className="hidden peer" onChange={handleCheckBox}></input>
                     <label
                         htmlFor="parking"
                         className="flex p-1 text-gray-800 border-2 bg-white border-gray-200 rounded-lg cursor-pointer peer-checked:bg-blue-100 peer-checked:border-blue-900 peer-checked:text-black"
                     >
-                        <svg
-                            width="800px"
-                            height="800px"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-6 h-6"
-                        >
+                        <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
                             <path
                                 fill-rule="evenodd"
                                 clip-rule="evenodd"
@@ -169,21 +134,13 @@ export default function Map() {
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                             />
-                            <path
-                                d="M10 11.8402V16.0002"
-                                stroke="#000000"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                            />
+                            <path d="M10 11.8402V16.0002" stroke="#000000" stroke-width="1.5" stroke-linecap="round" />
                         </svg>
                         <p className="hidden sm:inline">ที่จอดรถ</p>
                     </label>
                 </div>
                 <div className="absolute right-0">
-                    <button
-                        className="inline-flex p-1 text-gray-800 border-2 bg-white border-gray-200 rounded-lg"
-                        onClick={() => setLocateMe(true)}
-                    >
+                    <button className="inline-flex p-1 text-gray-800 border-2 bg-white border-gray-200 rounded-lg" onClick={() => setLocateMe(true)}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -192,11 +149,7 @@ export default function Map() {
                             stroke="currentColor"
                             className="w-5 h-5"
                         >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                            />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                             <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -226,14 +179,8 @@ export default function Map() {
                             weight: 1,
                             opacity: 0.1,
                         }}
-                        data={
-                            filter == "parking"
-                                ? parkingData.features
-                                : buildingData.features
-                        }
-                        pointToLayer={(feature, latlng) =>
-                            L.marker(latlng, { icon: parkingIcon })
-                        }
+                        data={filter == "parking" ? parkingData.features : buildingData.features}
+                        pointToLayer={(feature, latlng) => L.marker(latlng, { icon: parkingIcon })}
                         eventHandlers={{
                             click: (data: any) => {
                                 const feature = data.layer["feature"];
@@ -248,9 +195,7 @@ export default function Map() {
                         pathOptions={{ color: "blue", weight: 2 }}
                         data={selectedPlace}
                         key={keyGeoJson}
-                        pointToLayer={(feature, latlng) =>
-                            L.marker(latlng, { icon: parkingIcon })
-                        }
+                        pointToLayer={(feature, latlng) => L.marker(latlng, { icon: parkingIcon })}
                     />
 
                     {locateMe && <LocationMarker />}
@@ -271,9 +216,7 @@ export default function Map() {
                         scale: 0.75,
                         transition: { ease: "easeIn", duration: 0.1 },
                     }}
-                    onAnimationComplete={() =>
-                        window.scrollTo({ top: 1000, behavior: "smooth" })
-                    }
+                    onAnimationComplete={() => window.scrollTo({ top: 1000, behavior: "smooth" })}
                     className="mb-2 md:mb-24"
                 >
                     <DetailCard data={selectedPlace.properties} />

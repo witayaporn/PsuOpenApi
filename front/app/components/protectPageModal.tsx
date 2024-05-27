@@ -29,17 +29,11 @@ export default function ProtectPageModel() {
                     >
                         <div className="flex overflow-hidden p-6 md:pb-12 md:px-36 border-b border-solid rounded-lg">
                             <div className="grid grid-cols-1 gap-y-3 m-auto text-center">
-                                <Player style={{width: "10rem"}} src={WarningAnimation} keepLastFrame autoplay/>
+                                <Player style={{ width: "10rem" }} src={WarningAnimation} keepLastFrame autoplay />
                                 <p className="text-xl font-bold">เข้าสู่ระบบเพื่อดำเนินการต่อ</p>
-                                <p className="text-lg">
-                                    คุณยังไม่ได้เข้าสู่ระบบ
-                                    โปรดเข้าสู่ระบบเพื่อดำเนินการต่อหรือกลับสู่หน้าเเรก
-                                </p>
+                                <p className="text-lg">คุณยังไม่ได้เข้าสู่ระบบ โปรดเข้าสู่ระบบเพื่อดำเนินการต่อหรือกลับสู่หน้าเเรก</p>
                                 <div className="flex items-center justify-center gap-3 mt-2">
-                                    <a
-                                        href="/home"
-                                        className="p-2 border rounded-lg hover:bg-gray-200 transition-all duration-200"
-                                    >
+                                    <a href="/home" className="p-2 border rounded-lg hover:bg-gray-200 transition-all duration-200">
                                         กลับหน้าเเรก
                                     </a>
                                     <a

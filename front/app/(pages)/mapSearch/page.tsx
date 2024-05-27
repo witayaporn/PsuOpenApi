@@ -11,8 +11,7 @@ export default function MapSearchPage() {
         loading: () => <p>Loading...</p>,
     });
 
-    const handleSearchChange = (e: any) => {
-    };
+    const handleSearchChange = (e: any) => {};
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -24,14 +23,9 @@ export default function MapSearchPage() {
             <div className="grid grid-cols-1 gap-4 mb-3">
                 <div className="grid grid-cols-1 gap-4">
                     <div>
-                        <p className="text-4xl font-bold text-right">
-                            เเผนที่เเละอาคาร
-                        </p>
+                        <p className="text-4xl font-bold text-right">เเผนที่เเละอาคาร</p>
                     </div>
-                    <SearchBar
-                        onSubmit={handleSubmit}
-                        onChange={handleSearchChange}
-                    />
+                    <SearchBar onSubmit={handleSubmit} onChange={handleSearchChange} />
                 </div>
             </div>
             <div>

@@ -16,7 +16,7 @@ export default function SectionCard(prop: any) {
     const { status } = useSession();
 
     const handleInterestClick = () => {
-        const userData = JSON.parse(sessionStorage.getItem("userData"));
+        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
         const body = {
             studentId: userData.studentId,
             studentFaculty: userData.majorNameThai,
@@ -60,33 +60,38 @@ export default function SectionCard(prop: any) {
     };
 
     useEffect(() => {
-        const userData = JSON.parse(sessionStorage.getItem("userData"));
-        userData
-            ? fetch(`${config.apiUrlPrefix}/student/${userData.studentId}`, {
-                  method: "GET",
-                  headers: {
-                      accept: "application/json",
-                  },
-              })
-                  .then((res) => res.json())
-                  .then((studentIn) => {
-                      const isInInterest = studentIn.filter(
-                          (item: any) =>
-                              item.subjectId == data.subjectId &&
-                              item.section == data.section &&
-                              item.year == data.eduYear &&
-                              item.term == data.eduTerm
-                      );
-                      setIsInterest(isInInterest.length ? isInInterest[0] : null);
+        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        try {
+            userData
+                ? fetch(`${config.apiUrlPrefix}/student/${userData.studentId}`, {
+                      method: "GET",
+                      headers: {
+                          accept: "application/json",
+                      },
                   })
-            : null;
+                      .then((res) => res.json())
+                      .then((studentIn) => {
+                          const isInInterest = studentIn.filter(
+                              (item: any) =>
+                                  item.subjectId == data.subjectId &&
+                                  item.section == data.section &&
+                                  item.year == data.eduYear &&
+                                  item.term == data.eduTerm
+                          );
+                          setIsInterest(isInInterest.length ? isInInterest[0] : null);
+                      })
+                : null;
+        } catch (e) {
+            console.error(e);
+        }
     }, []);
     return (
         <div className="w-full p-4 grid grid-cols-1 gap-3 rounded-lg bg-slate-200 ">
             <div className="flex justify-between">
                 <p className="font-bold text-md text-gray-800">ตอน {data.section}</p>
-                <p className="text-sm text-right bg-white p-2 border rounded-lg"
-                    style={{color: `hsl(${percentage > 100 ? 100.0 : percentage.toFixed(2)}, 70%, 40%)`}}
+                <p
+                    className="text-sm text-right bg-white p-2 border rounded-lg"
+                    style={{ color: `hsl(${percentage > 100 ? 100.0 : percentage.toFixed(2)}, 70%, 40%)` }}
                 >
                     โอกาส {percentage > 100 ? 100.0 : percentage.toFixed(2)} %
                 </p>
@@ -114,10 +119,7 @@ export default function SectionCard(prop: any) {
                         ? dateData.map((date: any) => (
                               <>
                                   <p className="p-1">
-                                      {date.classDateDesc}{" "}
-                                      {timeFormatter(date.startTime) +
-                                          " - " +
-                                          timeFormatter(date.stopTime)}
+                                      {date.classDateDesc} {timeFormatter(date.startTime) + " - " + timeFormatter(date.stopTime)}
                                   </p>
                                   {date.roomName ? (
                                       <p className="block md:inline-flex p-1">
@@ -162,20 +164,16 @@ export default function SectionCard(prop: any) {
                 </div>
                 <div className="grid grid-cols-2 text-sm break-words text-gray-600">
                     {midExam ? (
-                        <p className="p-1">{`${dateToTHstr(
-                            midExam.examDate.slice(0, 10)
-                        )} เวลา ${timeFormatter(midExam.examStartTime)} - ${timeFormatter(
-                            midExam.examStopTime
-                        )} ห้อง ${midExam.roomName ? midExam.roomName : "-"}`}</p>
+                        <p className="p-1">{`${dateToTHstr(midExam.examDate.slice(0, 10))} เวลา ${timeFormatter(
+                            midExam.examStartTime
+                        )} - ${timeFormatter(midExam.examStopTime)} ห้อง ${midExam.roomName ? midExam.roomName : "-"}`}</p>
                     ) : (
                         <p>-</p>
                     )}
                     {finalExam ? (
-                        <p className="p-1">{`${dateToTHstr(
-                            finalExam.examDate.slice(0, 10)
-                        )} เวลา ${timeFormatter(finalExam.examStartTime)} - ${timeFormatter(
-                            finalExam.examStopTime
-                        )} ห้อง ${finalExam.roomName ? finalExam.roomName : "-"}`}</p>
+                        <p className="p-1">{`${dateToTHstr(finalExam.examDate.slice(0, 10))} เวลา ${timeFormatter(
+                            finalExam.examStartTime
+                        )} - ${timeFormatter(finalExam.examStopTime)} ห้อง ${finalExam.roomName ? finalExam.roomName : "-"}`}</p>
                     ) : (
                         <p>-</p>
                     )}
@@ -201,10 +199,7 @@ export default function SectionCard(prop: any) {
                         </button>
                     )
                 ) : (
-                    <a
-                        className="text-gray-500 text-center p-2 border border-gray-500 rounded-lg font-bold uppercase text-sm"
-                        href="/login"
-                    >
+                    <a className="text-gray-500 text-center p-2 border border-gray-500 rounded-lg font-bold uppercase text-sm" href="/login">
                         กรุณาเข้าสู่ระบบ
                     </a>
                 )}

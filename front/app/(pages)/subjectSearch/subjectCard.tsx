@@ -28,95 +28,107 @@ export default function SubjectCard(prop: any) {
     const [subject, setSubject] = useState<any>();
 
     const fetchSubjectDetail = () => {
-        fetch(
-            `https://api-gateway.psu.ac.th/Test/regist/SubjectCampus/01/${data.subjectId}?offset=0&limit=1`,
-            {
+        try {
+            fetch(`https://api-gateway.psu.ac.th/Test/regist/SubjectCampus/01/${data.subjectId}?offset=0&limit=1`, {
                 method: "GET",
                 cache: "force-cache",
                 headers: {
                     credential: process.env.NEXT_PUBLIC_API_KEY,
                 },
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => setSubject(data.data));
+            })
+                .then((res) => res.json())
+                .then((data) => setSubject(data.data));
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const fetchSectionOffer = () => {
-        fetch(
-            `https://api-gateway.psu.ac.th/Test/regist/SectionOfferCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`,
-            {
-                method: "GET",
-                cache: "force-cache",
-                headers: {
-                    credential: process.env.NEXT_PUBLIC_API_KEY,
-                },
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => setCourseSection(data.data));
+        try {
+            fetch(
+                `https://api-gateway.psu.ac.th/Test/regist/SectionOfferCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`,
+                {
+                    method: "GET",
+                    cache: "force-cache",
+                    headers: {
+                        credential: process.env.NEXT_PUBLIC_API_KEY,
+                    },
+                }
+            )
+                .then((res) => res.json())
+                .then((data) => setCourseSection(data.data));
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const fetchSectionClassDate = () => {
-        fetch(
-            `https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`,
-            {
-                method: "GET",
-                cache: "force-cache",
-                headers: {
-                    credential: process.env.NEXT_PUBLIC_API_KEY,
-                },
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => setSectionDate(data.data));
+        try {
+            fetch(
+                `https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}/?section=&offset=0&limit=100`,
+                {
+                    method: "GET",
+                    cache: "force-cache",
+                    headers: {
+                        credential: process.env.NEXT_PUBLIC_API_KEY,
+                    },
+                }
+            )
+                .then((res) => res.json())
+                .then((data) => setSectionDate(data.data));
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const fetchSectionExamDate = () => {
-        fetch(
-            `https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}?section=&offset=0&limit=100`,
-            {
-                method: "GET",
-                cache: "force-cache",
-                headers: {
-                    credential: process.env.NEXT_PUBLIC_API_KEY,
-                },
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => setExamDate(data.data));
+        try {
+            fetch(
+                `https://api-gateway.psu.ac.th/Test/regist/SectionExamdateCampus/01/${data.eduTerm}/${data.eduYear}/${data.subjectId}?section=&offset=0&limit=100`,
+                {
+                    method: "GET",
+                    cache: "force-cache",
+                    headers: {
+                        credential: process.env.NEXT_PUBLIC_API_KEY,
+                    },
+                }
+            )
+                .then((res) => res.json())
+                .then((data) => setExamDate(data.data));
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const fetchSubjectStat = () => {
-        fetch(
-            `${config.apiUrlPrefix}/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`,
-            {
+        try {
+            fetch(`${config.apiUrlPrefix}/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`, {
                 method: "GET",
                 headers: {
                     accept: "application/json",
                 },
-            }
-        )
-            .then((res) => res.json())
-            .then((stat) => {
-                if (stat.length) {
-                    var labels: string[] = [];
-                    const datasets = stat.map((data: any) => {
-                        const label = "ตอน " + data._id;
-                        const dataset = data.summary.map((item: any) => {
-                            labels.includes(item.studentFaculty)
-                                ? null
-                                : labels.push(item.studentFaculty);
-                            return { x: item.studentFaculty, y: item.count };
+            })
+                .then((res) => res.json())
+                .then((stat) => {
+                    if (stat.length) {
+                        var labels: string[] = [];
+                        const datasets = stat.map((data: any) => {
+                            const label = "ตอน " + data._id;
+                            const dataset = data.summary.map((item: any) => {
+                                labels.includes(item.studentFaculty) ? null : labels.push(item.studentFaculty);
+                                return { x: item.studentFaculty, y: item.count };
+                            });
+                            return { data: dataset, label: label };
                         });
-                        return { data: dataset, label: label };
-                    });
-                    setSubjectStat(stat);
-                    setSubjectStatSerialize({ labels: labels, datasets: datasets });
-                } else {
-                    setSubjectStatSerialize({ labels: [], datasets: [] });
-                }
-            });
+                        setSubjectStat(stat);
+                        setSubjectStatSerialize({ labels: labels, datasets: datasets });
+                    } else {
+                        setSubjectStatSerialize({ labels: [], datasets: [] });
+                    }
+                });
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     // const fetchStudentInterest = () => {
@@ -145,23 +157,13 @@ export default function SubjectCard(prop: any) {
         const html = document.getElementsByTagName("html")[0];
         if (!showModal) {
             try {
-                Promise.all([
-                    fetchSubjectDetail(),
-                    fetchSectionOffer(),
-                    fetchSectionClassDate(),
-                    fetchSectionExamDate(),
-                    fetchSubjectStat(),
-                ]);
+                Promise.all([fetchSubjectDetail(), fetchSectionOffer(), fetchSectionClassDate(), fetchSectionExamDate(), fetchSubjectStat()]);
             } catch (e) {
                 console.error(e);
             }
 
             html.classList.add("overflow-hidden");
-            router.push(
-                `/subjectSearch/?subjectId=${data.subjectId}&term=${data.eduTerm}&year=${data.eduYear}&modal=open`,
-                undefined,
-                { shallow: true }
-            );
+            router.push(`/subjectSearch/?subjectId=${data.subjectId}&term=${data.eduTerm}&year=${data.eduYear}&modal=open`, undefined, { shallow: true });
         } else {
             html.classList.remove("overflow-hidden");
             router.push("/subjectSearch", undefined, { shallow: true });
@@ -231,13 +233,9 @@ export default function SubjectCard(prop: any) {
                                         >
                                             X
                                         </button>
-                                        <p className="font-bold text-lg text-green-950">
-                                            {subjectNameEN}
-                                        </p>
+                                        <p className="font-bold text-lg text-green-950">{subjectNameEN}</p>
                                         <p className="text-gray-700">{data.subjectNameThai}</p>
-                                        <p className="text-gray-500 inline md:block">
-                                            {data.credit}
-                                        </p>
+                                        <p className="text-gray-500 inline md:block">{data.credit}</p>
                                         <p className="inline-flex py-1 px-2 mx-2 md:mt-2 md:m-0 text-black text-xs bg-gray-100 border-gray-400 rounded-lg">
                                             {data.subjectTypeDesc}
                                         </p>
@@ -259,8 +257,7 @@ export default function SubjectCard(prop: any) {
                                         <div>
                                             <p className="font-bold">คำอธิบายรายวิชา</p>
                                             {subject ? (
-                                                <p className="text-gray-900 bg-gray-100 text-sm p-2 border-2 rounded-lg break-words"
-                                                >
+                                                <p className="text-gray-900 bg-gray-100 text-sm p-2 border-2 rounded-lg break-words">
                                                     {subject[0].subjectDescThai ? subject[0].subjectDescThai : "ไม่มีข้อมูล"}
                                                 </p>
                                             ) : (
@@ -270,10 +267,7 @@ export default function SubjectCard(prop: any) {
                                         <div>
                                             <p className="font-bold">ข้อมูลจำนวนนักศึกษาที่สนใจ</p>
                                             <p className="text-gray-900 text-xs">
-                                                <BarChart
-                                                    data={subjectStatSerialize}
-                                                    shareStage={shareStage}
-                                                />
+                                                <BarChart data={subjectStatSerialize} shareStage={shareStage} />
                                             </p>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2">
@@ -281,32 +275,18 @@ export default function SubjectCard(prop: any) {
                                             {courseSection
                                                 ? courseSection.map((section: any, key: number) => {
                                                       const dateData = sectionDate
-                                                          ? sectionDate.filter(
-                                                                (data: any) =>
-                                                                    data.section == section.section
-                                                            )
+                                                          ? sectionDate.filter((data: any) => data.section == section.section)
                                                           : sectionDate;
                                                       const examData = examDate
-                                                          ? examDate.filter(
-                                                                (data: any) =>
-                                                                    data.section == section.section
-                                                            )
+                                                          ? examDate.filter((data: any) => data.section == section.section)
                                                           : examDate;
                                                       const statData = subjectStat
-                                                          ? subjectStat.filter(
-                                                                (data: any) =>
-                                                                    data?._id == section.section
-                                                            )
+                                                          ? subjectStat.filter((data: any) => data?._id == section.section)
                                                           : {};
                                                       return (
                                                           <SectionCard
                                                               key={key}
-                                                              data={[
-                                                                  section,
-                                                                  dateData,
-                                                                  examData,
-                                                                  statData,
-                                                              ]}
+                                                              data={[section, dateData, examData, statData]}
                                                               setShareStage={setShareStage}
                                                               shareStage={shareStage}
                                                           />
