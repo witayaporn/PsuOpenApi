@@ -124,9 +124,6 @@ export default function PlanPage() {
                         <p className="font-bold">สอบกลางภาค</p>
                         <p className="font-bold">สอบปลายภาค</p>
                         {selectSubject.map((subject: any) => {
-                            console.log(subject[0][0]);
-                            console.log(midExamDate);
-                            finalExamDate.map((data: any) => console.log(data));
                             var midExam: any = midExamDate.filter((data: any) =>
                                 data?.length ? data[0].subjectId == subject[0][0].subjectId : null
                             );

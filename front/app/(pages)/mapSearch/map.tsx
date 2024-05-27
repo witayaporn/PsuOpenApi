@@ -60,7 +60,6 @@ export default function Map() {
             map.locate().on("locationfound", (e) => {
                 setPosition(e.latlng);
                 map.flyTo(e.latlng, map.getZoom());
-                console.log("Hello");
             });
         }, [map]);
         return position === null ? null : (
@@ -73,7 +72,6 @@ export default function Map() {
     useEffect(() => {
         var searchStr = seachParams.get("search")?.toLowerCase();
         if (searchStr && searchStr != "") {
-            console.log(searchStr);
             var roomCode: string;
             if (searchStr.slice(0, 4) == "ห้อง") {
                 roomCode = searchStr.slice(4);
@@ -99,7 +97,6 @@ export default function Map() {
                 return byName || byNameEng;
             });
             searchBuilding.length ? setSelectedPlace(searchBuilding[0]) : null;
-            console.log(searchBuilding);
         }
     }, []);
     return (

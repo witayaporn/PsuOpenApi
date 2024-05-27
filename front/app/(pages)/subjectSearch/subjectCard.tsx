@@ -262,7 +262,6 @@ export default function SubjectCard(prop: any) {
                                                 <p className="text-gray-900 bg-gray-100 text-sm p-2 border-2 rounded-lg break-words"
                                                 >
                                                     {subject[0].subjectDescThai ? subject[0].subjectDescThai : "ไม่มีข้อมูล"}
-                                                    {/* {console.log(subject[0].subjectDescThai?.length)} */}
                                                 </p>
                                             ) : (
                                                 <></>

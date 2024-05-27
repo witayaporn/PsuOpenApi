@@ -19,7 +19,7 @@ const dateToTHstr = (dateStr: string) => {
         });
         return dateTHstr;
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 };
 

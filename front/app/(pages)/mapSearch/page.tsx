@@ -12,8 +12,6 @@ export default function MapSearchPage() {
     });
 
     const handleSearchChange = (e: any) => {
-        // console.log(e.target.value)
-        // setSearch(e.target.value)
     };
 
     const handleSubmit = (e: any) => {

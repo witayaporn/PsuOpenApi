@@ -19,9 +19,7 @@ export default function HeadNavbar() {
     };
 
     useEffect(() => {
-        console.log(status);
         if (sessionStorage.getItem("userData") == null && status == "authenticated") {
-            console.log("reload user data");
             fetch("https://api-gateway.psu.ac.th/Test/regist/level2/StudentDetailCampus/01/token", {
                 method: "GET",
                 cache: "force-cache",

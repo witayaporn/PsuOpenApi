@@ -29,7 +29,6 @@ export default function SubjectSearchPage() {
     const campusID: string = "01";
 
     const handleSearchChange = (e: any) => {
-        console.log(e.target.value);
         setSearchInput(e.target.value);
     };
 
@@ -88,7 +87,6 @@ export default function SubjectSearchPage() {
         const subjectId = seachParams.get("subjectId");
         const term = seachParams.get("term");
         const year = seachParams.get("year");
-        // console.log(term)
         subjectId
             ? fetch(
                   `https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/01/${term}/${year}/${subjectId}?offset=0&limit=1000`,

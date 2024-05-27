@@ -214,9 +214,6 @@ export default function TimeTable(prop: any) {
                                             countOverlap += 1;
                                         }
                                     });
-                                    // console.log(day.day + " " + countOverlap)
-                                    // console.log(weekTime[day.shortEng].slice(0, key - 1))
-                                    console.log(item);
 
                                     return (
                                         <>

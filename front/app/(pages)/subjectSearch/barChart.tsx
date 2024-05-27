@@ -5,46 +5,7 @@ import { Chart, ChartData, registerables } from "chart.js";
 export default function BarChart(prop: any) {
     Chart.register(...registerables);
     const data = prop.data;
-    // const [subjectStat, setSubjectStat] = useState<ChartData<"bar">>({
-    //     labels: [],
-    //     datasets: [],
-    // });
-    const fetchSubjectStat = () => {
-        // fetch(
-        //     `http://localhost:8000/student/getSubjectStat/${data.subjectId}?year=${data.eduYear}&term=${data.eduTerm}`,
-        //     {
-        //         method: "GET",
-        //         headers: {
-        //             accept: "application/json",
-        //         },
-        //     }
-        // )
-        //     .then((res) => res.json())
-        //     .then((stat) => {
-        //         console.log(subjectStat);
-        //         if (stat.length) {
-        //             var labels: string[] = [];
-        //             const datasets = stat.map((data: any) => {
-        //                 console.log(data);
-        //                 const label = data._id;
-        //                 const dataset = data.summary.map((item: any) => {
-        //                     labels.includes(item.studentFaculty)
-        //                         ? null
-        //                         : labels.push(item.studentFaculty);
-        //                     return { x: item.studentFaculty, y: item.count };
-        //                 });
-        //                 return { data: dataset, label: label };
-        //             });
-        //             setSubjectStat({ labels: labels, datasets: datasets });
-        //         } else {
-        //             setSubjectStat({ labels: [], datasets: [] });
-        //         }
-        //     });
-    };
-
-    // useEffect(() => {
-    //     fetchSubjectStat();
-    // }, []);
+;
     return (
         <>
             <Bar
@@ -63,7 +24,6 @@ export default function BarChart(prop: any) {
                     },
                 }}
             >
-                {/* {console.log(prop.shareStage)} */}
             </Bar>
         </>
     );

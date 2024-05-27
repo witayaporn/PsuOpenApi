@@ -2,9 +2,6 @@
 import { useSession } from "next-auth/react";
 
 export default function HomePage() {
-    // const {data: session} = useSession()
-    // console.log(session)
-
     return (
         <section>
             <div className="grid md:grid-rows-2 grid-rows-3 md:grid-cols-3 gap-1 items-start">
