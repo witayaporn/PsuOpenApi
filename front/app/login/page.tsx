@@ -6,28 +6,19 @@ import { signIn } from "next-auth/react";
 import { useEffect } from "react";
 
 export default function LoginPage() {
-
     return (
-        <div className="md:px-24 xl:px-72 md:py-80 xl:py-20 w-full h-screen">
-            <div className="relative grid grid-cols-1 md:grid-rows-1 md:grid-cols-7 w-full h-full rounded-lg border bg-white">
-                <div className="m-auto md:col-span-4 rounded-l-lg py-2 px-4">
-                    <img
-                        src="/logo/psu-guide-logo-ex.svg"
-                        className="h-[5rem] m-auto mb-4"
-                        alt="PSU GUIDE Logo"
-                    />
+        <div className="md:px-24 xl:px-72 md:pt-[6rem] w-full h-screen">
+            <div className="relative grid grid-cols-1 md:grid-rows-1 md:grid-cols-7 h-full md:h-[26rem] lg:h-[32rem] rounded-lg border bg-sky-100">
+                <div className="hidden md:flex m-auto md:col-span-4 rounded-l-lg py-2 px-4">
                     <Player src={planningAnimation} loop autoplay />
                 </div>
-                <div className="grid md:grid-cols-1 col-span-3 md:py-28 rounded-r-lg border bg-blue-100">
-                    <div className="grid grid-cols-1 gap-4 m-auto text-center p-12">
-                        <p className="font-bold text-4xl">สวัสดี!</p>
-                        <p className="text-xl">
-                            ลงชื่อเข้าใช้ผ่าน PSU Passport เพื่อเริ่มต้นใช้งาน
-                        </p>
-                    </div>
+                <div className="flex flex-col col-span-3 text-center rounded-r-lg border px-6 bg-white">
+                    <img src="/logo/psu-guide-logo-ex.svg" className="h-[5rem] w-4/5 md:w-fit mt-4 md:mt-auto m-auto mb-1 px-3" alt="PSU GUIDE Logo" />
+                    <p className="mt-6 font-bold md:text-2xl text-4xl">สวัสดี!</p>
+                    <p className="mt-4 md:text-lg text-2xl md:px-4 px-3">ลงชื่อเข้าใช้ผ่าน PSU Passport เพื่อเริ่มต้นใช้งาน</p>
                     <button
                         type="button"
-                        className="p-4 m-auto bg-blue-900 text-white rounded-lg shadow hover:shadow-lg hover:scale-110 transition-all w-full max-w-60"
+                        className="mt-10 p-4 m-auto bg-blue-900 text-white rounded-lg shadow hover:shadow-lg hover:scale-105 transition-all w-full max-w-60"
                         onClick={() =>
                             signIn("authentik", {
                                 callbackUrl: "https://psuguide.maliwan.cloud/",
@@ -36,6 +27,9 @@ export default function LoginPage() {
                     >
                         <img src="/logo/PSUOauth.svg" alt="test" />
                     </button>
+                    <div className="md:hidden m-auto md:col-span-4 rounded-l-lg">
+                        <Player src={planningAnimation} loop autoplay />
+                    </div>
                 </div>
             </div>
         </div>
