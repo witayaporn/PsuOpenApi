@@ -61,7 +61,7 @@ export default function HeadNavbar() {
                 console.error(e);
             }
         } else {
-            setUserData(JSON.parse(sessionStorage.getItem("userData") || "{}"));
+            setUserData(JSON.parse(sessionStorage.getItem("userData")!));
             setStudentImg(sessionStorage.getItem("userImg"));
         }
     }, [status, session]);
