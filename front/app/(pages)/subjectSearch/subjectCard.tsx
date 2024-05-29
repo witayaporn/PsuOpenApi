@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
+import BarChart from "./barChart";
 import SectionCard from "./sectionCard";
+import SubjectDescModal from "./subjectDescModal";
 import facultyData from "@/public/faculty-data.json";
 import { AnimatePresence, motion } from "framer-motion";
-import BarChart from "./barChart";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChartData } from "chart.js";
 import config from "@/app/config";
@@ -16,6 +17,7 @@ export default function SubjectCard(prop: any) {
     const router = useRouter();
     const urlParam = useSearchParams();
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [showSubjectDesc, setShowSubjectDesc] = useState<boolean>(false);
     const [examDate, setExamDate] = useState<any[]>([]);
     const [courseSection, setCourseSection] = useState<any[]>([]);
     const [sectionDate, setSectionDate] = useState<any[]>([]);
@@ -163,7 +165,9 @@ export default function SubjectCard(prop: any) {
             }
 
             html.classList.add("overflow-hidden");
-            router.push(`/subjectSearch/?subjectId=${data.subjectId}&term=${data.eduTerm}&year=${data.eduYear}&modal=open`, undefined, { shallow: true });
+            router.push(`/subjectSearch/?subjectId=${data.subjectId}&term=${data.eduTerm}&year=${data.eduYear}&modal=open`, undefined, {
+                shallow: true,
+            });
         } else {
             html.classList.remove("overflow-hidden");
             router.push("/subjectSearch", undefined, { shallow: true });
@@ -241,7 +245,7 @@ export default function SubjectCard(prop: any) {
                                         </p>
                                     </div>
                                     <div className="relative px-5 grid grid-cols-1 gap-y-2">
-                                        <div className="flex-auto">
+                                        <div className="flex-auto pb-3 border-b border-solid">
                                             <p className="font-bold">รายละเอียด</p>
                                             <div className="grid grid-cols-2 sm:grid-cols-4 text-sm">
                                                 <p>ภาคการศึกษา</p>
@@ -254,21 +258,59 @@ export default function SubjectCard(prop: any) {
                                                 <p>{data.campusNameThai}</p>
                                             </div>
                                         </div>
-                                        <div>
-                                            <p className="font-bold">คำอธิบายรายวิชา</p>
-                                            {subject ? (
-                                                <p className="text-gray-900 bg-gray-100 text-sm p-2 border-2 rounded-lg break-words">
-                                                    {subject[0].subjectDescThai ? subject[0].subjectDescThai : "ไม่มีข้อมูล"}
-                                                </p>
-                                            ) : (
-                                                <></>
-                                            )}
+
+                                        <div className="pb-3 border-b border-solid">
+                                            <div className="flex justify-between mb-2">
+                                                <p className="font-bold">คำอธิบายรายวิชา</p>
+                                                <button
+                                                    className="text-sm px-2 rounded-md border border-blue-900"
+                                                    onClick={() => setShowSubjectDesc(!showSubjectDesc)}
+                                                >
+                                                    {showSubjectDesc ? "ซ่อน" : "เเสดง"}
+                                                </button>
+                                            </div>
+                                            <AnimatePresence>
+                                                {showSubjectDesc && (
+                                                    <motion.p
+                                                        className="text-gray-900 bg-gray-100 text-sm p-2 border-2 rounded-lg break-words"
+                                                        initial={{
+                                                            y: -10,
+                                                            opacity: 0,
+                                                     }}
+                                                        animate={{
+                                                            y: 0,
+                                                            opacity: 1,
+                                                            scale: 1,
+                                                            transition: {
+                                                                ease: "backOut",
+                                                                duration: 0.3,
+                                                            },
+                                                        }}
+                                                        exit={{
+                                                            y: -5,
+                                                            opacity: 0,
+                                                            // scale: 0.75,
+                                                            transition: {
+                                                                ease: "backIn",
+                                                                duration: 0.3,
+                                                            },
+                                                        }}
+                                                    >
+                                                        {subject[0].subjectDescThai ? subject[0].subjectDescThai : "ไม่มีข้อมูล"}
+                                                    </motion.p>
+                                                )}
+                                            </AnimatePresence>
                                         </div>
-                                        <div>
+
+                                        <div className="pb-3 border-b border-solid">
                                             <p className="font-bold">ข้อมูลจำนวนนักศึกษาที่สนใจ</p>
                                             <p className="text-gray-900 text-xs">
                                                 <BarChart data={subjectStatSerialize} shareStage={shareStage} />
                                             </p>
+                                        </div>
+
+                                        <div className="pb-3 border-b border-solid">
+                                            <p className="font-bold">ความคิดเห็นต่อรายวิชา</p>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2">
                                             <p className="font-bold">ตอน</p>
