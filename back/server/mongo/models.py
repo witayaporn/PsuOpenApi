@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field  # type: ignore
 from pydantic_core import core_schema, PydanticOmit # type: ignore
 from pydantic.json_schema import GenerateJsonSchema, JsonSchemaValue # type: ignore
 from bson import ObjectId # type: ignore
+from datetime import datetime, timezone
 
 
 class _ObjectIdPydanticAnnotation:
@@ -166,41 +167,72 @@ class SubjectInterestUpdate(BaseModel):
             }
         }
 
-class comment(BaseModel):
+class Comment(BaseModel):
     id: Optional[PydanticObjectId] = Field(alias='_id',default=ObjectId())
-    commentId: int
-    studentId: int
-    comment: str
-    subjectId: int
-    verifyInfo: str
+    xSubjectId: str = Field(...)
+    studentId: str = Field(...)
+    parentId: Optional[PydanticObjectId] = Field(alias='parentId',default=None) 
+    content: str = Field(...)
+    created: datetime = Field(datetime.now(tz=timezone.utc))
+    voting: int = Field(...)
 
     class Config:
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "commentId": 1,
-                "studentId": 6410110123,
-                "comment": "test",
-                "subjectId": 1,
-                "verifyInfo": "test"
+                "xSubjectId": "240",
+                "studentId": "6410110123",
+                "parentId": "",
+                "content": "ทดสอบ comment",
+                "voting": +1
             }
         }
 
-class commentUpdate(BaseModel):
-    commentId: Optional[int]
-    studentId: Optional[int]
-    comment: Optional[str]
-    subjectId: Optional[int]
-    verifyInfo: Optional[str]
+class CommentUpdate(BaseModel):
+    xSubjectId: Optional[str]
+    studentId: Optional[str]
+    content: Optional[str]
+    voting: Optional[int]
 
     class Config:
         json_schema_extra = {
             "example": {
-                "commentId": 1,
-                "studentId": 6410110123,
-                "comment": "test",
-                "subjectId": 1,
-                "verifyInfo": "test"
+                "xSubjectId": "240",
+                "studentId": "6410110123",
+                "content": "ทดสอบ comment",
+                "voting": -1
+            }
+        }
+
+class Vote(BaseModel):
+    id: Optional[PydanticObjectId] = Field(alias='_id',default=ObjectId())
+    studentId: str = Field(...)
+    commentId: Optional[PydanticObjectId] = Field(alias='_id',default=ObjectId())
+    voteType: int = Field(...)
+    created: datetime = Field(datetime.now(tz=timezone.utc))
+
+    class Config:
+        populate_by_name = True
+        json_schema_extra = {
+            "example": {
+                "studentId": "6410110123",
+                "commentId": "",
+                "voteType": 1
+            }
+        }
+
+class VoteUpdate(BaseModel):
+    studentId: Optional[str]
+    commentId: Optional[PydanticObjectId]
+    voteType: Optional[int]
+
+    class Config:
+        populate_by_name = True
+        json_schema_extra = {
+            "example": {
+                "studentId": "6410110123",
+                "commentId": "",
+                "voteType": 2
             }
         }
 
@@ -212,8 +244,8 @@ Student.model_json_schema(mode='serialization')
 StudentUpdate.model_json_schema(mode='serialization')
 SubjectInterest.model_json_schema(mode='serialization')
 SubjectInterestUpdate.model_json_schema(mode='serialization')
-comment.model_json_schema(mode='serialization')
-commentUpdate.model_json_schema(mode='serialization')
+Comment.model_json_schema(mode='serialization')
+CommentUpdate.model_json_schema(mode='serialization')
 
 #Student.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
 #StudentUpdate.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
