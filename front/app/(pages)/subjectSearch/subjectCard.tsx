@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import BarChart from "./barChart";
 import SectionCard from "./sectionCard";
-import SubjectDescModal from "./subjectDescModal";
+import CommentModal from "./commentModal";
+import AlertModal from "@/app/components/alertModal";
 import facultyData from "@/public/faculty-data.json";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -18,6 +19,8 @@ export default function SubjectCard(prop: any) {
     const urlParam = useSearchParams();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showSubjectDesc, setShowSubjectDesc] = useState<boolean>(false);
+    const [showComment, setShowComment] = useState<boolean>(false);
+    const [showAlert, setShowAlert] = useState<boolean>(true);
     const [examDate, setExamDate] = useState<any[]>([]);
     const [courseSection, setCourseSection] = useState<any[]>([]);
     const [sectionDate, setSectionDate] = useState<any[]>([]);
@@ -26,7 +29,6 @@ export default function SubjectCard(prop: any) {
         datasets: [],
     });
     const [subjectStat, setSubjectStat] = useState<any[]>([]);
-    const [shareStage, setShareStage] = useState<boolean>(false);
     const [subject, setSubject] = useState<any>();
 
     const fetchSubjectDetail = () => {
@@ -205,9 +207,9 @@ export default function SubjectCard(prop: any) {
                 </div>
             </a>
             <AnimatePresence>
-                {showModal && (
+                {(showModal && showAlert) && (
                     <>
-                        <div className="justify-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[10100] outline-none overscroll-auto">
+                        <div className="justify-center flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-[10100] outline-none overscroll-auto">
                             <div className="relative w-full m-auto max-w-3xl">
                                 <motion.div
                                     className="w-full h-fit grid grid-cols-1 gap-2 border-0 rounded-lg shadow-lg relative bg-white outline-none focus:outline-none"
@@ -249,13 +251,13 @@ export default function SubjectCard(prop: any) {
                                             <p className="font-bold">รายละเอียด</p>
                                             <div className="grid grid-cols-2 sm:grid-cols-4 text-sm">
                                                 <p>ภาคการศึกษา</p>
-                                                <p>{data.eduTerm + "/" + data.eduYear}</p>
+                                                <p className="text-gray-700">{data.eduTerm + "/" + data.eduYear}</p>
                                                 <p>ภาควิชา</p>
-                                                <p>{data.deptNameThai}</p>
+                                                <p className="text-gray-700">{data.deptNameThai}</p>
                                                 <p>คณะ</p>
-                                                <p>{data.facNameThai}</p>
+                                                <p className="text-gray-700">{data.facNameThai}</p>
                                                 <p>วิทยาเขต</p>
-                                                <p>{data.campusNameThai}</p>
+                                                <p className="text-gray-700">{data.campusNameThai}</p>
                                             </div>
                                         </div>
 
@@ -276,11 +278,10 @@ export default function SubjectCard(prop: any) {
                                                         initial={{
                                                             y: -10,
                                                             opacity: 0,
-                                                     }}
+                                                        }}
                                                         animate={{
                                                             y: 0,
                                                             opacity: 1,
-                                                            scale: 1,
                                                             transition: {
                                                                 ease: "backOut",
                                                                 duration: 0.3,
@@ -292,7 +293,7 @@ export default function SubjectCard(prop: any) {
                                                             // scale: 0.75,
                                                             transition: {
                                                                 ease: "backIn",
-                                                                duration: 0.3,
+                                                                duration: 0.2,
                                                             },
                                                         }}
                                                     >
@@ -305,12 +306,16 @@ export default function SubjectCard(prop: any) {
                                         <div className="pb-3 border-b border-solid">
                                             <p className="font-bold">ข้อมูลจำนวนนักศึกษาที่สนใจ</p>
                                             <p className="text-gray-900 text-xs">
-                                                <BarChart data={subjectStatSerialize} shareStage={shareStage} />
+                                                <BarChart data={subjectStatSerialize} showAlert={showAlert} />
                                             </p>
                                         </div>
 
                                         <div className="pb-3 border-b border-solid">
                                             <p className="font-bold">ความคิดเห็นต่อรายวิชา</p>
+                                            <button onClick={() => setShowComment(!showComment)}>ดูความคิดเห็น</button>
+                                            <AnimatePresence>
+                                                {showComment && <CommentModal showComment={showComment} setShowComment={setShowComment} />}
+                                            </AnimatePresence>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2">
                                             <p className="font-bold">ตอน</p>
@@ -329,8 +334,8 @@ export default function SubjectCard(prop: any) {
                                                           <SectionCard
                                                               key={key}
                                                               data={[section, dateData, examData, statData]}
-                                                              setShareStage={setShareStage}
-                                                              shareStage={shareStage}
+                                                              setShowAlert={setShowAlert}
+                                                              showAlert={showAlert}
                                                           />
                                                       );
                                                   })
@@ -343,7 +348,7 @@ export default function SubjectCard(prop: any) {
                                             type="button"
                                             onClick={handleCardClick}
                                         >
-                                            Close
+                                            ปิด
                                         </button>
                                     </div>
                                 </motion.div>
@@ -352,6 +357,7 @@ export default function SubjectCard(prop: any) {
                         <div className="opacity-25 fixed inset-0 z-[10000] bg-black"></div>
                     </>
                 )}
+                {!showAlert && <AlertModal showAlert={showAlert} setShowAlert={setShowAlert} handleClose={fetchSubjectStat}/>}
             </AnimatePresence>
         </>
     );

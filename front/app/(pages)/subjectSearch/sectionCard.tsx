@@ -34,7 +34,7 @@ export default function SectionCard(prop: any) {
                 .then((res: any) => res.json())
                 .then((data) => {
                     setIsInterest(data);
-                    prop.setShareStage(!prop.shareStage);
+                    prop.setShowAlert(!prop.showAlert);
                 });
         } catch (e) {
             console.error(e);
@@ -45,14 +45,14 @@ export default function SectionCard(prop: any) {
         try {
             fetch(`${config.apiUrlPrefix}/student/deleteSubjectInterest/${isInterest?._id}`, {
                 method: "POST",
-                mode: "no-cors",
-                headers: {
-                    Accept: "*/*",
-                    "Content-Type": "application/json",
-                },
+                // mode: "no-cors",
+                // headers: {
+                //     Accept: "*/*",
+                //     "Content-Type": "application/json",
+                // },
             }).then((res) => {
                 setIsInterest(null);
-                prop.setShareStage(!prop.shareStage);
+                prop.setShowAlert(!prop.showAlert);
             });
         } catch (e) {
             console.error(e);
@@ -187,7 +187,7 @@ export default function SectionCard(prop: any) {
                             type="button"
                             onClick={handleInterestClick}
                         >
-                            Interest
+                            เพิ่มเข้าในวิชาที่สนใจ
                         </button>
                     ) : (
                         <button
@@ -195,7 +195,7 @@ export default function SectionCard(prop: any) {
                             type="button"
                             onClick={handleRemoveInterestClick}
                         >
-                            Remove From Interest
+                            ลบออกจากวิชาที่สนใจ
                         </button>
                     )
                 ) : (
