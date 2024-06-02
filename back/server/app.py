@@ -9,8 +9,8 @@ from pymongo import MongoClient # type: ignore
 from pymongo.errors import ServerSelectionTimeoutError # type: ignore
 
 from routes_student import router_student
-from routes_subjectinterest import router_subjectinterest
 from routes_comment import router_comment
+from routes_vote import router_vote
 
 config = dotenv_values("./mongo/.env")
 
@@ -65,9 +65,10 @@ def read_root():
 
 app.include_router(router_student, tags=["student"], prefix="/student")
 
-#app.include_router(router_subjectinterest, tags=["SubjectInterest"], prefix="/SubjectInterest")
 
-app.include_router(router_comment, tags=["comment"], prefix="/Comment")
+app.include_router(router_comment, tags=["comment"], prefix="/comment")
+
+app.include_router(router_vote, tags=["vote"], prefix="/vote")
 
 
 if __name__ == "__main__":

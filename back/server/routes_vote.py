@@ -47,8 +47,10 @@ async def find_vote(commentId: PydanticObjectId, request: Request):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Comment with ID {commentId} not found")
 
 @router_vote.post("/", response_description="Create a new Vote", status_code=status.HTTP_201_CREATED, response_model=Vote)
-async def create_vote(request: Request, comment: Vote = Body(...)):
-    vote = jsonable_encoder(comment)
+async def create_vote(request: Request, vote: Vote = Body(...)):
+    vote = jsonable_encoder(vote)
+    vote['_id'] = ObjectId()
+    vote['commentId'] = ObjectId(vote['commentId']) if len(vote['commentId']) else None
     new_vote = request.app.database["Vote"].insert_one(vote)
     created_vote = request.app.database["Vote"].find_one(
         {"_id": new_vote.inserted_id}
