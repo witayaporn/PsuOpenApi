@@ -2,12 +2,58 @@ import { motion } from "framer-motion";
 import { Comment } from "./comment";
 import { useEffect, useState } from "react";
 import config from "@/app/config";
+import { useSession } from "next-auth/react";
+import { verify } from "crypto";
 
 export default function CommentModal(prop: any) {
     // const commentData = prop.comment;
     const subjectId = prop.subjectId;
     const [subjectComment, setSubjectComment] = useState<any>([]);
-    const [studentVote, setStudentVote] = useState<any>([])
+    const [studentVote, setStudentVote] = useState<any>([]);
+    const [studentRegistInfo, setStudentRegistInfo] = useState<any>({});
+    const [newComment, setNewComment] = useState<any>({})
+    const [commentText, setCommentText] = useState<string>("");
+    const { data: session, status } = useSession();
+
+    const handleCommentTextChange = (e: any) => {
+        // console.log(e.target.value)
+        setCommentText(e.target.value);
+    };
+
+    const handleCommentSubmit = (e: any) => {
+        e.preventDefault();
+        // console.log(commentText)
+        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        if (Object.keys(userData).length && status == "authenticated") {
+            const body = {
+                content: commentText,
+                parentId: "",
+                studentId: userData.studentId,
+                studentInfoTH: userData.titleNameThai + userData.studNameThai + " " + userData.studSnameThai,
+                studentInfoEN: userData.studNameEng + " " + userData.studSnameEng,
+                extraInfo: Object.keys(studentRegistInfo).length ? `${studentRegistInfo.eduTerm}/${studentRegistInfo.eduYear}` : "",
+                subjectId: subjectId,
+            };
+            try {
+                fetch(`${config.apiUrlPrefix}/comment`, {
+                    method: "POST",
+                    body: JSON.stringify(body),
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (data) {
+                            // // console.log(data);
+                            // setSubjectComment((subjectComment: any) => [data, ...subjectComment])
+                            setNewComment(data)
+                            setCommentText("")
+                        }
+                    });
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    };
+
     const fetchSubjectComment = () => {
         try {
             fetch(`${config.apiUrlPrefix}/comment/${subjectId}`, {
@@ -55,15 +101,38 @@ export default function CommentModal(prop: any) {
         } catch (e) {
             console.error(e);
         }
-    }
+    };
+
+    const fetchAllStudentRegist = () => {
+        try {
+            fetch("https://api-gateway.psu.ac.th/Test/regist/level2/RegistDataCampus/01/token?eduTerm=*&eduYear=*&offset=0&limit=100", {
+                method: "GET",
+                cache: "force-cache",
+                headers: {
+                    credential: process.env.NEXT_PUBLIC_API_KEY,
+                    token: session?.accessToken,
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    // console.log(data)
+                    const pastRegisted = data.data.filter((subjectRegisted: any) => subjectRegisted.subjectId == subjectId);
+                    setStudentRegistInfo(pastRegisted[0] || {});
+                    // console.log(pastRegisted);
+                });
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     useEffect(() => {
         const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
-        if(userData){
-            fetchStudentVote(userData)
+        if (Object.keys(userData).length && status == "authenticated") {
+            fetchStudentVote(userData);
+            fetchAllStudentRegist();
         }
         fetchSubjectComment();
-
-    }, []);
+    }, [newComment]);
     return (
         <>
             <div className="justify-center flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-[10200] outline-none">
@@ -101,9 +170,9 @@ export default function CommentModal(prop: any) {
                         <div className="flex flex-col max-h-screen md:max-h-[70vh] overflow-y-auto pr-3">
                             {/* {console.log(subjectComment)} */}
                             {subjectComment.length ? (
-                                subjectComment.map((comment: any, key: number) => {
+                                subjectComment.map((comment: any) => {
                                     if (comment.parentId == null) {
-                                        return <Comment key={key} data={[comment, subjectComment, studentVote]} />;
+                                        return <Comment key={comment._id} data={[comment, subjectComment, studentVote]} />;
                                     }
                                 })
                             ) : (
@@ -111,14 +180,17 @@ export default function CommentModal(prop: any) {
                             )}
                         </div>
                         <div className="flex pr-5">
+                            {/* <p className="my-auto text-sm text-gray-400">{Object.keys(studentRegistInfo).length ? "คุณเคยลงทะเบียนวิชานี้" : "คุณไม่เคยลงทะเบียนวิชานี้"}</p> */}
                             <div className="w-8 h-8 rounded-full bg-slate-500"></div>
-                            <form className="flex flex-col w-full bg-slate-200 border-2 border-solid rounded-2xl mx-2">
+                            <form onSubmit={handleCommentSubmit} className="flex flex-col w-full bg-slate-200 border-2 border-solid rounded-2xl mx-2">
                                 <textarea
+                                    value={commentText}
                                     className="w-full h-full text-sm border-none outline-none resize-none bg-transparent rounded-2xl px-3 py-1"
-                                    placeholder="เเสดงความคิดเห็นในชื่อ xxxxxxxxx"
+                                    placeholder={Object.keys(studentRegistInfo).length ? "คุณเคยลงทะเบียนวิชานี้" : "คุณไม่เคยลงทะเบียนวิชานี้"}
+                                    onChange={handleCommentTextChange}
                                 ></textarea>
                                 <div className="flex justify-end">
-                                    <button className="flex w-fit px-3 py-1 text-gray-500 hover:text-blue-800">
+                                    <button type="submit" className="flex w-fit px-3 py-1 text-gray-500 hover:text-blue-800">
                                         <p className="mx-1 my-auto text-md">ส่ง</p>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                                             <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />

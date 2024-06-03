@@ -1,41 +1,37 @@
-import { datetimeToTHstr, timeFormatter } from "@/app/utils/timeUtils";
+import { datetimeToTHstr } from "@/app/utils/timeUtils";
 import config from "@/app/config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export function Comment(prop: any) {
     const data = prop.data[0];
     const allCommentData = prop.data[1];
     const allStudentVote = prop.data[2];
-
     const dateCreated = datetimeToTHstr(data.created);
-    const studentVote = allStudentVote.filter((vote: any) => vote.commentId == data._id);
-    const replies = allCommentData.filter((comment: any) => comment.parentId == data._id);
 
-    const [vote, setVote] = useState<number>(data.vote);
-    const [studentVoteState, setStudentVoteState] = useState<any>(studentVote[0]);
+    const { data: session, status } = useSession();
+    const [vote, setVote] = useState<number>(0);
+    const [studentVoteState, setStudentVoteState] = useState<any>({});
+    const [commentReply, setCommentReply] = useState<any>([])
 
     const handleVoteClick = (voteType: string) => {
         const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
-        // console.log("Click");
-        if (Object.keys(userData).length) {
+        if (Object.keys(userData).length && status == "authenticated") {
             const body = {
                 commentId: data._id,
                 studentId: userData.studentId,
                 subjectId: data.subjectId,
                 voteType: voteType,
             };
-            // console.log(body);
             if (studentVoteState) {
                 if (studentVoteState.voteType != voteType) {
                     try {
                         fetch(`${config.apiUrlPrefix}/vote/update/${studentVoteState._id}`, {
                             method: "POST",
-                            // cache: "force-cache",
                             body: JSON.stringify(body),
                         })
                             .then((res) => res.json())
                             .then((data) => {
-                                // console.log(data);
                                 if (data) {
                                     setVote(voteType == "up" ? vote + 2 : vote - 2);
                                     setStudentVoteState(data);
@@ -62,7 +58,6 @@ export function Comment(prop: any) {
                 try {
                     fetch(`${config.apiUrlPrefix}/vote/`, {
                         method: "POST",
-                        // cache: "force-cache",
                         body: JSON.stringify(body),
                     })
                         .then((res) => res.json())
@@ -79,13 +74,23 @@ export function Comment(prop: any) {
         }
     };
 
+    useEffect(() => {
+        const studentVote = allStudentVote.filter((vote: any) => vote.commentId == data._id);
+        const replies = allCommentData.filter((comment: any) => comment.parentId == data._id);
+
+        setVote(data.vote)
+        setStudentVoteState(studentVote[0])
+        setCommentReply(replies)
+
+    }, [])
+
     return (
         <div className="flex flex-col w-full p-2">
             <div className="flex">
                 <div className="w-8 h-8 rounded-full bg-slate-500 my-auto"></div>
                 <div className="flex flex-col">
-                    <p className="mx-2 text-sm">นายxxxx xxxxxx (64xxxxxxx)</p>
-                    <p className="mx-2 text-xs">{`เคยเรียน xxxxxxxxx`}</p>
+                    <p className="mx-2 text-sm">{`${data?.studentInfoTH} (${data?.studentId})`}</p>
+                    <p className="mx-2 text-[0.65rem]" style={{color: data?.extraInfo.length ? "#0F766E" : "#EA580C"}}>{data?.extraInfo.length ? `เคยลงทะเบียนเรียนวิชานี้ (${data.extraInfo})` : "ไม่เคยลงทะเบียนวิชานี้"}</p>
                 </div>
             </div>
             <div className="px-3 py-3 border-l-2 border-solid">
@@ -102,7 +107,7 @@ export function Comment(prop: any) {
                             stroke-width="1.5"
                             stroke="currentColor"
                             className="size-5 mx-1 hover:text-green-700"
-                            style={studentVoteState ? { color: studentVoteState?.voteType == "up" ? "rgb(21, 128, 61)" : "" } : {}}
+                            style={studentVoteState ? { color: studentVoteState?.voteType == "up" ? "#15803D" : "" } : {}}
                         >
                             <path
                                 stroke-linecap="round"
@@ -111,7 +116,7 @@ export function Comment(prop: any) {
                             />
                         </svg>
                     </button>
-                    <p className="px-2 text-sm border-x" style={{ color: vote > 0 ? "rgb(21, 128, 61)" : vote == 0 ? "" : "rgb(185, 28, 27)" }}>
+                    <p className="px-2 text-sm border-x" style={{ color: vote > 0 ? "#15803D" : vote == 0 ? "" : "#EF4444" }}>
                         {(vote > 0 ? "+" : "") + vote}
                     </p>
                     <button onClick={() => handleVoteClick("down")}>
@@ -122,7 +127,7 @@ export function Comment(prop: any) {
                             stroke-width="1.5"
                             stroke="currentColor"
                             className="size-5 mx-1 hover:text-red-500"
-                            style={studentVoteState ? { color: studentVoteState?.voteType == "down" ? "rgb(239, 68, 68)" : "" } : {}}
+                            style={studentVoteState ? { color: studentVoteState?.voteType == "down" ? "#EF4444" : "" } : {}}
                         >
                             <path
                                 stroke-linecap="round"
@@ -135,8 +140,8 @@ export function Comment(prop: any) {
                 <button className="text-sm px-3">ตอบกลับ</button>
             </div>
             <div className="pl-5">
-                {replies.map((reply: any, key: number) => (
-                    <Comment key={key} data={[reply, allCommentData, allStudentVote]} />
+                {commentReply.map((reply: any) => (
+                    <Comment key={reply._id} data={[reply, allCommentData, allStudentVote]} />
                 ))}
             </div>
         </div>

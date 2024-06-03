@@ -77,6 +77,9 @@ class Comment(BaseModel):
     id: Optional[PydanticObjectId] = Field(alias="_id", default=ObjectId())
     subjectId: str = Field(...)
     studentId: str = Field(...)
+    studentInfoTH: str = Field(default="")
+    studentInfoEN: str = Field(default="")
+    extraInfo: str = Field(default="")
     parentId: Optional[PydanticObjectId] = None
     content: str = Field(...)
     created: datetime = Field(default=datetime.now(tz=timezone(timedelta(hours=7))))
@@ -91,6 +94,8 @@ class Comment(BaseModel):
             "example": {
                 "subjectId": "0022683",
                 "studentId": "6410110123",
+                "studentInfoTH": "นายxxxxx xxxxx",
+                "studentInfoEN": "xxxxxx xxxxx",
                 "parentId": "",
                 "content": "ทดสอบ comment",
                 "voting": [],
@@ -101,6 +106,9 @@ class Comment(BaseModel):
 class CommentUpdate(BaseModel):
     subjectId: Optional[str]
     studentId: Optional[str]
+    studentInfoTH: Optional[str] 
+    studentInfoEN: Optional[str]
+    extraInfo: Optional[str]
     content: Optional[str]
 
     class Config:
@@ -108,6 +116,8 @@ class CommentUpdate(BaseModel):
             "example": {
                 "subjectId": "0022683",
                 "studentId": "6410110123",
+                "studentInfoTH": "นายxxxxx xxxxx",
+                "studentInfoEN": "xxxxxx xxxxx",
                 "content": "ทดสอบ comment",
             }
         }
