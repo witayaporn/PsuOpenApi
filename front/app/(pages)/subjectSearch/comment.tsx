@@ -1,21 +1,25 @@
+import { datetimeToTHstr, timeFormatter } from "@/app/utils/timeUtils";
+
 export function Comment(prop: any) {
+    const data = prop.data[0];
+    const allCommentData = prop.data[1]
+    const dateCreated = datetimeToTHstr(data.created)
+    const replies = allCommentData.filter((comment: any) => comment["parentId"] == data["_id"])
     return (
-        <div
-            className="flex flex-col w-full p-2"
-        >
+        <div className="flex flex-col w-full p-2">
             <div className="flex">
                 <div className="w-8 h-8 rounded-full bg-slate-500 my-auto"></div>
                 <div className="flex flex-col">
                     <p className="mx-2 text-sm">นายxxxx xxxxxx (64xxxxxxx)</p>
-                    <p className="mx-2 text-xs">เคยเรียน xxxxxxxxx</p>
+                    <p className="mx-2 text-xs">{`เคยเรียน xxxxxxxxx`}</p>
                 </div>
             </div>
             <div className="px-3 py-3 border-l-2 border-solid">
                 <p className="text-sm text-gray-700">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisl justo, dignissim ac nunc a, pharetra egestas nibh. Phasellus
-                    sodales, tellus eget vulputate tempor, tellus ipsum interdum odio, quis viverra nulla dui at libero. Vestibulum sem nunc, dapibus
-                    et arcu et, dapibus pretium mauris.
+                    {console.log(data)}
+                    {data?.content}
                 </p>
+                <p className="text-[0.65rem] text-gray-700">{dateCreated}</p>
             </div>
             <div className="flex">
                 <div className="flex border border-gray-400 w-fit p-1 rounded-full">
@@ -26,7 +30,7 @@ export function Comment(prop: any) {
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            className="size-5 hover:text-green-700"
+                            className="size-5 mx-1 hover:text-green-700"
                         >
                             <path
                                 stroke-linecap="round"
@@ -35,7 +39,12 @@ export function Comment(prop: any) {
                             />
                         </svg>
                     </button>
-                    <p className="px-2 font-bold text-sm text-green-700">+12</p>
+                    <p
+                        className="px-2 text-sm border-x"
+                        style={{ color: data.vote > 0 ? "rgb(21, 128, 61)" : data.vote == 0 ? "" : "rgb(185, 28, 27)" }}
+                    >
+                        {(data.vote > 0 ? "+" : "") + data.vote}
+                    </p>
                     <button>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +52,7 @@ export function Comment(prop: any) {
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            className="size-5 hover:text-red-500"
+                            className="size-5 mx-1 hover:text-red-500"
                         >
                             <path
                                 stroke-linecap="round"
@@ -56,14 +65,7 @@ export function Comment(prop: any) {
                 <button className="text-sm px-3">ตอบกลับ</button>
             </div>
             <div className="pl-5">
-                {prop.data && (
-                    <>
-                        <Comment />
-                        <Comment />
-                        <Comment />
-                    </>
-                )}
-                {/* <Comment /> */}
+                {replies.map((reply: any) => <Comment data={[reply, allCommentData]} />)}
             </div>
         </div>
     );

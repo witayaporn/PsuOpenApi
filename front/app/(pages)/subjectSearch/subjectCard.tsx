@@ -30,6 +30,7 @@ export default function SubjectCard(prop: any) {
     });
     const [subjectStat, setSubjectStat] = useState<any[]>([]);
     const [subject, setSubject] = useState<any>();
+    const [subjectComment, setSubjectComment] = useState<any>([]);
 
     const fetchSubjectDetail = () => {
         try {
@@ -135,6 +136,36 @@ export default function SubjectCard(prop: any) {
         }
     };
 
+    const fetchSubjectComment = () => {
+        try {
+            fetch(`${config.apiUrlPrefix}/comment/${data.subjectId}`, {
+                method: "GET",
+                // cache: "force-cache",
+                headers: {
+                    accept: "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    data.sort((commA: any, commB: any) => {
+                        if (commA.vote > commB.vote) {
+                            return -1;
+                        } else if (commA.vote < commB.vote) {
+                            return 1;
+                        } else {
+                            if (commA.created > commB.created) {
+                                return -1;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    });
+                    setSubjectComment(data);
+                });
+        } catch (e) {
+            console.error(e);
+        }
+    };
     // const fetchStudentInterest = () => {
     //     const userData = JSON.parse(sessionStorage.getItem("userData"));
     //     console.log(userData);
@@ -161,7 +192,14 @@ export default function SubjectCard(prop: any) {
         const html = document.getElementsByTagName("html")[0];
         if (!showModal) {
             try {
-                Promise.all([fetchSubjectDetail(), fetchSectionOffer(), fetchSectionClassDate(), fetchSectionExamDate(), fetchSubjectStat()]);
+                Promise.all([
+                    fetchSubjectDetail(),
+                    fetchSectionOffer(),
+                    fetchSectionClassDate(),
+                    fetchSectionExamDate(),
+                    fetchSubjectStat(),
+                    fetchSubjectComment(),
+                ]);
             } catch (e) {
                 console.error(e);
             }
@@ -207,7 +245,7 @@ export default function SubjectCard(prop: any) {
                 </div>
             </a>
             <AnimatePresence>
-                {(showModal && showAlert) && (
+                {showModal && showAlert && (
                     <>
                         <div className="justify-center flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-[10100] outline-none overscroll-auto">
                             <div className="relative w-full m-auto max-w-3xl">
@@ -312,9 +350,15 @@ export default function SubjectCard(prop: any) {
 
                                         <div className="pb-3 border-b border-solid">
                                             <p className="font-bold">ความคิดเห็นต่อรายวิชา</p>
-                                            <button onClick={() => setShowComment(!showComment)}>ดูความคิดเห็น</button>
+                                            <button onClick={() => setShowComment(!showComment)}>{`ดู ${subjectComment.length} ความคิดเห็น`}</button>
                                             <AnimatePresence>
-                                                {showComment && <CommentModal showComment={showComment} setShowComment={setShowComment} />}
+                                                {showComment && (
+                                                    <CommentModal
+                                                        comment={subjectComment}
+                                                        showComment={showComment}
+                                                        setShowComment={setShowComment}
+                                                    />
+                                                )}
                                             </AnimatePresence>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2">
@@ -357,7 +401,7 @@ export default function SubjectCard(prop: any) {
                         <div className="opacity-25 fixed inset-0 z-[10000] bg-black"></div>
                     </>
                 )}
-                {!showAlert && <AlertModal showAlert={showAlert} setShowAlert={setShowAlert} handleClose={fetchSubjectStat}/>}
+                {!showAlert && <AlertModal showAlert={showAlert} setShowAlert={setShowAlert} handleClose={fetchSubjectStat} />}
             </AnimatePresence>
         </>
     );

@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field  # type: ignore
 from pydantic_core import core_schema, PydanticOmit  # type: ignore
 from pydantic.json_schema import GenerateJsonSchema, JsonSchemaValue  # type: ignore
 from bson import ObjectId  # type: ignore
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 
 class _ObjectIdPydanticAnnotation:
@@ -77,10 +77,11 @@ class Comment(BaseModel):
     studentId: str = Field(...)
     parentId: Optional[PydanticObjectId] = None
     content: str = Field(...)
-    created: datetime = Field(datetime.now(tz=timezone.utc))
-    voting: list = Field(...)
+    created: datetime = Field(default = datetime.now(tz=timezone(timedelta(hours=7))))
+    voting: dict = {"upvote": 0, "downvote": 0}
+    vote: int = 0
     # voteInfo: list[Vote] = Field(...)
-    reply: list[PydanticObjectId] = Field(...)
+    # reply: list[PydanticObjectId] = Field(...)
 
     class Config:
         populate_by_name = True
@@ -98,7 +99,6 @@ class CommentUpdate(BaseModel):
     subjectId: Optional[str]
     studentId: Optional[str]
     content: Optional[str]
-    voting: Optional[list]
 
     class Config:
         json_schema_extra = {
@@ -106,7 +106,6 @@ class CommentUpdate(BaseModel):
                 "subjectId": "0022683",
                 "studentId": "6410110123",
                 "content": "ทดสอบ comment",
-                "voting": [],
             }
         }
 
@@ -115,7 +114,7 @@ class Vote(BaseModel):
     studentId: str = Field(...)
     commentId: Optional[PydanticObjectId] = Field(alias="commentId", default=None)
     voteType: str = Field(...)
-    created: datetime = Field(datetime.now(tz=timezone.utc))
+    created: datetime = Field(default = datetime.now())
 
     class Config:
         populate_by_name = True

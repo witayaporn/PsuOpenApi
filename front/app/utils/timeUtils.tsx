@@ -23,6 +23,23 @@ const dateToTHstr = (dateStr: string) => {
     }
 };
 
+const datetimeToTHstr = (dateStr: string) => {
+    try {
+        const date = new Date(dateStr);
+        const dateTHstr = date.toLocaleDateString("th-TH", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+        return dateTHstr;
+    } catch (e) {
+        console.error(e);
+    }
+};
+
+
 const checkTimeOverlap = (
     firstStartT: string,
     firstStopT: string,
@@ -48,4 +65,4 @@ const checkDateTimeOverlap = (
     return firstDate == secondDate && checkTimeOverlap(fStartT, fStopT, sStartT, sStopT);
 };
 
-export { timeFormatter, dateToTHstr, checkTimeOverlap, checkDateTimeOverlap };
+export { timeFormatter, dateToTHstr, datetimeToTHstr, checkTimeOverlap, checkDateTimeOverlap };

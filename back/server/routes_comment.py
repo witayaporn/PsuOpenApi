@@ -2,8 +2,8 @@ from fastapi import APIRouter, Body, Request, Response, HTTPException, status  #
 from fastapi.encoders import jsonable_encoder  # type: ignore
 from typing import List, Optional
 from bson import ObjectId  # type: ignore
-
 from mongo.models import Comment, CommentUpdate
+from datetime import datetime, timezone, timedelta
 
 router_comment = APIRouter()
 
@@ -23,8 +23,9 @@ async def find_comment(subjectId: str, request: Request):
         comments = list(request.app.database["Comment"].find({"subjectId": subjectId}))
 
         for comment in comments:
-            comment["reply"] = []
-            comment["voting"] = {}
+            # comment["reply"] = []
+            # comment["voting"] = {}
+            # comment["vote"] = 0
             # comment["voteInfo"] = list(request.app.database["Vote"].find({'commentId': comment["_id"]}))
             vote = list(request.app.database["Vote"].aggregate(
                     [
@@ -43,13 +44,21 @@ async def find_comment(subjectId: str, request: Request):
                 )
             )
             # print(vote)
-            comment["voting"] = vote
-            # print(type(comment["_id"]))
-            if comment["parentId"]:
-                for parent in comments:
-                    if parent["_id"] == comment["parentId"]:
-                        # print(parent["reply"])
-                        parent["reply"].append(comment["_id"])
+            if(vote):
+                upvote = [upvote["count"] for upvote in vote if upvote["_id"] == "up" ]
+                downvote = [downvote["count"] for downvote in vote if downvote["_id"] == "down"]
+                upvote = upvote[0] if len(upvote) else 0
+                downvote = downvote[0] if len(downvote) else 0
+                
+                comment["voting"] = {"upvote": upvote, "downvote": downvote}
+                comment["vote"] = upvote - downvote
+            # print(upvote)
+            # # print(type(comment["_id"]))
+            # if comment["parentId"]:
+            #     for parent in comments:
+            #         if parent["_id"] == comment["parentId"]:
+            #             # print(parent["reply"])
+            #             parent["reply"].append(comment["_id"])
         # return comments
 
         return comments
@@ -70,6 +79,7 @@ async def find_comment(subjectId: str, request: Request):
 async def create_comment(request: Request):
     comment = jsonable_encoder(await request.json())
     comment["_id"] = ObjectId()
+    comment["created"] = datetime.now()
     comment["parentId"] = (
         ObjectId(comment["parentId"]) if len(comment["parentId"]) else None
     )

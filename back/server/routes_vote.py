@@ -5,8 +5,8 @@ from pydantic import BaseModel, Field  # type: ignore
 from pydantic_core import core_schema, PydanticOmit  # type: ignore
 from pydantic.json_schema import GenerateJsonSchema, JsonSchemaValue  # type: ignore
 from bson import ObjectId  # type: ignore
-
 from mongo.models import Vote, VoteUpdate
+from datetime import datetime, timezone, timedelta
 
 
 class _ObjectIdPydanticAnnotation:
@@ -65,6 +65,7 @@ async def find_vote(commentId: PydanticObjectId, request: Request):
 async def create_vote(request: Request, vote: Vote = Body(...)):
     vote = jsonable_encoder(vote)
     vote["_id"] = ObjectId()
+    vote["created"] = datetime.now()
     vote["commentId"] = ObjectId(vote["commentId"]) if len(vote["commentId"]) else None
     new_vote = request.app.database["Vote"].insert_one(vote)
     created_vote = request.app.database["Vote"].find_one({"_id": new_vote.inserted_id})
