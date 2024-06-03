@@ -91,7 +91,7 @@ export default function PlanPage() {
     useEffect(() => {
         // "use client";
         const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
-        if (userData != null && status == "authenticated") {
+        if (Object.keys(userData).length && status == "authenticated") {
             setClassDate([]);
             fetchStudentInterest(userData);
         }

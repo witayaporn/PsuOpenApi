@@ -27,7 +27,8 @@ async def find_comment(subjectId: str, request: Request):
             # comment["voting"] = {}
             # comment["vote"] = 0
             # comment["voteInfo"] = list(request.app.database["Vote"].find({'commentId': comment["_id"]}))
-            vote = list(request.app.database["Vote"].aggregate(
+            vote = list(
+                request.app.database["Vote"].aggregate(
                     [
                         {
                             "$match": {
@@ -44,12 +45,14 @@ async def find_comment(subjectId: str, request: Request):
                 )
             )
             # print(vote)
-            if(vote):
-                upvote = [upvote["count"] for upvote in vote if upvote["_id"] == "up" ]
-                downvote = [downvote["count"] for downvote in vote if downvote["_id"] == "down"]
+            if vote:
+                upvote = [upvote["count"] for upvote in vote if upvote["_id"] == "up"]
+                downvote = [
+                    downvote["count"] for downvote in vote if downvote["_id"] == "down"
+                ]
                 upvote = upvote[0] if len(upvote) else 0
                 downvote = downvote[0] if len(downvote) else 0
-                
+
                 comment["voting"] = {"upvote": upvote, "downvote": downvote}
                 comment["vote"] = upvote - downvote
             # print(upvote)

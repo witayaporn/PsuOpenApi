@@ -1,10 +1,84 @@
 import { datetimeToTHstr, timeFormatter } from "@/app/utils/timeUtils";
+import config from "@/app/config";
+import { useState } from "react";
 
 export function Comment(prop: any) {
     const data = prop.data[0];
-    const allCommentData = prop.data[1]
-    const dateCreated = datetimeToTHstr(data.created)
-    const replies = allCommentData.filter((comment: any) => comment["parentId"] == data["_id"])
+    const allCommentData = prop.data[1];
+    const allStudentVote = prop.data[2];
+
+    const dateCreated = datetimeToTHstr(data.created);
+    const studentVote = allStudentVote.filter((vote: any) => vote.commentId == data._id);
+    const replies = allCommentData.filter((comment: any) => comment.parentId == data._id);
+
+    const [vote, setVote] = useState<number>(data.vote);
+    const [studentVoteState, setStudentVoteState] = useState<any>(studentVote[0]);
+
+    const handleVoteClick = (voteType: string) => {
+        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        // console.log("Click");
+        if (Object.keys(userData).length) {
+            const body = {
+                commentId: data._id,
+                studentId: userData.studentId,
+                subjectId: data.subjectId,
+                voteType: voteType,
+            };
+            // console.log(body);
+            if (studentVoteState) {
+                if (studentVoteState.voteType != voteType) {
+                    try {
+                        fetch(`${config.apiUrlPrefix}/vote/update/${studentVoteState._id}`, {
+                            method: "POST",
+                            // cache: "force-cache",
+                            body: JSON.stringify(body),
+                        })
+                            .then((res) => res.json())
+                            .then((data) => {
+                                // console.log(data);
+                                if (data) {
+                                    setVote(voteType == "up" ? vote + 2 : vote - 2);
+                                    setStudentVoteState(data);
+                                }
+                            });
+                    } catch (e) {
+                        console.error(e);
+                    }
+                } else {
+                    try {
+                        fetch(`${config.apiUrlPrefix}/vote/delete/${studentVoteState._id}`, {
+                            method: "POST",
+                        }).then((res) => {
+                            if (res.status == 204) {
+                                setVote(voteType == "up" ? vote - 1 : vote + 1);
+                                setStudentVoteState(null);
+                            }
+                        });
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
+            } else {
+                try {
+                    fetch(`${config.apiUrlPrefix}/vote/`, {
+                        method: "POST",
+                        // cache: "force-cache",
+                        body: JSON.stringify(body),
+                    })
+                        .then((res) => res.json())
+                        .then((data) => {
+                            if (data) {
+                                setVote(voteType == "up" ? vote + 1 : vote - 1);
+                                setStudentVoteState(data);
+                            }
+                        });
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        }
+    };
+
     return (
         <div className="flex flex-col w-full p-2">
             <div className="flex">
@@ -15,15 +89,12 @@ export function Comment(prop: any) {
                 </div>
             </div>
             <div className="px-3 py-3 border-l-2 border-solid">
-                <p className="text-sm text-gray-700">
-                    {console.log(data)}
-                    {data?.content}
-                </p>
+                <p className="text-sm text-gray-700">{data?.content}</p>
                 <p className="text-[0.65rem] text-gray-700">{dateCreated}</p>
             </div>
             <div className="flex">
                 <div className="flex border border-gray-400 w-fit p-1 rounded-full">
-                    <button>
+                    <button onClick={() => handleVoteClick("up")}>
                         <svg
                             xmlns="http://www.w2.org/2000/svg"
                             fill="none"
@@ -31,6 +102,7 @@ export function Comment(prop: any) {
                             stroke-width="1.5"
                             stroke="currentColor"
                             className="size-5 mx-1 hover:text-green-700"
+                            style={studentVoteState ? { color: studentVoteState?.voteType == "up" ? "rgb(21, 128, 61)" : "" } : {}}
                         >
                             <path
                                 stroke-linecap="round"
@@ -39,13 +111,10 @@ export function Comment(prop: any) {
                             />
                         </svg>
                     </button>
-                    <p
-                        className="px-2 text-sm border-x"
-                        style={{ color: data.vote > 0 ? "rgb(21, 128, 61)" : data.vote == 0 ? "" : "rgb(185, 28, 27)" }}
-                    >
-                        {(data.vote > 0 ? "+" : "") + data.vote}
+                    <p className="px-2 text-sm border-x" style={{ color: vote > 0 ? "rgb(21, 128, 61)" : vote == 0 ? "" : "rgb(185, 28, 27)" }}>
+                        {(vote > 0 ? "+" : "") + vote}
                     </p>
-                    <button>
+                    <button onClick={() => handleVoteClick("down")}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -53,6 +122,7 @@ export function Comment(prop: any) {
                             stroke-width="1.5"
                             stroke="currentColor"
                             className="size-5 mx-1 hover:text-red-500"
+                            style={studentVoteState ? { color: studentVoteState?.voteType == "down" ? "rgb(239, 68, 68)" : "" } : {}}
                         >
                             <path
                                 stroke-linecap="round"
@@ -65,7 +135,9 @@ export function Comment(prop: any) {
                 <button className="text-sm px-3">ตอบกลับ</button>
             </div>
             <div className="pl-5">
-                {replies.map((reply: any) => <Comment data={[reply, allCommentData]} />)}
+                {replies.map((reply: any, key: number) => (
+                    <Comment key={key} data={[reply, allCommentData, allStudentVote]} />
+                ))}
             </div>
         </div>
     );

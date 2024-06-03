@@ -51,6 +51,7 @@ class Student(BaseModel):
             }
         }
 
+
 class StudentUpdate(BaseModel):
     studentId: Optional[str]
     studentFaculty: Optional[str]
@@ -71,13 +72,14 @@ class StudentUpdate(BaseModel):
             }
         }
 
+
 class Comment(BaseModel):
     id: Optional[PydanticObjectId] = Field(alias="_id", default=ObjectId())
     subjectId: str = Field(...)
     studentId: str = Field(...)
     parentId: Optional[PydanticObjectId] = None
     content: str = Field(...)
-    created: datetime = Field(default = datetime.now(tz=timezone(timedelta(hours=7))))
+    created: datetime = Field(default=datetime.now(tz=timezone(timedelta(hours=7))))
     voting: dict = {"upvote": 0, "downvote": 0}
     vote: int = 0
     # voteInfo: list[Vote] = Field(...)
@@ -95,6 +97,7 @@ class Comment(BaseModel):
             }
         }
 
+
 class CommentUpdate(BaseModel):
     subjectId: Optional[str]
     studentId: Optional[str]
@@ -109,22 +112,31 @@ class CommentUpdate(BaseModel):
             }
         }
 
+
 class Vote(BaseModel):
     id: Optional[PydanticObjectId] = Field(alias="_id", default=ObjectId())
     studentId: str = Field(...)
     commentId: Optional[PydanticObjectId] = Field(alias="commentId", default=None)
+    subjectId: str = Field(...)
     voteType: str = Field(...)
-    created: datetime = Field(default = datetime.now())
+    created: datetime = Field(default=datetime.now())
 
     class Config:
         populate_by_name = True
         json_schema_extra = {
-            "example": {"studentId": "6410110123", "commentId": "", "voteType": "up"}
+            "example": {
+                "studentId": "6410110123",
+                "commentId": "",
+                "sujectId": "",
+                "voteType": "up",
+            }
         }
+
 
 class VoteUpdate(BaseModel):
     studentId: Optional[str]
     commentId: Optional[PydanticObjectId]
+    subjectId: Optional[str]
     voteType: Optional[str]
 
     class Config:
@@ -133,11 +145,13 @@ class VoteUpdate(BaseModel):
             "example": {"studentId": "6410110123", "commentId": "", "voteType": 2}
         }
 
+
 class MyGenerateJsonSchema(GenerateJsonSchema):
     def handle_invalid_for_json_schema(
         self, schema: core_schema.CoreSchema, error_info: str
     ) -> JsonSchemaValue:
         raise PydanticOmit
+
 
 Student.model_json_schema(mode="serialization")
 StudentUpdate.model_json_schema(mode="serialization")

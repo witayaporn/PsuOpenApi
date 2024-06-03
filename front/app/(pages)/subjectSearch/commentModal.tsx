@@ -1,8 +1,69 @@
 import { motion } from "framer-motion";
 import { Comment } from "./comment";
+import { useEffect, useState } from "react";
+import config from "@/app/config";
 
 export default function CommentModal(prop: any) {
-    const commentData = prop.comment;
+    // const commentData = prop.comment;
+    const subjectId = prop.subjectId;
+    const [subjectComment, setSubjectComment] = useState<any>([]);
+    const [studentVote, setStudentVote] = useState<any>([])
+    const fetchSubjectComment = () => {
+        try {
+            fetch(`${config.apiUrlPrefix}/comment/${subjectId}`, {
+                method: "GET",
+                // cache: "only-if-cached",
+                headers: {
+                    accept: "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    data.sort((commA: any, commB: any) => {
+                        if (commA.vote > commB.vote) {
+                            return -1;
+                        } else if (commA.vote < commB.vote) {
+                            return 1;
+                        } else {
+                            if (commA.created > commB.created) {
+                                return -1;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    });
+                    setSubjectComment(data);
+                });
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const fetchStudentVote = (userData: any) => {
+        try {
+            fetch(`${config.apiUrlPrefix}/vote/user/${userData.studentId}?subjectId=${subjectId}`, {
+                method: "GET",
+                // cache: "only-if-cached",
+                headers: {
+                    accept: "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setStudentVote(data);
+                });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    useEffect(() => {
+        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        if(userData){
+            fetchStudentVote(userData)
+        }
+        fetchSubjectComment();
+
+    }, []);
     return (
         <>
             <div className="justify-center flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-[10200] outline-none">
@@ -38,13 +99,16 @@ export default function CommentModal(prop: any) {
                             <p className="w-full font-bold text-lg border-b border-solid">ความคิดเห็นต่อรายวิชา</p>
                         </div>
                         <div className="flex flex-col max-h-screen md:max-h-[70vh] overflow-y-auto pr-3">
-                            {console.log(commentData)}
-                            {commentData.map((comment: any) => {
-                                console.log(comment.parentId)
-                                if (comment.parentId == null) {
-                                    return <Comment data={[comment, commentData]} />;
-                                }
-                            })}
+                            {/* {console.log(subjectComment)} */}
+                            {subjectComment.length ? (
+                                subjectComment.map((comment: any, key: number) => {
+                                    if (comment.parentId == null) {
+                                        return <Comment key={key} data={[comment, subjectComment, studentVote]} />;
+                                    }
+                                })
+                            ) : (
+                                <p className="p-3 m-auto">กำลังโหลดความคิดเห็น...</p>
+                            )}
                         </div>
                         <div className="flex pr-5">
                             <div className="w-8 h-8 rounded-full bg-slate-500"></div>

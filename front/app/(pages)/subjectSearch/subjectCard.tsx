@@ -136,36 +136,6 @@ export default function SubjectCard(prop: any) {
         }
     };
 
-    const fetchSubjectComment = () => {
-        try {
-            fetch(`${config.apiUrlPrefix}/comment/${data.subjectId}`, {
-                method: "GET",
-                // cache: "force-cache",
-                headers: {
-                    accept: "application/json",
-                },
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    data.sort((commA: any, commB: any) => {
-                        if (commA.vote > commB.vote) {
-                            return -1;
-                        } else if (commA.vote < commB.vote) {
-                            return 1;
-                        } else {
-                            if (commA.created > commB.created) {
-                                return -1;
-                            } else {
-                                return 1;
-                            }
-                        }
-                    });
-                    setSubjectComment(data);
-                });
-        } catch (e) {
-            console.error(e);
-        }
-    };
     // const fetchStudentInterest = () => {
     //     const userData = JSON.parse(sessionStorage.getItem("userData"));
     //     console.log(userData);
@@ -350,11 +320,11 @@ export default function SubjectCard(prop: any) {
 
                                         <div className="pb-3 border-b border-solid">
                                             <p className="font-bold">ความคิดเห็นต่อรายวิชา</p>
-                                            <button onClick={() => setShowComment(!showComment)}>{`ดู ${subjectComment.length} ความคิดเห็น`}</button>
+                                            <button onClick={() => setShowComment(!showComment)}>{`ดูความคิดเห็น`}</button>
                                             <AnimatePresence>
                                                 {showComment && (
                                                     <CommentModal
-                                                        comment={subjectComment}
+                                                        subjectId={data.subjectId}
                                                         showComment={showComment}
                                                         setShowComment={setShowComment}
                                                     />

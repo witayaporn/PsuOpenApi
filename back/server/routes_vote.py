@@ -52,7 +52,33 @@ async def find_vote(commentId: PydanticObjectId, request: Request):
         return vote
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Comment with ID {commentId} not found",
+        detail=f"Vote with ID {commentId} not found",
+    )
+
+
+@router_vote.get(
+    "/user/{studentId}",
+    response_description="Get a Vote by Student Id",
+    response_model=List[Vote],
+)
+async def find_vote(studentId: str, request: Request, subjectId: str = None):
+    if studentId is not None and studentId is not None:
+        if (
+            vote := list(
+                request.app.database["Vote"].find(
+                    {"studentId": studentId, "subjectId": subjectId}
+                )
+            )
+        ) is not None:
+            return vote
+    else:
+        if (
+            vote := list(request.app.database["Vote"].find({"studentId": studentId}))
+        ) is not None:
+            return vote
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"Vote with ID {studentId} not found",
     )
 
 
@@ -62,8 +88,8 @@ async def find_vote(commentId: PydanticObjectId, request: Request):
     status_code=status.HTTP_201_CREATED,
     response_model=Vote,
 )
-async def create_vote(request: Request, vote: Vote = Body(...)):
-    vote = jsonable_encoder(vote)
+async def create_vote(request: Request):
+    vote = jsonable_encoder(await request.json())
     vote["_id"] = ObjectId()
     vote["created"] = datetime.now()
     vote["commentId"] = ObjectId(vote["commentId"]) if len(vote["commentId"]) else None
@@ -72,39 +98,36 @@ async def create_vote(request: Request, vote: Vote = Body(...)):
     return created_vote
 
 
-@router_vote.put(
-    "/{commentId}", response_description="Update a Vote", response_model=Vote
+@router_vote.post(
+    "/update/{voteId}", response_description="Update a Vote", response_model=Vote
 )
-async def update_vote(
-    commentId: PydanticObjectId, request: Request, vote: VoteUpdate = Body(...)
-):
-    vote = {k: v for k, v in vote.dict().items() if v is not None}
-    if len(vote) >= 1:
+async def update_vote(voteId: PydanticObjectId, request: Request):
+    vote = jsonable_encoder(await request.json())
+    vote["commentId"] = ObjectId(vote["commentId"])
+    if len(vote):
         update_result = request.app.database["Vote"].update_one(
-            {"commentId": commentId}, {"$set": vote}
+            {"_id": voteId}, {"$set": vote}
         )
-        if update_result.modified_count == 0:
+        if update_result.matched_count == 0:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Vote with ID {commentId} not found",
+                detail=f"Vote with ID {voteId} not found",
             )
-
+        # print(update_result)
     if (
-        existing_vote := request.app.database["Vote"].find_one({"commentId": commentId})
+        existing_vote := request.app.database["Vote"].find_one({"_id": voteId})
     ) is not None:
         return existing_vote
 
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Vote with ID {commentId} not found",
+        detail=f"Vote with ID {voteId} not found",
     )
 
 
-@router_vote.delete("/{commentId}", response_description="Delete a Vote")
-async def delete_vote(
-    commentId: PydanticObjectId, request: Request, response: Response
-):
-    delete_result = request.app.database["Vote"].delete_one({"commentId": commentId})
+@router_vote.post("/delete/{voteId}", response_description="Delete a Vote")
+async def delete_vote(voteId: PydanticObjectId, request: Request, response: Response):
+    delete_result = request.app.database["Vote"].delete_one({"_id": voteId})
 
     if delete_result.deleted_count == 1:
         response.status_code = status.HTTP_204_NO_CONTENT
@@ -112,5 +135,5 @@ async def delete_vote(
 
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Vote with ID {commentId} not found",
+        detail=f"Vote with ID {voteId} not found",
     )

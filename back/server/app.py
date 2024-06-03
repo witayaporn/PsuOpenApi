@@ -62,6 +62,7 @@ app = FastAPI(lifespan=lifespan)
 def read_root():
     return {"Hello": "World"}
 
+
 app.include_router(router_student, tags=["student"], prefix="/student")
 
 app.include_router(router_comment, tags=["comment"], prefix="/comment")
