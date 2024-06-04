@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import config from "@/app/config";
 import { useSession } from "next-auth/react";
 import { verify } from "crypto";
+import CommentSkeleton from "./commentSkeleton";
 
 export default function CommentModal(prop: any) {
     // const commentData = prop.comment;
@@ -11,7 +12,7 @@ export default function CommentModal(prop: any) {
     const [subjectComment, setSubjectComment] = useState<any>([]);
     const [studentVote, setStudentVote] = useState<any>([]);
     const [studentRegistInfo, setStudentRegistInfo] = useState<any>({});
-    const [newComment, setNewComment] = useState<any>({})
+    const [newComment, setNewComment] = useState<any>({});
     const [commentText, setCommentText] = useState<string>("");
     const { data: session, status } = useSession();
 
@@ -44,8 +45,8 @@ export default function CommentModal(prop: any) {
                         if (data) {
                             // // console.log(data);
                             // setSubjectComment((subjectComment: any) => [data, ...subjectComment])
-                            setNewComment(data)
-                            setCommentText("")
+                            setNewComment(data);
+                            setCommentText("");
                         }
                     });
             } catch (e) {
@@ -176,7 +177,7 @@ export default function CommentModal(prop: any) {
                                     }
                                 })
                             ) : (
-                                <p className="p-3 m-auto">กำลังโหลดความคิดเห็น...</p>
+                                <CommentSkeleton />
                             )}
                         </div>
                         <div className="flex pr-5">
