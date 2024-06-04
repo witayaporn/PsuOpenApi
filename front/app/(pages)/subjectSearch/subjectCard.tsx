@@ -320,7 +320,7 @@ export default function SubjectCard(prop: any) {
 
                                         <div className="pb-3 border-b border-solid">
                                             <p className="font-bold">ความคิดเห็นต่อรายวิชา</p>
-                                            <button onClick={() => setShowComment(!showComment)}>{`ดูความคิดเห็น`}</button>
+                                            <button className="w-full m-auto" onClick={() => setShowComment(!showComment)}>{`ดูความคิดเห็น`}</button>
                                             <AnimatePresence>
                                                 {showComment && (
                                                     <CommentModal

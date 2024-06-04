@@ -4,15 +4,17 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 export function Comment(prop: any) {
-    const data = prop.data[0];
-    const allCommentData = prop.data[1];
-    const allStudentVote = prop.data[2];
+    const data = prop.data;
+    // const allCommentData = prop.comments ? prop.comments : [];
+    // const allStudentVote = prop.votes ? prop.votes : [];
     const dateCreated = datetimeToTHstr(data.created);
 
     const { data: session, status } = useSession();
+    const [comments, setComments] = useState<any>(prop.comments || []);
+    const [votes, setVotes] = useState<any>(prop.votes || []);
     const [vote, setVote] = useState<number>(0);
     const [studentVoteState, setStudentVoteState] = useState<any>({});
-    const [commentReply, setCommentReply] = useState<any>([])
+    const [commentReply, setCommentReply] = useState<any>([]);
 
     const handleVoteClick = (voteType: string) => {
         const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
@@ -75,22 +77,23 @@ export function Comment(prop: any) {
     };
 
     useEffect(() => {
-        const studentVote = allStudentVote.filter((vote: any) => vote.commentId == data._id);
-        const replies = allCommentData.filter((comment: any) => comment.parentId == data._id);
+        const studentVote = votes.filter((vote: any) => vote.commentId == data._id);
+        const replies = comments.filter((comment: any) => comment.parentId == data._id);
 
-        setVote(data.vote)
-        setStudentVoteState(studentVote[0])
-        setCommentReply(replies)
-
-    }, [])
+        setVote(data.vote);
+        setStudentVoteState(studentVote[0]);
+        setCommentReply(replies);
+    }, []);
 
     return (
         <div className="flex flex-col w-full p-2">
             <div className="flex">
-                <div className="w-8 h-8 rounded-full bg-slate-500 my-auto"></div>
+                <div className="min-w-8 h-8 rounded-full bg-slate-500 my-auto"></div>
                 <div className="flex flex-col">
                     <p className="mx-2 text-sm">{`${data?.studentInfoTH} (${data?.studentId})`}</p>
-                    <p className="mx-2 text-[0.65rem]" style={{color: data?.extraInfo.length ? "#0F766E" : "#EA580C"}}>{data?.extraInfo.length ? `เคยลงทะเบียนเรียนวิชานี้ (${data.extraInfo})` : "ไม่เคยลงทะเบียนวิชานี้"}</p>
+                    <p className="mx-2 text-[0.65rem]" style={{ color: data?.extraInfo.length ? "#0F766E" : "#EA580C" }}>
+                        {data?.extraInfo.length ? `เคยลงทะเบียนเรียนวิชานี้ (${data.extraInfo})` : "ไม่เคยลงทะเบียนวิชานี้"}
+                    </p>
                 </div>
             </div>
             <div className="px-3 py-3 border-l-2 border-solid">
@@ -137,11 +140,13 @@ export function Comment(prop: any) {
                         </svg>
                     </button>
                 </div>
-                <button className="text-sm px-3">ตอบกลับ</button>
+                <button className="text-sm px-3" onClick={() => prop.onReply(data)}>
+                    ตอบกลับ
+                </button>
             </div>
             <div className="pl-5">
                 {commentReply.map((reply: any) => (
-                    <Comment key={reply._id} data={[reply, allCommentData, allStudentVote]} />
+                    <Comment key={reply._id} data={reply} comments={comments} votes={votes} onReply={prop.onReply} />
                 ))}
             </div>
         </div>
