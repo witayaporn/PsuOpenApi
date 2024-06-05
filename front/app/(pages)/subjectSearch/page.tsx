@@ -120,8 +120,7 @@ export default function SubjectSearchPage() {
                         <SearchBar onSubmit={handleSubmit} onChange={handleSearchChange} />
                     </div>
                     <div className="flex justify-end space-x-2">
-                        <div className="col-span-8 flex space-x-2 overflow-x-hidden"></div>
-                        <div className="col-span-2">
+                        <div className="w-[5.75rem]">
                             <select
                                 id="term"
                                 onChange={handleTermSelect}
@@ -131,10 +130,9 @@ export default function SubjectSearchPage() {
                                 <option value="1/64">1/64</option>
                                 <option value="3/63">3/63</option>
                                 <option value="2/63">2/63</option>
-                                <option value="1/63">1/63</option>
                             </select>
                         </div>
-                        <div className="col-span-2">
+                        <div className="">
                             <button className="h-full p-[5px] bg-gray-50 border border-black rounded-lg" onClick={() => setShowModal(!showModal)}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -179,7 +177,7 @@ export default function SubjectSearchPage() {
                                                         },
                                                     }}
                                                 >
-                                                    <div className="items-start justify-between overflow-hidden p-5 border-b border-solid rounded-t">
+                                                    <div className="items-start justify-between overflow-hidden p-5 border-b border-solid">
                                                         <div className="col-span-9 flex flex-wrap space-x-2 space-y-1">
                                                             {selectFaculty.map((fac: any, key: number) => (
                                                                 <div key={key}>
@@ -204,7 +202,7 @@ export default function SubjectSearchPage() {
                                                             ))}
                                                         </div>
                                                     </div>
-                                                    <div className="items-start justify-between overflow-hidden p-5 border-b border-solid rounded-t">
+                                                    <div className="items-start justify-between overflow-hidden p-5">
                                                         <div className="col-span-9 flex flex-wrap space-x-2 space-y-1">
                                                             {faculty.map((fac: any, key: number) => (
                                                                 <div>
@@ -235,7 +233,7 @@ export default function SubjectSearchPage() {
                                                             type="button"
                                                             onClick={() => setShowModal(!showModal)}
                                                         >
-                                                            Close
+                                                            ปิด
                                                         </button>
                                                     </div>
                                                 </motion.div>
@@ -250,7 +248,7 @@ export default function SubjectSearchPage() {
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-20">
-                {courseData ? courseData.map((course, key) => <SubjectCard key={key} data={course} />) : <p>ไม่มีข้อมูล</p>}
+                {courseData ? courseData.map((course, key) => <SubjectCard key={course.subjectId + "" + key} data={course} />) : <p>ไม่มีข้อมูล</p>}
             </div>
         </section>
     );

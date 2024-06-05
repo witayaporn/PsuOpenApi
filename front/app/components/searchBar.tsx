@@ -9,10 +9,10 @@ export default function SearchBar({ ...props }) {
                 ></input>
                 <button
                     type="submit"
-                    className="w-full h-full bg-blue-950 text-white border hover:bg-white hover:text-blue-950 hover:border-blue-950 py-2 px-4 rounded-xl transition-all"
+                    className="w-full h-full bg-blue-950 text-white border hover:bg-white hover:text-blue-950 hover:border-blue-950 rounded-xl transition-all"
                 >
                     <svg
-                        className="w-6 h-6 mx-auto sm:hidden"
+                        className="w-6 h-6 m-auto sm:hidden"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"

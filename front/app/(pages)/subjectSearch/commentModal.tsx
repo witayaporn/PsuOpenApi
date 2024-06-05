@@ -147,7 +147,7 @@ export default function CommentModal(prop: any) {
             <div className="justify-center flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-[10200] outline-none">
                 <div className="relative w-full md:w-4/5 lg:w-2/4 xl:w-2/5 m-auto">
                     <motion.div
-                        className="w-full h-screen md:h-[70vh] lg:h-[90vh] grid grid-cols-1 gap-2 p-5 pr-0 border-0 rounded-lg shadow-lg relative bg-white outline-none focus:outline-none"
+                        className="flex flex-col w-full h-screen md:h-[70vh] lg:h-[90vh] md:max-h-[70vh] lg:max-h-[90vh] pt-5 pr-0 border-0 rounded-lg shadow-lg relative bg-white outline-none focus:outline-none"
                         initial={{ opacity: 0, scale: 0.75 }}
                         animate={{
                             opacity: 1,
@@ -166,7 +166,7 @@ export default function CommentModal(prop: any) {
                             },
                         }}
                     >
-                        <div className="flex pr-5">
+                        <div className="flex h-fit px-5 pb-2 border-b-2 border-solid">
                             <button
                                 className="absolute top-1 right-0 px-2 text-gray-500 hover:bg-gray-300 hover:text-red-500 rounded-lg font-bold uppercase text-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
@@ -174,9 +174,9 @@ export default function CommentModal(prop: any) {
                             >
                                 X
                             </button>
-                            <p className="w-full font-bold text-lg border-b-2 border-solid">ความคิดเห็นต่อรายวิชา</p>
+                            <p className="w-full font-bold text-lg ">ความคิดเห็นต่อรายวิชา</p>
                         </div>
-                        <div className="flex flex-col max-h-screen md:max-h-[70vh] overflow-y-auto pr-3">
+                        <div className="flex flex-col h-full overflow-y-auto px-3">
                             {/* {console.log(subjectComment)} */}
                             {subjectComment.length ? (
                                 subjectComment.map((comment: any) => {
@@ -200,11 +200,24 @@ export default function CommentModal(prop: any) {
                                 </>
                             )}
                         </div>
-                        <div className="flex flex-col pr-5">
-                            <div className="w-full pt-1 border-t-2 border-solid"></div>
+                        <div className="flex flex-col h-fit px-3 pb-5 bg-slate-50 rounded-b-lg border-t-2 border-solid border-gray-300">
                             {/* <p className="my-auto text-sm text-gray-400">{Object.keys(studentRegistInfo).length ? "คุณเคยลงทะเบียนวิชานี้" : "คุณไม่เคยลงทะเบียนวิชานี้"}</p> */}
-                            <div>{Object.keys(repliedComment).length ? <Comment data={repliedComment} votes={studentVote} /> : null}</div>
-                            <div className="flex">
+                            <div>
+                                {Object.keys(repliedComment).length ? (
+                                    <div>
+                                        <button
+                                            className="absolute ml-auto w-fit right-0 px-2 mt-1 mr-1 border-2 border-slate-200 text-gray-500 font-bold text-sm hover:bg-gray-200 hover:border-gray-200 rounded-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+                                            type="button"
+                                            onClick={() => setRepliedComment({})}
+                                        >
+                                            <p className="hidden md:flex">ยกเลิก</p>
+                                            <p className="md:hidden">X</p>
+                                        </button>
+                                        <Comment data={repliedComment} votes={studentVote} />
+                                    </div>
+                                ) : null}
+                            </div>
+                            <div className="flex mt-2 md:mt-2">
                                 <div className="min-w-8 h-8 rounded-full bg-slate-500"></div>
                                 <form
                                     onSubmit={handleCommentSubmit}
@@ -217,7 +230,7 @@ export default function CommentModal(prop: any) {
                                         onChange={handleCommentTextChange}
                                     ></textarea>
                                     <div className="flex justify-end">
-                                        <button type="submit" className="flex w-fit px-3 py-1 text-gray-500 hover:text-blue-800">
+                                        <button type="submit" className="flex w-fit px-3 py-1 text-gray-600 hover:text-blue-800">
                                             <p className="mx-1 my-auto text-md">ส่ง</p>
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                                                 <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
