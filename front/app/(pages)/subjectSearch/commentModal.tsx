@@ -3,7 +3,6 @@ import { Comment } from "./comment";
 import { useEffect, useState } from "react";
 import config from "@/app/config";
 import { useSession } from "next-auth/react";
-import { verify } from "crypto";
 import CommentSkeleton from "./commentSkeleton";
 
 export default function CommentModal(prop: any) {
@@ -62,6 +61,14 @@ export default function CommentModal(prop: any) {
         // console.log(repliedCommentData);
         setRepliedComment(repliedCommentData);
     };
+
+    const handleEditComment = () => {
+        console.log("Edit Commet")
+    }
+
+    const handleDeleteComment = () => {
+        console.log("Delete Comment")
+    }
 
     const fetchSubjectComment = () => {
         try {
@@ -188,6 +195,8 @@ export default function CommentModal(prop: any) {
                                                 comments={subjectComment}
                                                 votes={studentVote}
                                                 onReply={handleReplyComment}
+                                                onEdit={handleEditComment}
+                                                onDelete={handleDeleteComment}
                                             />
                                         );
                                     }
@@ -206,7 +215,7 @@ export default function CommentModal(prop: any) {
                                 {Object.keys(repliedComment).length ? (
                                     <div>
                                         <button
-                                            className="absolute ml-auto w-fit right-0 px-2 mt-1 mr-1 border-2 border-slate-200 text-gray-500 font-bold text-sm hover:bg-gray-200 hover:border-gray-200 rounded-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+                                            className="absolute ml-auto w-fit right-0 px-2 mt-1 mr-1 border-2 border-slate-200 text-gray-500 text-sm hover:bg-gray-200 hover:border-gray-200 rounded-lg outline-none focus:outline-none ease-linear transition-all duration-150"
                                             type="button"
                                             onClick={() => setRepliedComment({})}
                                         >

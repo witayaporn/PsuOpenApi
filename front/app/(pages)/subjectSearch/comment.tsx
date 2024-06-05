@@ -2,6 +2,7 @@ import { datetimeToTHstr } from "@/app/utils/timeUtils";
 import config from "@/app/config";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { AnimatePresence, motion } from "framer-motion";
 
 export function Comment(prop: any) {
     const data = prop.data;
@@ -10,14 +11,15 @@ export function Comment(prop: any) {
     const dateCreated = datetimeToTHstr(data.created);
 
     const { data: session, status } = useSession();
+    const [userData, setUserData] = useState<any>(JSON.parse(sessionStorage.getItem("userData") || "{}"));
     const [comments, setComments] = useState<any>(prop.comments || []);
     const [votes, setVotes] = useState<any>(prop.votes || []);
     const [vote, setVote] = useState<number>(0);
     const [studentVoteState, setStudentVoteState] = useState<any>({});
     const [commentReply, setCommentReply] = useState<any>([]);
+    const [commentOption, showCommentOption] = useState<boolean>(false);
 
     const handleVoteClick = (voteType: string) => {
-        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
         if (Object.keys(userData).length && status == "authenticated") {
             const body = {
                 commentId: data._id,
@@ -86,7 +88,10 @@ export function Comment(prop: any) {
     }, []);
 
     return (
-        <div className="flex flex-col w-full p-2">
+        <div
+            className="flex flex-col w-full my-1 px-2 py-1 rounded-lg"
+            style={{ backgroundColor: Object.keys(userData).length && userData.studentId == data?.studentId && prop.onReply ? "#F1F5F9" : "" }}
+        >
             <div className="flex">
                 <div className="min-w-8 h-8 rounded-full bg-slate-500 my-auto"></div>
                 <div className="flex flex-col">
@@ -101,7 +106,7 @@ export function Comment(prop: any) {
                 <p className="text-[0.65rem] text-gray-700">{dateCreated}</p>
             </div>
             <div className="flex">
-                <div className="flex border border-gray-400 w-fit p-1 rounded-full">
+                <div className="flex bg-white border border-gray-400 w-fit p-1 rounded-full">
                     <button onClick={() => handleVoteClick("up")}>
                         <svg
                             xmlns="http://www.w2.org/2000/svg"
@@ -119,7 +124,7 @@ export function Comment(prop: any) {
                             />
                         </svg>
                     </button>
-                    <p className="px-2 text-sm border-x" style={{ color: vote > 0 ? "#15803D" : vote == 0 ? "" : "#EF4444" }}>
+                    <p className="px-2 text-sm m-auto border-x" style={{ color: vote > 0 ? "#15803D" : vote == 0 ? "" : "#EF4444" }}>
                         {(vote > 0 ? "+" : "") + vote}
                     </p>
                     <button onClick={() => handleVoteClick("down")}>
@@ -140,13 +145,96 @@ export function Comment(prop: any) {
                         </svg>
                     </button>
                 </div>
-                <button className="text-sm px-3" onClick={() => prop.onReply(data)}>
-                    ตอบกลับ
-                </button>
+
+                {prop.onReply ? (
+                    <button
+                        className="text-sm mx-2 px-2 p-1 bg-white border border-gray-400 rounded-full hover:bg-gray-300 ease-linear transition-all"
+                        onClick={() => prop.onReply(data)}
+                    >
+                        ตอบกลับ
+                    </button>
+                ) : (
+                    <p className="text-sm px-3 my-auto text-gray-600">กำลังตอบกลับ</p>
+                )}
+
+                {Object.keys(userData).length && userData.studentId == data?.studentId && prop.onReply && (
+                    <div
+                        className="w-fit text-sm bg-gray-200 rounded-full ease-linear transition-all"
+                        // style={{ borderWidth: commentOption ? "1px 0px" : "0px 0px" }}
+                    >
+                        <button
+                            className="text-sm px-2 p-1 bg-white border border-gray-400 rounded-full hover:bg-gray-300 ease-linear transition-all"
+                            onClick={() => showCommentOption(!commentOption)}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="size-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                                />
+                            </svg>
+                        </button>
+                        <button
+                            className="text-sm px-2 p-1 rounded-full hover:bg-gray-300 hover:text-blue-500 ease-linear transition-all"
+                            style={{ display: commentOption ? "" : "none" }}
+                            onClick={() => prop.onEdit()}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.3"
+                                stroke="currentColor"
+                                className="size-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                                />
+                            </svg>
+                        </button>
+                        <button
+                            className="text-sm px-2 p-1 rounded-full hover:bg-gray-300 hover:text-red-500 ease-linear transition-all"
+                            style={{ display: commentOption ? "" : "none" }}
+                            onClick={() => prop.onDelete()}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.3"
+                                stroke="currentColor"
+                                className="size-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                )}
             </div>
             <div className="pl-5">
                 {commentReply.map((reply: any) => (
-                    <Comment key={reply._id} data={reply} comments={comments} votes={votes} onReply={prop.onReply} />
+                    <Comment
+                        key={reply._id}
+                        data={reply}
+                        comments={comments}
+                        votes={votes}
+                        onReply={prop.onReply}
+                        onEdit={prop.onEdit}
+                        onDelete={prop.onDelete}
+                    />
                 ))}
             </div>
         </div>

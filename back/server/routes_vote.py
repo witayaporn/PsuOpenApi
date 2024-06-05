@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Body, Request, Response, HTTPException, status  # type: ignore
 from fastapi.encoders import jsonable_encoder  # type: ignore
-from typing import Annotated, Any, Callable, List, Optional
+from typing import Annotated, Any, Callable, List
 from pydantic import BaseModel, Field  # type: ignore
 from pydantic_core import core_schema, PydanticOmit  # type: ignore
-from pydantic.json_schema import GenerateJsonSchema, JsonSchemaValue  # type: ignore
 from bson import ObjectId  # type: ignore
 from mongo.models import Vote, VoteUpdate
 from datetime import datetime, timezone, timedelta

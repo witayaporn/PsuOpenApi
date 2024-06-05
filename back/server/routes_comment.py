@@ -1,16 +1,35 @@
 from fastapi import APIRouter, Body, Request, Response, HTTPException, status  # type: ignore
 from fastapi.encoders import jsonable_encoder  # type: ignore
-from typing import List, Optional
+from typing import Annotated, Any, Callable, List
+from pydantic_core import core_schema, PydanticOmit  # type: ignore
 from bson import ObjectId  # type: ignore
 from mongo.models import Comment, CommentUpdate
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
+
+
+class _ObjectIdPydanticAnnotation:
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls,
+        _source_type: Any,
+        _handler: Callable[[Any], core_schema.CoreSchema],
+    ) -> core_schema.CoreSchema:
+        def validate_from_str(input_value: str) -> ObjectId:
+            return ObjectId(input_value)
+
+        return core_schema.union_schema(
+            [
+                # check if it's an instance first before doing any further work
+                core_schema.is_instance_schema(ObjectId),
+                core_schema.no_info_plain_validator_function(validate_from_str),
+            ],
+            serialization=core_schema.to_string_ser_schema(),
+        )
+
+
+PydanticObjectId = Annotated[ObjectId, _ObjectIdPydanticAnnotation]
 
 router_comment = APIRouter()
-
-# @router_comment.get("/", response_description="List all Comment", response_model=List[Comment])
-# async def list_comment(request: Request):
-#     comment = list(request.app.database["Comment"].find())
-#     return comment
 
 
 @router_comment.get(
@@ -73,6 +92,54 @@ async def find_comment(subjectId: str, request: Request):
     )
 
 
+@router_comment.get(
+    "/student/{studentId}",
+    response_description="Get a Comment by studentId",
+    response_model=List[Comment],
+)
+async def find_student_comment(studentId: str, request: Request):
+    try:
+        comments = list(request.app.database["Comment"].find({"studentId": studentId}))
+
+        for comment in comments:
+            vote = list(
+                request.app.database["Vote"].aggregate(
+                    [
+                        {
+                            "$match": {
+                                "commentId": comment["_id"],
+                            }
+                        },
+                        {
+                            "$group": {
+                                "_id": "$voteType",
+                                "count": {"$sum": 1},
+                            }
+                        },
+                    ]
+                )
+            )
+            # print(vote)
+            if vote:
+                upvote = [upvote["count"] for upvote in vote if upvote["_id"] == "up"]
+                downvote = [
+                    downvote["count"] for downvote in vote if downvote["_id"] == "down"
+                ]
+                upvote = upvote[0] if len(upvote) else 0
+                downvote = downvote[0] if len(downvote) else 0
+
+                comment["voting"] = {"upvote": upvote, "downvote": downvote}
+                comment["vote"] = upvote - downvote
+
+        return comments
+    except BaseException:
+        pass
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"Comment with studentID {studentId} not found",
+    )
+
+
 @router_comment.post(
     "/",
     response_description="Create a new Comment",
@@ -93,40 +160,42 @@ async def create_comment(request: Request):
     return created_comment
 
 
-@router_comment.put(
-    "/{subjectId}", response_description="Update a Comment", response_model=Comment
+@router_comment.post(
+    "/update/{commentId}",
+    response_description="Update a Comment",
+    response_model=CommentUpdate,
 )
-async def update_comment(
-    subjectId: str, request: Request, comment: CommentUpdate = Body(...)
-):
-    comment = {k: v for k, v in comment.dict().items() if v is not None}
-    if len(comment) >= 1:
+async def update_comment(commentId: PydanticObjectId, request: Request):
+    # comment = {k: v for k, v in comment.dict().items() if v is not None}
+    comment = jsonable_encoder(await request.json())
+    # comment = ObjectId(comment["commentId"])
+    if len(comment):
         update_result = request.app.database["Comment"].update_one(
-            {"subjectId": subjectId}, {"$set": comment}
+            {"_id": commentId}, {"$set": comment}
         )
 
         if update_result.modified_count == 0:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Comment with ID {subjectId} not found",
+                detail=f"Comment with ID {commentId} not found",
             )
 
     if (
-        existing_comment := request.app.database["Comment"].find_one(
-            {"subjectId": subjectId}
-        )
+        existing_comment := request.app.database["Comment"].find_one({"_id": commentId})
     ) is not None:
         return existing_comment
 
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Comment with ID {subjectId} not found",
+        detail=f"Comment with ID {commentId} not found",
     )
 
 
-@router_comment.delete("/{subjectId}", response_description="Delete a Comment")
-async def delete_comment(subjectId: str, request: Request, response: Response):
-    delete_result = request.app.database["Comment"].delete_one({"subjectId": subjectId})
+@router_comment.post("/delete/{commentId}", response_description="Delete a Comment")
+async def delete_comment(
+    commentId: PydanticObjectId, request: Request, response: Response
+):
+    delete_result = request.app.database["Comment"].delete_one({"_id": commentId})
 
     if delete_result.deleted_count == 1:
         response.status_code = status.HTTP_204_NO_CONTENT
@@ -134,5 +203,5 @@ async def delete_comment(subjectId: str, request: Request, response: Response):
 
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Comment with ID {subjectId} not found",
+        detail=f"Comment with ID {commentId} not found",
     )

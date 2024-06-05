@@ -106,7 +106,7 @@ class Comment(BaseModel):
 class CommentUpdate(BaseModel):
     subjectId: Optional[str]
     studentId: Optional[str]
-    studentInfoTH: Optional[str] 
+    studentInfoTH: Optional[str]
     studentInfoEN: Optional[str]
     extraInfo: Optional[str]
     content: Optional[str]
