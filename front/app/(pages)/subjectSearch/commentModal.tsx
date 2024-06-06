@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import config from "@/app/config";
 import { useSession } from "next-auth/react";
 import CommentSkeleton from "./commentSkeleton";
+import { encryptStorage } from "@/app/utils/encryptStorage";
 
 export default function CommentModal(prop: any) {
     // const commentData = prop.comment;
@@ -24,7 +25,7 @@ export default function CommentModal(prop: any) {
     const handleCommentSubmit = (e: any) => {
         e.preventDefault();
         // console.log(commentText)
-        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
         if (Object.keys(userData).length && status == "authenticated") {
             const body = {
                 content: commentText,
@@ -62,8 +63,9 @@ export default function CommentModal(prop: any) {
         setRepliedComment(repliedCommentData);
     };
 
-    const handleEditComment = () => {
+    const handleEditComment = (editedComment: any) => {
         console.log("Edit Commet")
+        setCommentText(editedComment.content)
     }
 
     const handleDeleteComment = () => {
@@ -142,7 +144,7 @@ export default function CommentModal(prop: any) {
     };
 
     useEffect(() => {
-        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
         if (Object.keys(userData).length && status == "authenticated") {
             fetchStudentVote(userData);
             fetchAllStudentRegist();

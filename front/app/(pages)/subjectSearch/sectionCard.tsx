@@ -2,6 +2,7 @@ import { timeFormatter, dateToTHstr } from "@/app/utils/timeUtils";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import config from "@/app/config";
+import { encryptStorage } from "@/app/utils/encryptStorage";
 
 export default function SectionCard(prop: any) {
     const data = prop.data[0];
@@ -16,7 +17,7 @@ export default function SectionCard(prop: any) {
     const { status } = useSession();
 
     const handleInterestClick = () => {
-        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
         const body = {
             studentId: userData.studentId,
             studentFaculty: userData.majorNameThai,
@@ -60,7 +61,7 @@ export default function SectionCard(prop: any) {
     };
 
     useEffect(() => {
-        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
         try {
             userData
                 ? fetch(`${config.apiUrlPrefix}/student/${userData.studentId}`, {

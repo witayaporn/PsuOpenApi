@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChartData } from "chart.js";
 import config from "@/app/config";
+import {AES, enc} from "crypto-js";
 
 export default function SubjectCard(prop: any) {
     const data = prop.data;
@@ -192,6 +193,11 @@ export default function SubjectCard(prop: any) {
     };
 
     useEffect(() => {
+        // const encr = AES.encrypt("Test", "HATYAITEAM")
+        // console.log(encr.toString())
+        // const denc = AES.decrypt(encr.toString(), "HATYAITEAM")
+        // console.log(denc.toString(enc.Utf8))
+
         const modal = urlParam.get("modal");
         modal == "open" ? handleCardClick() : null;
     }, []);

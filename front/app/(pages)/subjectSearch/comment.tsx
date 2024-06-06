@@ -3,6 +3,7 @@ import config from "@/app/config";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
+import { encryptStorage } from "@/app/utils/encryptStorage";
 
 export function Comment(prop: any) {
     const data = prop.data;
@@ -11,7 +12,7 @@ export function Comment(prop: any) {
     const dateCreated = datetimeToTHstr(data.created);
 
     const { data: session, status } = useSession();
-    const [userData, setUserData] = useState<any>(JSON.parse(sessionStorage.getItem("userData") || "{}"));
+    const [userData, setUserData] = useState<any>(JSON.parse(encryptStorage.getItem("userData") || "{}"));
     const [comments, setComments] = useState<any>(prop.comments || []);
     const [votes, setVotes] = useState<any>(prop.votes || []);
     const [vote, setVote] = useState<number>(0);
@@ -89,8 +90,8 @@ export function Comment(prop: any) {
 
     return (
         <div
-            className="flex flex-col w-full my-1 px-2 py-1 rounded-lg"
-            style={{ backgroundColor: Object.keys(userData).length && userData.studentId == data?.studentId && prop.onReply ? "#F1F5F9" : "" }}
+            className="flex flex-col w-full my-1 px-2 py-1 bg-slate-100 rounded-lg"
+            style={{ backgroundColor: Object.keys(userData).length && userData.studentId == data?.studentId && prop.onReply ? "#DBEAFE" : "" }}
         >
             <div className="flex">
                 <div className="min-w-8 h-8 rounded-full bg-slate-500 my-auto"></div>
@@ -184,7 +185,7 @@ export function Comment(prop: any) {
                         <button
                             className="text-sm px-2 p-1 rounded-full hover:bg-gray-300 hover:text-blue-500 ease-linear transition-all"
                             style={{ display: commentOption ? "" : "none" }}
-                            onClick={() => prop.onEdit()}
+                            onClick={() => prop.onEdit(data)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

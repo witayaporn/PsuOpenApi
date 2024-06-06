@@ -3,6 +3,7 @@
 import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { encryptStorage } from "../utils/encryptStorage";
 
 export default function HeadNavbar() {
     const router = usePathname();
@@ -12,14 +13,14 @@ export default function HeadNavbar() {
     const { data: session, status } = useSession();
 
     const handleSignOut = () => {
-        sessionStorage.removeItem("userData");
-        if (sessionStorage.getItem("userData") == null) {
+        encryptStorage.removeItem("userData");
+        if (encryptStorage.getItem("userData") == null) {
             signOut();
         }
     };
 
     useEffect(() => {
-        if (sessionStorage.getItem("userData") == null && status == "authenticated") {
+        if (encryptStorage.getItem("userData") == null && status == "authenticated") {
             try {
                 fetch("https://api-gateway.psu.ac.th/Test/regist/level2/StudentDetailCampus/01/token", {
                     method: "GET",
@@ -43,7 +44,7 @@ export default function HeadNavbar() {
                                 majorNameEng: json.data[0]?.majorNameEng,
                                 majorNameThai: json.data[0]?.majorNameThai,
                             };
-                            sessionStorage.setItem("userData", JSON.stringify(userData));
+                            encryptStorage.setItem("userData", JSON.stringify(userData));
                         }
                     });
 
@@ -56,13 +57,13 @@ export default function HeadNavbar() {
                     },
                 })
                     .then((res) => res.text())
-                    .then((image) => sessionStorage.setItem("userImg", image?.replace(/[""]+/g, "")));
+                    .then((image) => encryptStorage.setItem("userImg", image?.replace(/[""]+/g, "")));
             } catch (e) {
                 console.error(e);
             }
         } else {
-            setUserData(JSON.parse(sessionStorage.getItem("userData")!));
-            setStudentImg(sessionStorage.getItem("userImg"));
+            setUserData(JSON.parse(encryptStorage.getItem("userData")!));
+            setStudentImg(encryptStorage.getItem("userImg"));
         }
     }, [status, session]);
     return (

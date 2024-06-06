@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { AnimatePresence } from "framer-motion";
 import ProtectPageModel from "@/app/components/protectPageModal";
 import config from "@/app/config";
+import { encryptStorage } from "@/app/utils/encryptStorage";
 
 export default function PlanPage() {
     const { status } = useSession();
@@ -90,7 +91,7 @@ export default function PlanPage() {
 
     useEffect(() => {
         // "use client";
-        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
         if (Object.keys(userData).length && status == "authenticated") {
             setClassDate([]);
             fetchStudentInterest(userData);
