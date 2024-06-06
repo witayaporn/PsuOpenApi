@@ -1,8 +1,8 @@
-import WarningAnimation from "@/public/svg-animation/warning-animation.json";
+import SuccessAnimation from "@/public/svg-animation/success-animation.json";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { motion } from "framer-motion";
 
-export default function AlertModal(prop: any) {
+export default function SuccessModal(prop: any) {
     return (
         <>
             <div className="justify-center flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-[10600] outline-none">
@@ -28,21 +28,15 @@ export default function AlertModal(prop: any) {
                         }}
                     >
                         <div className="flex overflow-hidden p-2 md:pb-6 md:px-12 border-b border-solid rounded-lg">
-                            <div className="grid grid-cols-1 gap-y-3 p-2 m-auto text-center">
-                                <Player style={{ width: "10rem" }} src={WarningAnimation} keepLastFrame autoplay />
-                                <p className="text-lg font-bold">ต้องการดำเนินการต่อหรือไม่?</p>
+                            <div className="grid grid-cols-1 gap-y-3 m-auto text-center">
+                                <Player style={{ width: "10rem" }} src={SuccessAnimation} keepLastFrame autoplay />
+                                <p className="text-lg font-bold">ดำเนินการสำเร็จ</p>
                                 <div className="flex items-center justify-center gap-3 mt-2">
                                     <button
-                                        onClick={prop.onConfirm}
-                                        className="p-2 border rounded-lg hover:bg-gray-200 transition-all duration-200"
+                                        onClick={prop.onClose}
+                                        className="p-2 px-6 border rounded-lg hover:bg-gray-200 transition-all duration-200"
                                     >
-                                        ยืนยัน
-                                    </button>
-                                    <button
-                                        onClick={prop.onDeny}
-                                        className="p-2 border rounded-lg hover:bg-gray-200 transition-all duration-200"
-                                    >
-                                        ยกเลิก
+                                        ปิด
                                     </button>
                                 </div>
                             </div>

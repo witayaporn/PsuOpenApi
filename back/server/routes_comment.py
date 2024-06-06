@@ -195,8 +195,32 @@ async def update_comment(commentId: PydanticObjectId, request: Request):
 async def delete_comment(
     commentId: PydanticObjectId, request: Request, response: Response
 ):
+    childs_result = request.app.database["Comment"].aggregate(
+        [
+            {"$match": {"_id": commentId}},
+            {
+                "$graphLookup": {
+                    "from": "Comment",
+                    "startWith": "$_id",
+                    "connectFromField": "_id",
+                    "connectToField": "parentId",
+                    "as": "ids",
+                }
+            },
+            {
+                "$project": {
+                    "ids": {"$map": {"input": "$ids", "as": "id", "in": "$$id._id"}},
+                    "_id": 0,
+                }
+            },
+        ]
+    )
     delete_result = request.app.database["Comment"].delete_one({"_id": commentId})
-
+    
+    childs = list(childs_result)[0]
+    if len(childs):
+        request.app.database["Comment"].delete_many({"_id": {"$in": childs["ids"]}})
+    
     if delete_result.deleted_count == 1:
         response.status_code = status.HTTP_204_NO_CONTENT
         return response

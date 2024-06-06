@@ -1,6 +1,6 @@
 import { AES, enc } from "crypto-js";
 const salt = "HTTEAM";
-export let encryptStorage = {
+export const encryptStorage = {
     setItem: (key: string, data: string) => {
         // console.log(data);
         const encryptedString = AES.encrypt(JSON.stringify(data), salt);

@@ -5,6 +5,8 @@ import config from "@/app/config";
 import { useSession } from "next-auth/react";
 import CommentSkeleton from "./commentSkeleton";
 import { encryptStorage } from "@/app/utils/encryptStorage";
+import AlertModal from "@/app/components/alertModal";
+import { comment } from "postcss";
 
 export default function CommentModal(prop: any) {
     // const commentData = prop.comment;
@@ -15,6 +17,9 @@ export default function CommentModal(prop: any) {
     const [newComment, setNewComment] = useState<any>({});
     const [repliedComment, setRepliedComment] = useState<any>({});
     const [commentText, setCommentText] = useState<string>("");
+    const [selectedCommentId, setSelectedCommentId] = useState<string>("");
+    const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [showAlert, setShowAlert] = useState<boolean>(false);
     const { data: session, status } = useSession();
 
     const handleCommentTextChange = (e: any) => {
@@ -44,7 +49,7 @@ export default function CommentModal(prop: any) {
                     .then((res) => res.json())
                     .then((data) => {
                         if (data) {
-                            console.log(data);
+                            // console.log(data);
                             // setSubjectComment((subjectComment: any) => [data, ...subjectComment])
                             setNewComment(data);
                             setCommentText("");
@@ -58,19 +63,67 @@ export default function CommentModal(prop: any) {
         }
     };
 
+    const handleEditCommentSubmit = (e: any) => {
+        e.preventDefault();
+        try {
+            fetch(`${config.apiUrlPrefix}/comment/update/${repliedComment._id}`, {
+                method: "POST",
+                body: JSON.stringify({
+                    content: commentText,
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data) {
+                        setNewComment(data);
+                        setCommentText("");
+                        setRepliedComment({});
+                        setSubjectComment([]);
+                    }
+                });
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const handleDeleteCommentSubmit = (e: any) => {
+        e.preventDefault();
+        try {
+            fetch(`${config.apiUrlPrefix}/comment/delete/${selectedCommentId}`, {
+                method: "POST",
+            }).then((res) => {
+                if (res.status == 204) {
+                    // console.log(data);
+                    setNewComment({});
+                    setCommentText("");
+                    setRepliedComment({});
+                    setSubjectComment([]);
+                }
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     const handleReplyComment = (repliedCommentData: any) => {
         // console.log(repliedCommentData);
+        setIsEdit(false);
         setRepliedComment(repliedCommentData);
+        setCommentText("");
     };
 
     const handleEditComment = (editedComment: any) => {
-        console.log("Edit Commet")
-        setCommentText(editedComment.content)
-    }
+        // console.log("Edit Commet");
+        setIsEdit(true);
+        setRepliedComment(editedComment);
+        setCommentText(editedComment.content);
+    };
 
-    const handleDeleteComment = () => {
-        console.log("Delete Comment")
-    }
+    const handleDeleteComment = (commentId: string) => {
+        // console.log("Delete Comment");
+        setShowAlert(true);
+        setSelectedCommentId(commentId);
+    };
 
     const fetchSubjectComment = () => {
         try {
@@ -211,7 +264,7 @@ export default function CommentModal(prop: any) {
                                 </>
                             )}
                         </div>
-                        <div className="flex flex-col h-fit px-3 pb-5 bg-slate-50 rounded-b-lg border-t-2 border-solid border-gray-300">
+                        <div className="flex flex-col h-fit px-3 pb-5 bg-gray-100 rounded-b-lg border-t-2 border-solid border-gray-300">
                             {/* <p className="my-auto text-sm text-gray-400">{Object.keys(studentRegistInfo).length ? "คุณเคยลงทะเบียนวิชานี้" : "คุณไม่เคยลงทะเบียนวิชานี้"}</p> */}
                             <div>
                                 {Object.keys(repliedComment).length ? (
@@ -219,19 +272,23 @@ export default function CommentModal(prop: any) {
                                         <button
                                             className="absolute ml-auto w-fit right-0 px-2 mt-1 mr-1 border-2 border-slate-200 text-gray-500 text-sm hover:bg-gray-200 hover:border-gray-200 rounded-lg outline-none focus:outline-none ease-linear transition-all duration-150"
                                             type="button"
-                                            onClick={() => setRepliedComment({})}
+                                            onClick={() => {
+                                                setIsEdit(false);
+                                                setRepliedComment({});
+                                                setCommentText("");
+                                            }}
                                         >
                                             <p className="hidden md:flex">ยกเลิก</p>
                                             <p className="md:hidden">X</p>
                                         </button>
-                                        <Comment data={repliedComment} votes={studentVote} />
+                                        <Comment data={repliedComment} votes={studentVote} state={isEdit ? "edit" : "reply"} />
                                     </div>
                                 ) : null}
                             </div>
                             <div className="flex mt-2 md:mt-2">
                                 <div className="min-w-8 h-8 rounded-full bg-slate-500"></div>
                                 <form
-                                    onSubmit={handleCommentSubmit}
+                                    onSubmit={isEdit ? handleEditCommentSubmit : handleCommentSubmit}
                                     className="flex flex-col w-full bg-slate-200 border-2 border-solid rounded-2xl mx-2"
                                 >
                                     <textarea
@@ -242,7 +299,7 @@ export default function CommentModal(prop: any) {
                                     ></textarea>
                                     <div className="flex justify-end">
                                         <button type="submit" className="flex w-fit px-3 py-1 text-gray-600 hover:text-blue-800">
-                                            <p className="mx-1 my-auto text-md">ส่ง</p>
+                                            <p className="mx-1 my-auto text-md">{isEdit ? "เเก้ไข" : "ส่ง"}</p>
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                                                 <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
                                             </svg>
@@ -255,6 +312,15 @@ export default function CommentModal(prop: any) {
                 </div>
             </div>
             <div className="opacity-25 fixed inset-0 z-[10100] bg-black"></div>
+            {showAlert && (
+                <AlertModal
+                    onConfirm={(e: any) => {
+                        setShowAlert(false);
+                        handleDeleteCommentSubmit(e);
+                    }}
+                    onDeny={() => setShowAlert(false)}
+                />
+            )}
         </>
     );
 }

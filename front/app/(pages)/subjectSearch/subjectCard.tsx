@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import BarChart from "./barChart";
 import SectionCard from "./sectionCard";
 import CommentModal from "./commentModal";
-import AlertModal from "@/app/components/alertModal";
+import SuccessModal from "@/app/components/successModal";
 import facultyData from "@/public/faculty-data.json";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChartData } from "chart.js";
 import config from "@/app/config";
-import {AES, enc} from "crypto-js";
 
 export default function SubjectCard(prop: any) {
     const data = prop.data;
@@ -193,11 +192,6 @@ export default function SubjectCard(prop: any) {
     };
 
     useEffect(() => {
-        // const encr = AES.encrypt("Test", "HATYAITEAM")
-        // console.log(encr.toString())
-        // const denc = AES.decrypt(encr.toString(), "HATYAITEAM")
-        // console.log(denc.toString(enc.Utf8))
-
         const modal = urlParam.get("modal");
         modal == "open" ? handleCardClick() : null;
     }, []);
@@ -377,7 +371,14 @@ export default function SubjectCard(prop: any) {
                         <div className="opacity-25 fixed inset-0 z-[10000] bg-black"></div>
                     </>
                 )}
-                {!showAlert && <AlertModal showAlert={showAlert} setShowAlert={setShowAlert} handleClose={fetchSubjectStat} />}
+                {!showAlert && (
+                    <SuccessModal
+                        onClose={() => {
+                            setShowAlert(!showAlert);
+                            fetchSubjectStat();
+                        }}
+                    />
+                )}
             </AnimatePresence>
         </>
     );
