@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Body, Request, Response, HTTPException, status  # type: ignore
 from fastapi.encoders import jsonable_encoder  # type: ignore
-from typing import Annotated, Any, Callable, List
+from typing import Annotated, Any, Callable, List, Dict
 from pydantic_core import core_schema, PydanticOmit  # type: ignore
 from bson import ObjectId  # type: ignore
+import json
 from mongo.models import Comment, CommentUpdate
 from datetime import datetime
 
@@ -140,6 +141,66 @@ async def find_student_comment(studentId: str, request: Request):
     )
 
 
+@router_comment.get(
+    "/getPreviewComment/{subjectId}",
+    response_description="Get a Comment by subjectId",
+    response_model=List[Comment],
+)
+async def find_max_vote_comment(subjectId: str, request: Request):
+    try:
+        comments = list(request.app.database["Comment"].find({"subjectId": subjectId}))
+        maxVoteComment = None
+        if comments:
+            for comment in comments:
+                comment["voting"] = {"upvote": 0, "downvote": 0}
+                comment["vote"] = 0
+                vote = list(
+                    request.app.database["Vote"].aggregate(
+                        [
+                            {
+                                "$match": {
+                                    "commentId": comment["_id"],
+                                }
+                            },
+                            {
+                                "$group": {
+                                    "_id": "$voteType",
+                                    "count": {"$sum": 1},
+                                }
+                            },
+                        ]
+                    )
+                )
+                if vote:
+                    upvote = [upvote["count"] for upvote in vote if upvote["_id"] == "up"]
+                    downvote = [
+                        downvote["count"] for downvote in vote if downvote["_id"] == "down"
+                    ]
+                    upvote = upvote[0] if len(upvote) else 0
+                    downvote = downvote[0] if len(downvote) else 0
+
+                    comment["voting"] = {"upvote": upvote, "downvote": downvote}
+                    comment["vote"] = upvote - downvote
+
+                if maxVoteComment == None:
+                    maxVoteComment = comment
+                elif (
+                    maxVoteComment["vote"] < comment["vote"]
+                    and maxVoteComment["created"] < comment["created"]
+                    and comment["parentId"] == None
+                ):
+                    maxVoteComment = comment    
+            return [maxVoteComment]
+        else:
+            return comments
+    except BaseException:
+        pass
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"Comment with ID {subjectId} not found",
+    )
+
+
 @router_comment.post(
     "/",
     response_description="Create a new Comment",
@@ -216,11 +277,11 @@ async def delete_comment(
         ]
     )
     delete_result = request.app.database["Comment"].delete_one({"_id": commentId})
-    
+
     childs = list(childs_result)[0]
     if len(childs):
         request.app.database["Comment"].delete_many({"_id": {"$in": childs["ids"]}})
-    
+
     if delete_result.deleted_count == 1:
         response.status_code = status.HTTP_204_NO_CONTENT
         return response

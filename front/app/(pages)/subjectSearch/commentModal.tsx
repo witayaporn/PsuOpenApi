@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Comment } from "./comment";
 import { useEffect, useState } from "react";
 import config from "@/app/config";
@@ -6,13 +6,12 @@ import { useSession } from "next-auth/react";
 import CommentSkeleton from "./commentSkeleton";
 import { encryptStorage } from "@/app/utils/encryptStorage";
 import AlertModal from "@/app/components/alertModal";
-import { comment } from "postcss";
 
 export default function CommentModal(prop: any) {
     // const commentData = prop.comment;
     const subjectId = prop.subjectId;
-    const [subjectComment, setSubjectComment] = useState<any>([]);
-    const [studentVote, setStudentVote] = useState<any>([]);
+    const [subjectComment, setSubjectComment] = useState<any[]>([]);
+    const [studentVote, setStudentVote] = useState<any[]>([]);
     const [studentRegistInfo, setStudentRegistInfo] = useState<any>({});
     const [newComment, setNewComment] = useState<any>({});
     const [repliedComment, setRepliedComment] = useState<any>({});
@@ -23,13 +22,11 @@ export default function CommentModal(prop: any) {
     const { data: session, status } = useSession();
 
     const handleCommentTextChange = (e: any) => {
-        // console.log(e.target.value)
         setCommentText(e.target.value);
     };
 
     const handleCommentSubmit = (e: any) => {
         e.preventDefault();
-        // console.log(commentText)
         const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
         if (Object.keys(userData).length && status == "authenticated") {
             const body = {
@@ -49,8 +46,6 @@ export default function CommentModal(prop: any) {
                     .then((res) => res.json())
                     .then((data) => {
                         if (data) {
-                            // console.log(data);
-                            // setSubjectComment((subjectComment: any) => [data, ...subjectComment])
                             setNewComment(data);
                             setCommentText("");
                             setRepliedComment({});
@@ -106,21 +101,18 @@ export default function CommentModal(prop: any) {
     };
 
     const handleReplyComment = (repliedCommentData: any) => {
-        // console.log(repliedCommentData);
         setIsEdit(false);
         setRepliedComment(repliedCommentData);
         setCommentText("");
     };
 
     const handleEditComment = (editedComment: any) => {
-        // console.log("Edit Commet");
         setIsEdit(true);
         setRepliedComment(editedComment);
         setCommentText(editedComment.content);
     };
 
     const handleDeleteComment = (commentId: string) => {
-        // console.log("Delete Comment");
         setShowAlert(true);
         setSelectedCommentId(commentId);
     };
@@ -129,7 +121,6 @@ export default function CommentModal(prop: any) {
         try {
             fetch(`${config.apiUrlPrefix}/comment/${subjectId}`, {
                 method: "GET",
-                // cache: "only-if-cached",
                 headers: {
                     accept: "application/json",
                 },
@@ -239,7 +230,6 @@ export default function CommentModal(prop: any) {
                             <p className="w-full font-bold text-lg ">ความคิดเห็นต่อรายวิชา</p>
                         </div>
                         <div className="flex flex-col h-full overflow-y-auto px-3">
-                            {/* {console.log(subjectComment)} */}
                             {subjectComment.length ? (
                                 subjectComment.map((comment: any) => {
                                     if (comment.parentId == null) {
@@ -312,15 +302,17 @@ export default function CommentModal(prop: any) {
                 </div>
             </div>
             <div className="opacity-25 fixed inset-0 z-[10100] bg-black"></div>
-            {showAlert && (
-                <AlertModal
-                    onConfirm={(e: any) => {
-                        setShowAlert(false);
-                        handleDeleteCommentSubmit(e);
-                    }}
-                    onDeny={() => setShowAlert(false)}
-                />
-            )}
+            <AnimatePresence>
+                {showAlert && (
+                    <AlertModal
+                        onConfirm={(e: any) => {
+                            setShowAlert(false);
+                            handleDeleteCommentSubmit(e);
+                        }}
+                        onDeny={() => setShowAlert(false)}
+                    />
+                )}
+            </AnimatePresence>
         </>
     );
 }

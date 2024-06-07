@@ -14,11 +14,12 @@ export function Comment(prop: any) {
     const { data: session, status } = useSession();
     const [userData, setUserData] = useState<any>(JSON.parse(encryptStorage.getItem("userData") || "{}"));
     const [comments, setComments] = useState<any>(prop.comments || []);
-    const [votes, setVotes] = useState<any>(prop.votes || []);
+    const [votes, setVotes] = useState<any[]>(prop.votes || []);
     const [vote, setVote] = useState<number>(0);
     const [studentVoteState, setStudentVoteState] = useState<any>({});
-    const [commentReply, setCommentReply] = useState<any>([]);
+    const [commentReply, setCommentReply] = useState<any[]>([]);
     const [commentOption, showCommentOption] = useState<boolean>(false);
+    const [tempName, setTempName] = useState<string>("")
 
     const handleVoteClick = (voteType: string) => {
         if (Object.keys(userData).length && status == "authenticated") {
@@ -83,6 +84,9 @@ export function Comment(prop: any) {
         const studentVote = votes.filter((vote: any) => vote.commentId == data._id);
         const replies = comments.filter((comment: any) => comment.parentId == data._id);
 
+        const nameArr = data?.studentInfoEN.split(" ")
+        setTempName(nameArr[1][0] + nameArr[nameArr.length - 1][0])
+
         setVote(data.vote);
         setStudentVoteState(studentVote[0]);
         setCommentReply(replies);
@@ -94,7 +98,11 @@ export function Comment(prop: any) {
             style={{ backgroundColor: Object.keys(userData).length && userData.studentId == data?.studentId && !prop.state ? "#DBEAFE" : "" }}
         >
             <div className="flex">
-                <div className="min-w-8 h-8 rounded-full bg-slate-500 my-auto"></div>
+                <div className="flex min-w-8 h-8 rounded-full my-auto" style={{backgroundColor: `#${data?.studentId.slice(0, 6)}`}}>
+                    <p className="w-full my-auto text-center text-lg text-white">
+                        {tempName}
+                    </p>
+                </div>
                 <div className="flex flex-col">
                     <p className="mx-2 text-sm">{`${data?.studentInfoTH} (${data?.studentId})`}</p>
                     <p className="mx-2 text-[0.65rem]" style={{ color: data?.extraInfo.length ? "#0F766E" : "#EA580C" }}>

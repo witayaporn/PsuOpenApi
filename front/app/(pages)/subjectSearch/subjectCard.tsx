@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import BarChart from "./barChart";
 import SectionCard from "./sectionCard";
 import CommentModal from "./commentModal";
+import { Comment } from "./comment";
 import SuccessModal from "@/app/components/successModal";
 import facultyData from "@/public/faculty-data.json";
 import { AnimatePresence, motion } from "framer-motion";
@@ -30,7 +31,7 @@ export default function SubjectCard(prop: any) {
     });
     const [subjectStat, setSubjectStat] = useState<any[]>([]);
     const [subject, setSubject] = useState<any>();
-    const [subjectComment, setSubjectComment] = useState<any>([]);
+    const [subjectPreviewComment, setSubjectPreviewComment] = useState<any>({});
 
     const fetchSubjectDetail = () => {
         try {
@@ -136,27 +137,24 @@ export default function SubjectCard(prop: any) {
         }
     };
 
-    // const fetchStudentInterest = () => {
-    //     const userData = JSON.parse(sessionStorage.getItem("userData"));
-    //     console.log(userData);
-    //     userData
-    //         ? fetch(`http://localhost:8000/student/${userData.studentId}`, {
-    //               method: "GET",
-    //               cache: "only-if-cached",
-    //               headers: {
-    //                   accept: "application/json",
-    //               },
-    //           })
-    //               .then((res) => res.json())
-    //               .then((studentIn) => {
-    //                   // console.log(studentIn.filter((item: any) => console.log(studentIn)))
-    //                   setStudentInterest(studentIn);
-    //                   // const isInInterest = studentIn.filter((item: any) => item.subjectId == data.subjectId && item.section == data.section && item.year == data.eduYear && item.term == data.eduTerm)
-    //                   // setIsInterest(isInInterest.length ? isInInterest[0] : null)
-    //                   // setStudentInterest(data)
-    //               })
-    //         : null;
-    // };
+    const fetchSubjectPreviewComment = () => {
+        try {
+            fetch(`${config.apiUrlPrefix}/comment/getPreviewComment/${data.subjectId}`, {
+                method: "GET",
+                headers: {
+                    accept: "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((comment) => {
+                    if (comment.length) {
+                        setSubjectPreviewComment(comment[0]);
+                    }
+                });
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     const handleCardClick = () => {
         const html = document.getElementsByTagName("html")[0];
@@ -168,7 +166,7 @@ export default function SubjectCard(prop: any) {
                     fetchSectionClassDate(),
                     fetchSectionExamDate(),
                     fetchSubjectStat(),
-                    // fetchSubjectComment(),
+                    fetchSubjectPreviewComment(),
                 ]);
             } catch (e) {
                 console.error(e);
@@ -318,9 +316,26 @@ export default function SubjectCard(prop: any) {
                                             </p>
                                         </div>
 
-                                        <div className="pb-3 border-b border-solid">
+                                        <div className="pb-2 border-b border-solid">
                                             <p className="font-bold">ความคิดเห็นต่อรายวิชา</p>
-                                            <button className="w-full m-auto" onClick={() => setShowComment(!showComment)}>{`ดูความคิดเห็น`}</button>
+                                            <div className="px-2">
+                                                {Object.keys(subjectPreviewComment).length ? (
+                                                    <>
+                                                        <Comment
+                                                            data={subjectPreviewComment}
+                                                            onReply={() => setShowComment(true)}
+                                                            onEdit={() => setShowComment(true)}
+                                                            onDelete={() => setShowComment(true)}
+                                                        />
+                                                        <button
+                                                            className="w-full m-auto p-1 border rounded-lg hover:bg-gray-100 transition-all"
+                                                            onClick={() => setShowComment(!showComment)}
+                                                        >{`ดูความคิดเห็น`}</button>
+                                                    </>
+                                                ) : (
+                                                    <p className="w-full text-gray-500 text-center p-2">ไม่มีความคิดเห็นต่อรายวิชา</p>
+                                                )}
+                                            </div>
                                             <AnimatePresence>
                                                 {showComment && (
                                                     <CommentModal
@@ -331,6 +346,7 @@ export default function SubjectCard(prop: any) {
                                                 )}
                                             </AnimatePresence>
                                         </div>
+
                                         <div className="grid grid-cols-1 gap-2">
                                             <p className="font-bold">ตอน</p>
                                             {courseSection
