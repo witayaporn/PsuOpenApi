@@ -320,21 +320,21 @@ export default function SubjectCard(prop: any) {
                                             <p className="font-bold">ความคิดเห็นต่อรายวิชา</p>
                                             <div className="px-2">
                                                 {Object.keys(subjectPreviewComment).length ? (
-                                                    <>
-                                                        <Comment
-                                                            data={subjectPreviewComment}
-                                                            onReply={() => setShowComment(true)}
-                                                            onEdit={() => setShowComment(true)}
-                                                            onDelete={() => setShowComment(true)}
-                                                        />
-                                                        <button
-                                                            className="w-full m-auto p-1 border rounded-lg hover:bg-gray-100 transition-all"
-                                                            onClick={() => setShowComment(!showComment)}
-                                                        >{`ดูความคิดเห็น`}</button>
-                                                    </>
+                                                    <Comment
+                                                        data={subjectPreviewComment}
+                                                        onReply={() => setShowComment(true)}
+                                                        onEdit={() => setShowComment(true)}
+                                                        onDelete={() => setShowComment(true)}
+                                                    />
                                                 ) : (
                                                     <p className="w-full text-gray-500 text-center p-2">ไม่มีความคิดเห็นต่อรายวิชา</p>
                                                 )}
+                                                <button
+                                                    className="w-full m-auto p-1 border rounded-lg hover:bg-gray-100 transition-all"
+                                                    onClick={() => setShowComment(!showComment)}
+                                                >
+                                                    {Object.keys(subjectPreviewComment).length ? "ดูความคิดเห็น" : "เเสดงความเห็นต่อรายวิชา"}
+                                                </button>
                                             </div>
                                             <AnimatePresence>
                                                 {showComment && (
@@ -342,6 +342,7 @@ export default function SubjectCard(prop: any) {
                                                         subjectId={data.subjectId}
                                                         showComment={showComment}
                                                         setShowComment={setShowComment}
+                                                        hasComment={Object.keys(subjectPreviewComment).length > 0}
                                                     />
                                                 )}
                                             </AnimatePresence>

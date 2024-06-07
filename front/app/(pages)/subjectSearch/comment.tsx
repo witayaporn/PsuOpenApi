@@ -19,7 +19,7 @@ export function Comment(prop: any) {
     const [studentVoteState, setStudentVoteState] = useState<any>({});
     const [commentReply, setCommentReply] = useState<any[]>([]);
     const [commentOption, showCommentOption] = useState<boolean>(false);
-    const [tempName, setTempName] = useState<string>("")
+    const [tempName, setTempName] = useState<string>("");
 
     const handleVoteClick = (voteType: string) => {
         if (Object.keys(userData).length && status == "authenticated") {
@@ -84,8 +84,8 @@ export function Comment(prop: any) {
         const studentVote = votes.filter((vote: any) => vote.commentId == data._id);
         const replies = comments.filter((comment: any) => comment.parentId == data._id);
 
-        const nameArr = data?.studentInfoEN.split(" ")
-        setTempName(nameArr[1][0] + nameArr[nameArr.length - 1][0])
+        const nameArr = data?.studentInfoEN.split(" ");
+        setTempName(nameArr[1][0] + nameArr[nameArr.length - 1][0]);
 
         setVote(data.vote);
         setStudentVoteState(studentVote[0]);
@@ -98,10 +98,8 @@ export function Comment(prop: any) {
             style={{ backgroundColor: Object.keys(userData).length && userData.studentId == data?.studentId && !prop.state ? "#DBEAFE" : "" }}
         >
             <div className="flex">
-                <div className="flex min-w-8 h-8 rounded-full my-auto" style={{backgroundColor: `#${data?.studentId.slice(0, 6)}`}}>
-                    <p className="w-full my-auto text-center text-lg text-white">
-                        {tempName}
-                    </p>
+                <div className="flex min-w-8 h-8 rounded-full my-auto" style={{ backgroundColor: `#${data?.studentId.slice(0, 6)}` }}>
+                    <p className="w-full my-auto text-center text-lg text-white">{tempName}</p>
                 </div>
                 <div className="flex flex-col">
                     <p className="mx-2 text-sm">{`${data?.studentInfoTH} (${data?.studentId})`}</p>
@@ -171,11 +169,9 @@ export function Comment(prop: any) {
                 ) : (
                     <p className="text-sm px-3 my-auto text-gray-600">กำลังเเก้ไขความคิดเห็น</p>
                 )}
-                {Object.keys(userData).length && userData.studentId == data?.studentId && !prop.state && (
-                    <div
-                        className="w-fit text-sm bg-gray-50 rounded-full ease-linear transition-all"
-                        // style={{ borderWidth: commentOption ? "1px 0px" : "0px 0px" }}
-                    >
+
+                {Object.keys(userData).length && userData.studentId == data?.studentId && !prop.state ? (
+                    <div className="w-fit text-sm bg-gray-50 rounded-full ease-linear transition-all">
                         <button
                             className="text-sm px-2 p-1 bg-white border border-gray-400 rounded-full hover:bg-gray-300 ease-linear transition-all"
                             onClick={() => showCommentOption(!commentOption)}
@@ -236,7 +232,7 @@ export function Comment(prop: any) {
                             </svg>
                         </button>
                     </div>
-                )}
+                ) : null}
             </div>
             <div className="pl-5">
                 {commentReply.map((reply: any) => (

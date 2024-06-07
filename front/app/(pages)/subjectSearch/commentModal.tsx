@@ -10,6 +10,8 @@ import AlertModal from "@/app/components/alertModal";
 export default function CommentModal(prop: any) {
     // const commentData = prop.comment;
     const subjectId = prop.subjectId;
+    const [userData, setUserData] = useState<any>({});
+    const [tempName, setTempName] = useState<string>("");
     const [subjectComment, setSubjectComment] = useState<any[]>([]);
     const [studentVote, setStudentVote] = useState<any[]>([]);
     const [studentRegistInfo, setStudentRegistInfo] = useState<any>({});
@@ -27,7 +29,7 @@ export default function CommentModal(prop: any) {
 
     const handleCommentSubmit = (e: any) => {
         e.preventDefault();
-        const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
+        // const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
         if (Object.keys(userData).length && status == "authenticated") {
             const body = {
                 content: commentText,
@@ -101,20 +103,26 @@ export default function CommentModal(prop: any) {
     };
 
     const handleReplyComment = (repliedCommentData: any) => {
-        setIsEdit(false);
-        setRepliedComment(repliedCommentData);
-        setCommentText("");
+        if (Object.keys(userData).length && status == "authenticated") {
+            setIsEdit(false);
+            setRepliedComment(repliedCommentData);
+            setCommentText("");
+        }
     };
 
     const handleEditComment = (editedComment: any) => {
-        setIsEdit(true);
-        setRepliedComment(editedComment);
-        setCommentText(editedComment.content);
+        if (Object.keys(userData).length && status == "authenticated") {
+            setIsEdit(true);
+            setRepliedComment(editedComment);
+            setCommentText(editedComment.content);
+        }
     };
 
     const handleDeleteComment = (commentId: string) => {
-        setShowAlert(true);
-        setSelectedCommentId(commentId);
+        if (Object.keys(userData).length && status == "authenticated") {
+            setShowAlert(true);
+            setSelectedCommentId(commentId);
+        }
     };
 
     const fetchSubjectComment = () => {
@@ -151,7 +159,6 @@ export default function CommentModal(prop: any) {
         try {
             fetch(`${config.apiUrlPrefix}/vote/user/${userData.studentId}?subjectId=${subjectId}`, {
                 method: "GET",
-                // cache: "only-if-cached",
                 headers: {
                     accept: "application/json",
                 },
@@ -188,9 +195,11 @@ export default function CommentModal(prop: any) {
     };
 
     useEffect(() => {
-        const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
-        if (Object.keys(userData).length && status == "authenticated") {
-            fetchStudentVote(userData);
+        const user = JSON.parse(encryptStorage.getItem("userData") || "{}");
+        if (Object.keys(user).length && status == "authenticated") {
+            setTempName(user.studNameEng.split(" ")[1][0] + user.studSnameEng.split(" ")[1][0]);
+            setUserData(user);
+            fetchStudentVote(user);
             fetchAllStudentRegist();
         }
         fetchSubjectComment();
@@ -230,32 +239,35 @@ export default function CommentModal(prop: any) {
                             <p className="w-full font-bold text-lg ">ความคิดเห็นต่อรายวิชา</p>
                         </div>
                         <div className="flex flex-col h-full overflow-y-auto px-3">
-                            {subjectComment.length ? (
-                                subjectComment.map((comment: any) => {
-                                    if (comment.parentId == null) {
-                                        return (
-                                            <Comment
-                                                key={comment._id}
-                                                data={comment}
-                                                comments={subjectComment}
-                                                votes={studentVote}
-                                                onReply={handleReplyComment}
-                                                onEdit={handleEditComment}
-                                                onDelete={handleDeleteComment}
-                                            />
-                                        );
-                                    }
-                                })
+                            {prop.hasComment ? (
+                                subjectComment.length ? (
+                                    subjectComment.map((comment: any) => {
+                                        if (comment.parentId == null) {
+                                            return (
+                                                <Comment
+                                                    key={comment._id}
+                                                    data={comment}
+                                                    comments={subjectComment}
+                                                    votes={studentVote}
+                                                    onReply={handleReplyComment}
+                                                    onEdit={handleEditComment}
+                                                    onDelete={handleDeleteComment}
+                                                />
+                                            );
+                                        }
+                                    })
+                                ) : (
+                                    <>
+                                        <CommentSkeleton />
+                                        <CommentSkeleton />
+                                        <CommentSkeleton />
+                                    </>
+                                )
                             ) : (
-                                <>
-                                    <CommentSkeleton />
-                                    <CommentSkeleton />
-                                    <CommentSkeleton />
-                                </>
+                                <p className="w-full text-gray-500 text-center p-2">ไม่มีความคิดเห็นต่อรายวิชา</p>
                             )}
                         </div>
                         <div className="flex flex-col h-fit px-3 pb-5 bg-gray-100 rounded-b-lg border-t-2 border-solid border-gray-300">
-                            {/* <p className="my-auto text-sm text-gray-400">{Object.keys(studentRegistInfo).length ? "คุณเคยลงทะเบียนวิชานี้" : "คุณไม่เคยลงทะเบียนวิชานี้"}</p> */}
                             <div>
                                 {Object.keys(repliedComment).length ? (
                                     <div>
@@ -275,27 +287,52 @@ export default function CommentModal(prop: any) {
                                     </div>
                                 ) : null}
                             </div>
-                            <div className="flex mt-2 md:mt-2">
-                                <div className="min-w-8 h-8 rounded-full bg-slate-500"></div>
-                                <form
-                                    onSubmit={isEdit ? handleEditCommentSubmit : handleCommentSubmit}
-                                    className="flex flex-col w-full bg-slate-200 border-2 border-solid rounded-2xl mx-2"
-                                >
-                                    <textarea
-                                        value={commentText}
-                                        className="w-full h-full text-sm border-none outline-none resize-none bg-transparent rounded-2xl px-3 py-1"
-                                        placeholder={Object.keys(studentRegistInfo).length ? "คุณเคยลงทะเบียนวิชานี้" : "คุณไม่เคยลงทะเบียนวิชานี้"}
-                                        onChange={handleCommentTextChange}
-                                    ></textarea>
-                                    <div className="flex justify-end">
-                                        <button type="submit" className="flex w-fit px-3 py-1 text-gray-600 hover:text-blue-800">
-                                            <p className="mx-1 my-auto text-md">{isEdit ? "เเก้ไข" : "ส่ง"}</p>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                                <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
-                                            </svg>
-                                        </button>
+                            <div className="mt-2 md:mt-2">
+                                {Object.keys(userData).length && status == "authenticated" ? (
+                                    <div className="flex w-full">
+                                        <div
+                                            className="flex min-w-8 h-8 rounded-full"
+                                            style={{ backgroundColor: `#${userData?.studentId.slice(0, 6)}` }}
+                                        >
+                                            <p className="w-full my-auto text-center text-lg text-white">{tempName}</p>
+                                        </div>
+                                        <form
+                                            onSubmit={isEdit ? handleEditCommentSubmit : handleCommentSubmit}
+                                            className="flex flex-col w-full bg-slate-200 border-2 border-solid rounded-2xl mx-2"
+                                        >
+                                            <textarea
+                                                value={commentText}
+                                                className="w-full h-full text-sm border-none outline-none resize-none bg-transparent rounded-2xl px-3 py-1"
+                                                placeholder={
+                                                    Object.keys(studentRegistInfo).length ? "คุณเคยลงทะเบียนวิชานี้" : "คุณไม่เคยลงทะเบียนวิชานี้"
+                                                }
+                                                onChange={handleCommentTextChange}
+                                            ></textarea>
+                                            <div className="flex justify-end">
+                                                <button type="submit" className="flex w-fit px-3 py-1 text-gray-600 hover:text-blue-800">
+                                                    <p className="mx-1 my-auto text-md">{isEdit ? "เเก้ไข" : "ส่ง"}</p>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 24 24"
+                                                        fill="currentColor"
+                                                        className="size-6"
+                                                    >
+                                                        <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
+                                ) : (
+                                    <div className="flex w-full">
+                                        <a
+                                            href="/login"
+                                            className="m-auto p-2 border rounded-lg bg-blue-900 text-white hover:bg-blue-500 transition-all duration-200"
+                                        >
+                                            ลงชื่อเข้าสู่ระบบ
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </motion.div>

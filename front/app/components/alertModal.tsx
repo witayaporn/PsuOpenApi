@@ -32,17 +32,14 @@ export default function AlertModal(prop: any) {
                                 <Player style={{ width: "10rem" }} src={WarningAnimation} keepLastFrame autoplay />
                                 <p className="text-lg font-bold">ต้องการดำเนินการต่อหรือไม่?</p>
                                 <div className="flex items-center justify-center gap-3 mt-2">
-                                    <button
-                                        onClick={prop.onConfirm}
-                                        className="p-2 border rounded-lg hover:bg-gray-200 transition-all duration-200"
-                                    >
-                                        ยืนยัน
+                                    <button onClick={prop.onDeny} className="p-2 border rounded-lg hover:bg-gray-200 transition-all duration-200">
+                                        ยกเลิก
                                     </button>
                                     <button
-                                        onClick={prop.onDeny}
-                                        className="p-2 border rounded-lg hover:bg-gray-200 transition-all duration-200"
+                                        onClick={prop.onConfirm}
+                                        className="p-2 border rounded-lg bg-blue-900 text-white hover:bg-blue-500 transition-all duration-200"
                                     >
-                                        ยกเลิก
+                                        ยืนยัน
                                     </button>
                                 </div>
                             </div>
