@@ -46,11 +46,6 @@ export default function SectionCard(prop: any) {
         try {
             fetch(`${config.apiUrlPrefix}/student/deleteSubjectInterest/${isInterest?._id}`, {
                 method: "POST",
-                // mode: "no-cors",
-                // headers: {
-                //     Accept: "*/*",
-                //     "Content-Type": "application/json",
-                // },
             }).then((res) => {
                 setIsInterest(null);
                 prop.setShowAlert(!prop.showAlert);

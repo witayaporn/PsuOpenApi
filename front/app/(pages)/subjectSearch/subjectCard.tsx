@@ -168,7 +168,7 @@ export default function SubjectCard(prop: any) {
                     fetchSectionClassDate(),
                     fetchSectionExamDate(),
                     fetchSubjectStat(),
-                    fetchSubjectComment(),
+                    // fetchSubjectComment(),
                 ]);
             } catch (e) {
                 console.error(e);

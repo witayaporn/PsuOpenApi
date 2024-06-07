@@ -23,7 +23,6 @@ export default function SubjectSearchPage() {
     });
 
     const [searchInput, setSearchInput] = useState<string>("");
-
     const [courseData, setCourseData] = useState<any[]>([]);
 
     const campusID: string = "01";

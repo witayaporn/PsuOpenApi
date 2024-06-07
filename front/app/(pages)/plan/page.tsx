@@ -9,9 +9,11 @@ import { AnimatePresence } from "framer-motion";
 import ProtectPageModel from "@/app/components/protectPageModal";
 import config from "@/app/config";
 import { encryptStorage } from "@/app/utils/encryptStorage";
+import AlertModal from "@/app/components/alertModal";
 
 export default function PlanPage() {
     const { status } = useSession();
+    const [studentSubjectInterest, setStudentSubjectInterest] = useState<any[]>([]);
     const [classDate, setClassDate] = useState<any[]>([]);
     const [midExamDate, setMidExamDate] = useState<any[]>([]);
     const [finalExamDate, setFinalExamDate] = useState<any[]>([]);
@@ -20,6 +22,9 @@ export default function PlanPage() {
         term: "2",
         year: "2564",
     });
+    const [showAlert, setShowAlert] = useState<boolean>(false);
+    const [deletedSubject, setDeletedSubject] = useState<any>({});
+    const [forceChange, setForceChange] = useState<boolean>(false);
 
     const fetchStudentInterest = (userData: any) => {
         try {
@@ -29,6 +34,7 @@ export default function PlanPage() {
             })
                 .then((res) => res.json())
                 .then((data) => {
+                    setStudentSubjectInterest(data);
                     data.map((subject: any) => {
                         fetch(
                             `https://api-gateway.psu.ac.th/Test/regist/SectionClassdateCampus/01/${subject.term}/${subject.year}/${subject.subjectId}/?section=${subject.section}&offset=0&limit=100`,
@@ -89,14 +95,44 @@ export default function PlanPage() {
         setTermYear(newTermYear);
     };
 
+    const handleDeleteInterestSubmit = (e: any) => {
+        const deletedSubjectFilter = studentSubjectInterest.filter(
+            (subject) =>
+                subject.subjectId == deletedSubject.subjectId &&
+                subject.section == deletedSubject.section &&
+                subject.term == deletedSubject.eduTerm &&
+                subject.year == deletedSubject.eduYear
+        );
+        const deletedSubjectId = deletedSubjectFilter.length ? deletedSubjectFilter[0]._id : "";
+
+        try {
+            fetch(`${config.apiUrlPrefix}/student/deleteSubjectInterest/${deletedSubjectId}`, {
+                method: "POST",
+            }).then((res) => {
+                // console.log(res);
+                if (res.status == 204) {
+                    setDeletedSubject({});
+                    setSelectSubject([]);
+                    setForceChange(!forceChange);
+                }
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const handleDeleteInterest = (subjectId: string) => {
+        setShowAlert(true);
+        setDeletedSubject(subjectId);
+    };
+
     useEffect(() => {
-        // "use client";
         const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
         if (Object.keys(userData).length && status == "authenticated") {
             setClassDate([]);
             fetchStudentInterest(userData);
         }
-    }, [status, termYear]);
+    }, [status, termYear, forceChange]);
 
     return (
         <section>
@@ -107,12 +143,14 @@ export default function PlanPage() {
                 <div>
                     <TimeTable data={selectSubject} />
                 </div>
-                <div className="grid grid-cols-1 px-6 py-4 bg-white w-full border rounded-lg">
-                    <p className="text-xl font-bold">ตารางสอบ</p>
-                    <div className="grid grid-cols-3 md:grid-cols-3 gap-2 bg-white w-full border-t-2 p-2">
-                        <p className="font-bold">ชื่อวิชา</p>
-                        <p className="font-bold">สอบกลางภาค</p>
-                        <p className="font-bold">สอบปลายภาค</p>
+                <div className="grid grid-cols-1 px-6 py-6 bg-white w-full border rounded-lg">
+                    <p className="text-2xl font-bold">ตารางสอบ</p>
+                    <div className="grid grid-cols-3 bg-white w-full border-t-2 mt-2 py-2">
+                        <p className="font-bold px-2">ชื่อวิชา</p>
+                        <p className="font-bold pr-2">สอบกลางภาค</p>
+                        <p className="font-bold pr-2">สอบปลายภาค</p>
+                    </div>
+                    <div className="grid grid-cols-3 gap-y-2 bg-white max-h-52 overflow-y-auto border-t-2 p-2">
                         {selectSubject.map((subject: any) => {
                             var midExam: any = midExamDate.filter((data: any) =>
                                 data?.length ? data[0].subjectId == subject[0][0].subjectId : null
@@ -169,10 +207,10 @@ export default function PlanPage() {
 
                             return (
                                 <>
-                                    <p className="text-sm">{`${subject[0][0].subjectCode} ${subject[0][0].shortNameEng}`}</p>
+                                    <p className="pr-2 py-2 text-xs md:text-sm border-b break-words">{`${subject[0][0].subjectCode} ${subject[0][0].shortNameEng}`}</p>
                                     {midExam ? (
                                         <p
-                                            className="text-sm"
+                                            className="pr-2 py-2 text-xs md:text-sm border-b break-words"
                                             style={{
                                                 color: `${midOverlap.length ? "red" : "black"}`,
                                             }}
@@ -180,11 +218,11 @@ export default function PlanPage() {
                                             midExam?.examStopTime
                                         )} ห้อง ${midExam?.roomName ? midExam?.roomName : "-"}`}</p>
                                     ) : (
-                                        <p>-</p>
+                                        <p className="pr-2 py-2 text-xs text-center md:text-sm border-b break-words">-</p>
                                     )}
                                     {finalExam ? (
                                         <p
-                                            className="text-sm"
+                                            className="pr-2 py-2 text-xs md:text-sm border-b break-words"
                                             style={{
                                                 color: `${finalOverlap.length ? "red" : "black"}`,
                                             }}
@@ -192,7 +230,7 @@ export default function PlanPage() {
                                             finalExam?.examStopTime
                                         )} ห้อง ${finalExam?.roomName ? finalExam?.roomName : "-"}`}</p>
                                     ) : (
-                                        <p>-</p>
+                                        <p className="pr-2 py-2 text-xs text-center md:text-sm border-b break-words">-</p>
                                     )}
                                 </>
                             );
@@ -216,14 +254,32 @@ export default function PlanPage() {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white w-full border-t-2 p-2">
                         {classDate.length ? (
-                            classDate.map((subject, key) => <SelectableSectionCard key={key} data={subject} onClick={handleSubjectSelect} />)
+                            classDate.map((subject: any) => (
+                                <SelectableSectionCard
+                                    key={subject.subjectId}
+                                    data={subject}
+                                    onClick={handleSubjectSelect}
+                                    onDelete={handleDeleteInterest}
+                                />
+                            ))
                         ) : (
-                            <p className="font-bold">ไม่มีข้อมูล</p>
+                            <p className="font-bold text">ไม่มีข้อมูล</p>
                         )}
                     </div>
                 </div>
             </div>
-            <AnimatePresence>{status == "unauthenticated" ? <ProtectPageModel /> : null}</AnimatePresence>
+            <AnimatePresence>
+                {status == "unauthenticated" ? <ProtectPageModel /> : null}
+                {showAlert && (
+                    <AlertModal
+                        onConfirm={(e: any) => {
+                            setShowAlert(false);
+                            handleDeleteInterestSubmit(e);
+                        }}
+                        onDeny={() => setShowAlert(false)}
+                    />
+                )}
+            </AnimatePresence>
         </section>
     );
 }
