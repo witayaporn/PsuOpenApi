@@ -19,8 +19,8 @@ export default function DetailCard(prop: any) {
                 </div>
                 <div className="px-4 grid grid-cols-1 text-center">
                     <p className="font-bold">เว็บไซต์</p>
-                    <a href={buildingDetail?.facDetail?.website} className="">
-                        {buildingDetail?.facDetail?.website}
+                    <a href={buildingDetail?.website || buildingDetail?.facDetail?.website} className="">
+                        {buildingDetail?.website || buildingDetail?.facDetail?.website}
                     </a>
                 </div>
             </div>

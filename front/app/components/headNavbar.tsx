@@ -137,7 +137,7 @@ export default function HeadNavbar() {
                     </a>
                 </div>
 
-                <div className="flex md:order-2 space-x-3 md:space-x-3 ltr:space-x-reverse">
+                <div className="flex relative md:order-2 space-x-3 md:space-x-3 ltr:space-x-reverse">
                     {status == "authenticated" && userData ? (
                         <>
                             <button
@@ -150,7 +150,7 @@ export default function HeadNavbar() {
                             </button>
 
                             <div
-                                className="absolute right-2 mt-12 bg-white border border-blue-950 divide-gray-100 rounded-lg shadow w-46"
+                                className="absolute mt-12 -right-2 w-[15rem] bg-white border border-blue-950 divide-gray-100 rounded-lg shadow"
                                 style={{
                                     display: isShowDropdown ? "block" : "none",
                                 }}

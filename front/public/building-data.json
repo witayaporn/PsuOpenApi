@@ -3237,7 +3237,7 @@
         "@id": "way/858795529",
         "building": "university",
         "building:levels": "3",
-        "name": "อาคารรวมห้องปฏิบัติการ",
+        "name": "อาคารปฏิบัติการรวม",
         "nameEng": "Multilab Building"
       },
       "geometry": {
@@ -3753,6 +3753,8 @@
       "properties": {
         "@id": "way/858854608",
         "building": "stadium",
+        "name": "อาคารยิมเนเซี่ยม",
+        "nameEng": "Gymnasium",
         "leisure": "sports_hall",
         "sport": "basketball"
       },
@@ -3790,6 +3792,8 @@
       "properties": {
         "@id": "way/858854618",
         "building": "gym",
+        "name": "อาคารศูนย์บริหารร่างกาย",
+        "nameEng": "Fitness Gym",
         "leisure": "fitness_centre",
         "sport": "fitness"
       },
@@ -3828,6 +3832,8 @@
         "@id": "way/858854620",
         "access": "yes",
         "building": "sports_centre",
+        "name": "อาคารกีฬาและนันทนาการ",
+        "nameEng": "Sports Center",
         "leisure": "sports_hall",
         "sport": "soccer;basketball;multi;volleyball;table_tennis",
         "website": "http://www.sportscenter.psu.ac.th/"

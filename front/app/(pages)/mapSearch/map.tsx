@@ -173,6 +173,7 @@ export default function Map() {
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
+
                     <GeoJSON
                         pathOptions={{
                             color: "wheat",
@@ -201,7 +202,7 @@ export default function Map() {
                     {locateMe && <LocationMarker />}
                 </MapContainer>
             </div>
-            {selectedPlace.properties && (
+            {selectedPlace.properties?.name && (
                 <motion.div
                     key={keyGeoJson}
                     initial={{ opacity: 0, scale: 0.75, y: 80 }}
