@@ -167,7 +167,7 @@ export default function Map() {
                     center={[7.0078, 100.5006]}
                     zoom={16}
                     scrollWheelZoom={true}
-                    style={{ height: "22rem", width: "auto", border: "none" }}
+                    style={{ height: "40svh", width: "auto", border: "none" }}
                 >
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
