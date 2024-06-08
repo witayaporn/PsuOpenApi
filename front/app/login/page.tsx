@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 export default function LoginPage() {
     return (
-        <div className="md:px-24 xl:px-72 md:pt-[6rem] w-full h-screen">
+        <div className="m-auto md:px-24 xl:px-72 2xl:px-96 md:pt-[6rem] w-full h-screen">
             <div className="relative grid grid-cols-1 md:grid-rows-1 md:grid-cols-7 h-full md:h-[26rem] lg:h-[32rem] rounded-lg border bg-sky-100">
                 <div className="hidden md:flex m-auto md:col-span-4 rounded-l-lg py-2 px-4">
                     <Player src={planningAnimation} loop autoplay />

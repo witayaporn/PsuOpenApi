@@ -18,6 +18,8 @@ export default function PlanPage() {
     const [midExamDate, setMidExamDate] = useState<any[]>([]);
     const [finalExamDate, setFinalExamDate] = useState<any[]>([]);
     const [selectSubject, setSelectSubject] = useState<any[]>([]);
+    const [selectSubjectMid, setSelectSubjectMid] = useState<any[]>([]);
+    const [selectSubjectFinal, setSelectSubjectFinal] = useState<any[]>([]);
     const [termYear, setTermYear] = useState<TermYearJSON>({
         term: "2",
         year: "2564",
@@ -74,15 +76,28 @@ export default function PlanPage() {
     };
 
     const handleSubjectSelect = (subjectId: string, section: string, select: boolean) => {
-        var temp: any = [...selectSubject];
+        var tempSelectSubject: any = [...selectSubject];
+        var tempSelectSubjectMid: any = [...selectSubjectMid];
+        var tempSelectSubjectFinal: any = [...selectSubjectFinal];
         var filterSubject: JSON[];
+        var midExam: any;
+        var finalExam: any;
+
         if (select) {
             filterSubject = classDate.filter((item: any) => item[0].subjectId == subjectId && item[0].section == section);
-            temp.push(filterSubject);
+            midExam = midExamDate.filter((item: any) => (item?.length ? item[0].subjectId == subjectId && item[0].section == section : null));
+            finalExam = finalExamDate.filter((item: any) => (item?.length ? item[0].subjectId == subjectId && item[0].section == section : null));
+            tempSelectSubject.push(filterSubject);
+            tempSelectSubjectMid.push(midExam);
+            tempSelectSubjectFinal.push(finalExam);
         } else {
-            temp = temp.filter((item: any) => item[0][0].subjectId != subjectId || item[0][0].section != section);
+            tempSelectSubject = tempSelectSubject.filter((item: any) => item[0][0].subjectId != subjectId || item[0][0].section != section);
+            tempSelectSubjectMid = tempSelectSubjectMid.filter((item: any) => item[0][0].subjectId != subjectId || item[0][0].section != section);
+            tempSelectSubjectFinal = tempSelectSubjectFinal.filter((item: any) => item[0][0].subjectId != subjectId || item[0][0].section != section);
         }
-        setSelectSubject(temp);
+        setSelectSubject(tempSelectSubject);
+        setSelectSubjectMid(tempSelectSubjectMid);
+        setSelectSubjectFinal(tempSelectSubjectFinal);
     };
 
     const handleTermSelect = (e: any) => {
@@ -93,6 +108,9 @@ export default function PlanPage() {
             year: "25" + splitData[1],
         };
         setTermYear(newTermYear);
+        setSelectSubject([]);
+        setSelectSubjectMid([]);
+        setSelectSubjectFinal([]);
     };
 
     const handleDeleteInterestSubmit = (e: any) => {
@@ -151,99 +169,101 @@ export default function PlanPage() {
                         <p className="font-bold pr-2">สอบปลายภาค</p>
                     </div>
                     <div className="grid grid-cols-3 gap-y-2 bg-white max-h-52 overflow-y-auto border-t-2 p-2">
-                        {selectSubject.map((subject: any) => {
-                            var midExam: any = midExamDate.filter((data: any) =>
-                                data?.length ? data[0].subjectId == subject[0][0].subjectId : null
-                            );
-                            var finalExam: any = finalExamDate.filter((data: any) =>
-                                data?.length ? data[0].subjectId == subject[0][0].subjectId : null
-                            );
-                            midExam = midExam.length ? midExam[0][0] : null;
-                            finalExam = finalExam.length ? finalExam[0][0] : null;
-                            const midStr: string = midExam?.examDate.slice(0, 10);
-                            const finalStr: string = finalExam?.examDate.slice(0, 10);
-                            const midDateStr = dateToTHstr(midStr);
-                            const finalDateStr = dateToTHstr(finalStr);
+                        {selectSubject.length
+                            ? selectSubject.map((subject: any) => {
+                                  var midExam: any = selectSubjectMid.filter((item: any) =>
+                                      item[0]?.length ? item[0][0].subjectId == subject[0][0].subjectId : null
+                                  );
+                                  var finalExam: any = selectSubjectFinal.filter((item: any) =>
+                                      item[0]?.length ? item[0][0].subjectId == subject[0][0].subjectId : null
+                                  );
+                                  midExam = midExam.length ? midExam[0][0][0] : null;
+                                  finalExam = finalExam.length ? finalExam[0][0][0] : null;
+                                  const midStr: string = midExam?.examDate.slice(0, 10);
+                                  const finalStr: string = finalExam?.examDate.slice(0, 10);
+                                  const midDateStr = dateToTHstr(midStr);
+                                  const finalDateStr = dateToTHstr(finalStr);
 
-                            var midOverlap: any = [];
-                            var finalOverlap: any = [];
-                            if (midStr) {
-                                midOverlap = midExamDate.filter((data: any) => {
-                                    if (data?.length && data[0] !== midExam) {
-                                        const midDate = data[0].examDate.slice(0, 10);
-                                        const midStartT = data[0].examStartTime;
-                                        const midStopT = data[0].examStopTime;
-                                        return checkDateTimeOverlap(
-                                            midExam.examDate,
-                                            midExam.examStartTime,
-                                            midExam.examStopTime,
-                                            midDate,
-                                            midStartT,
-                                            midStopT
-                                        );
-                                    }
-                                    return false;
-                                });
-                            }
+                                  var midOverlap: any = [];
+                                  var finalOverlap: any = [];
 
-                            if (finalStr) {
-                                finalOverlap = finalExamDate.filter((data: any) => {
-                                    if (data?.length && data[0] !== finalExam) {
-                                        const finalDate = data[0].examDate.slice(0, 10);
-                                        const finalStartT = data[0].examStartTime;
-                                        const finalStopT = data[0].examStopTime;
-                                        return checkDateTimeOverlap(
-                                            finalExam.examDate,
-                                            finalExam.examStartTime,
-                                            finalExam.examStopTime,
-                                            finalDate,
-                                            finalStartT,
-                                            finalStopT
-                                        );
-                                    }
-                                    return false;
-                                });
-                            }
+                                  if (midStr) {
+                                      midOverlap = selectSubjectMid.filter((data: any) => {
+                                          if (data[0]?.length && data[0][0] !== midExam) {
+                                              const midDate = data[0][0].examDate;
+                                              const midStartT = data[0][0].examStartTime;
+                                              const midStopT = data[0][0].examStopTime;
+                                              return checkDateTimeOverlap(
+                                                  midExam.examDate,
+                                                  midExam.examStartTime,
+                                                  midExam.examStopTime,
+                                                  midDate,
+                                                  midStartT,
+                                                  midStopT
+                                              );
+                                          }
+                                          return false;
+                                      });
+                                  }
 
-                            return (
-                                <>
-                                    <p className="pr-2 py-2 text-xs md:text-sm border-b break-words">{`${subject[0][0].subjectCode} ${subject[0][0].shortNameEng}`}</p>
-                                    {midExam ? (
-                                        <p
-                                            className="pr-2 py-2 text-xs md:text-sm border-b break-words"
-                                            style={{
-                                                color: `${midOverlap.length ? "red" : "black"}`,
-                                            }}
-                                        >{`${midDateStr} เวลา ${timeFormatter(midExam?.examStartTime)} - ${timeFormatter(
-                                            midExam?.examStopTime
-                                        )} ห้อง ${midExam?.roomName ? midExam?.roomName : "-"}`}</p>
-                                    ) : (
-                                        <p className="pr-2 py-2 text-xs text-center md:text-sm border-b break-words">-</p>
-                                    )}
-                                    {finalExam ? (
-                                        <p
-                                            className="pr-2 py-2 text-xs md:text-sm border-b break-words"
-                                            style={{
-                                                color: `${finalOverlap.length ? "red" : "black"}`,
-                                            }}
-                                        >{`${finalDateStr} เวลา ${timeFormatter(finalExam?.examStartTime)} - ${timeFormatter(
-                                            finalExam?.examStopTime
-                                        )} ห้อง ${finalExam?.roomName ? finalExam?.roomName : "-"}`}</p>
-                                    ) : (
-                                        <p className="pr-2 py-2 text-xs text-center md:text-sm border-b break-words">-</p>
-                                    )}
-                                </>
-                            );
-                        })}
+                                  if (finalStr) {
+                                      finalOverlap = selectSubjectFinal.filter((data: any) => {
+                                          if (data[0]?.length && data[0][0] !== finalExam) {
+                                              const finalDate = data[0][0].examDate.slice(0, 10);
+                                              const finalStartT = data[0][0].examStartTime;
+                                              const finalStopT = data[0][0].examStopTime;
+                                              return checkDateTimeOverlap(
+                                                  finalExam.examDate,
+                                                  finalExam.examStartTime,
+                                                  finalExam.examStopTime,
+                                                  finalDate,
+                                                  finalStartT,
+                                                  finalStopT
+                                              );
+                                          }
+                                          return false;
+                                      });
+                                  }
+                                  return (
+                                      <>
+                                          <p className="pr-2 py-2 text-xs md:text-sm border-b break-words">{`${subject[0][0].subjectCode} ${subject[0][0].shortNameEng}`}</p>
+                                          {midExam ? (
+                                              <p
+                                                  className="pr-2 py-2 text-xs md:text-sm border-b break-words"
+                                                  style={{
+                                                      color: `${midOverlap.length ? "red" : "black"}`,
+                                                  }}
+                                              >{`${midDateStr} เวลา ${timeFormatter(midExam?.examStartTime)} - ${timeFormatter(
+                                                  midExam?.examStopTime
+                                              )} ห้อง ${midExam?.roomName ? midExam?.roomName : "-"}`}</p>
+                                          ) : (
+                                              <p className="pr-2 py-2 text-xs text-center md:text-sm border-b break-words">-</p>
+                                          )}
+                                          {finalExam ? (
+                                              <p
+                                                  className="pr-2 py-2 text-xs md:text-sm border-b break-words"
+                                                  style={{
+                                                      color: `${finalOverlap.length ? "red" : "black"}`,
+                                                  }}
+                                              >{`${finalDateStr} เวลา ${timeFormatter(finalExam?.examStartTime)} - ${timeFormatter(
+                                                  finalExam?.examStopTime
+                                              )} ห้อง ${finalExam?.roomName ? finalExam?.roomName : "-"}`}</p>
+                                          ) : (
+                                              <p className="pr-2 py-2 text-xs text-center md:text-sm border-b break-words">-</p>
+                                          )}
+                                      </>
+                                  );
+                              })
+                            : null}
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-2 px-6 py-4 mb-16 bg-white w-full border rounded-lg">
-                    <div className="flex justify-between">
-                        <p className="text-2xl font-bold">วิชาที่คุณสนใจ</p>
+                    <div className="flex justify-between py-2 border-b-2">
+                        <p className="text-2xl font-bold ">วิชาที่คุณสนใจ</p>
                         <select
                             id="term"
                             onChange={handleTermSelect}
-                            className="h-full bg-gray-50 p-1 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block"
+                            className="w-3/12 md:w-2/12 h-fit bg-gray-50 p-1 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block"
                         >
                             <option value="2/64">2/64</option>
                             <option value="1/64">1/64</option>
@@ -252,20 +272,40 @@ export default function PlanPage() {
                             <option value="1/63">1/63</option>
                         </select>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white w-full border-t-2 p-2">
-                        {classDate.length ? (
-                            classDate.map((subject: any) => (
+
+                    {classDate.length ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white w-full p-2">
+                            {classDate.map((subject: any) => (
                                 <SelectableSectionCard
                                     key={subject.subjectId}
                                     data={subject}
                                     onClick={handleSubjectSelect}
                                     onDelete={handleDeleteInterest}
                                 />
-                            ))
-                        ) : (
-                            <p className="font-bold text">ไม่มีข้อมูล</p>
-                        )}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="flex flex-col w-full">
+                            <p className="text-center p-3 text-gray-500">ไม่มีข้อมูล</p>
+                        </div>
+                    )}
+                    <a
+                        className="w-full m-auto p-2 text-center border-2 rounded-lg text-gray-500 hover:bg-blue-100 transition-all duration-200"
+                        href={`/subjectSearch?term=${termYear.term}&year=${termYear.year}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="size-6 m-auto"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                    </a>
                 </div>
             </div>
             <AnimatePresence>

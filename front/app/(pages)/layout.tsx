@@ -15,7 +15,7 @@ export default function RootLayout({
             <body className="main-font">
                 <SessionProvider>
                     <HeadNavbar />
-                    <div className="pt-28 px-6 md:px-20 lg:px-40 xl:px-80 mb-20 md:mb-0 ">
+                    <div className="pt-28 px-6 md:px-20 lg:px-40 xl:px-80 2xl:px-[28rem] mb-20 md:mb-0 ">
                         <Suspense>{children}</Suspense>
                     </div>
                     <BottomNavbar />

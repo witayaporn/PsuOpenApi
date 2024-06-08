@@ -89,18 +89,26 @@ export default function SubjectSearchPage() {
         const term = seachParams.get("term");
         const year = seachParams.get("year");
         try {
-            subjectId
-                ? fetch(`https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/01/${term}/${year}/${subjectId}?offset=0&limit=1000`, {
-                      method: "GET",
-                      cache: "force-cache",
-                      headers: {
-                          credential: process.env.NEXT_PUBLIC_API_KEY,
-                      },
-                  })
+            subjectId || (term && year)
+                ? fetch(
+                      `https://api-gateway.psu.ac.th/Test/regist/SubjectOfferCampus/01/${term}/${year}${
+                          subjectId ? `/${subjectId}` : ""
+                      }?offset=0&limit=1000`,
+                      {
+                          method: "GET",
+                          cache: "force-cache",
+                          headers: {
+                              credential: process.env.NEXT_PUBLIC_API_KEY,
+                          },
+                      }
+                  )
                       .then((res) => res.json())
                       .then((json) => {
                           const data = json.data;
-                          setCourseData(data);
+                          if (data.length) {
+                              setCourseData(data);
+                              setTermYear({ term: term || "", year: year || "" });
+                          }
                       })
                 : null;
         } catch (e) {
@@ -125,10 +133,21 @@ export default function SubjectSearchPage() {
                                 onChange={handleTermSelect}
                                 className="h-full bg-gray-50 p-1 border border-black text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
                             >
-                                <option value="2/64">2/64</option>
-                                <option value="1/64">1/64</option>
-                                <option value="3/63">3/63</option>
-                                <option value="2/63">2/63</option>
+                                <option value="2/64" selected={termYear.term == "2" && termYear.year == "2564"}>
+                                    2/64
+                                </option>
+                                <option value="1/64" selected={termYear.term == "1" && termYear.year == "2564"}>
+                                    1/64
+                                </option>
+                                <option value="3/63" selected={termYear.term == "3" && termYear.year == "2563"}>
+                                    3/63
+                                </option>
+                                <option value="2/63" selected={termYear.term == "2" && termYear.year == "2563"}>
+                                    2/63
+                                </option>
+                                <option value="1/63" selected={termYear.term == "1" && termYear.year == "2563"}>
+                                    1/63
+                                </option>
                             </select>
                         </div>
                         <div className="">
@@ -247,7 +266,11 @@ export default function SubjectSearchPage() {
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-20">
-                {courseData ? courseData.map((course, key) => <SubjectCard key={course.subjectId + "" + key} data={course} />) : <p>ไม่มีข้อมูล</p>}
+                {courseData.length ? (
+                    courseData.map((course, key) => <SubjectCard key={course.subjectId + "" + key} data={course} />)
+                ) : (
+                    <p>ไม่มีข้อมูล</p>
+                )}
             </div>
         </section>
     );

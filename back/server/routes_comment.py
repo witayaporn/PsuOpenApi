@@ -172,9 +172,13 @@ async def find_max_vote_comment(subjectId: str, request: Request):
                     )
                 )
                 if vote:
-                    upvote = [upvote["count"] for upvote in vote if upvote["_id"] == "up"]
+                    upvote = [
+                        upvote["count"] for upvote in vote if upvote["_id"] == "up"
+                    ]
                     downvote = [
-                        downvote["count"] for downvote in vote if downvote["_id"] == "down"
+                        downvote["count"]
+                        for downvote in vote
+                        if downvote["_id"] == "down"
                     ]
                     upvote = upvote[0] if len(upvote) else 0
                     downvote = downvote[0] if len(downvote) else 0
@@ -189,7 +193,7 @@ async def find_max_vote_comment(subjectId: str, request: Request):
                     and maxVoteComment["created"] < comment["created"]
                     and comment["parentId"] == None
                 ):
-                    maxVoteComment = comment    
+                    maxVoteComment = comment
             return [maxVoteComment]
         else:
             return comments

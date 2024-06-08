@@ -185,8 +185,8 @@ export default function SubjectCard(prop: any) {
 
     const faculty = facultyData.filter((fac) => fac.facId == data.facId)[0];
     const facColor = {
-        primary: faculty.primaryColor,
-        secondary: faculty.secondaryColor,
+        primary: faculty?.primaryColor,
+        secondary: faculty?.secondaryColor,
     };
 
     useEffect(() => {
