@@ -6,7 +6,7 @@ export default function HomePage() {
         <section>
             <div className="grid md:grid-rows-2 grid-rows-3 md:grid-cols-3 gap-1 items-start">
                 <a
-                    href="/subjectSearch"
+                    href={`/subjectSearch`}
                     className="h-full md:h-80 p-8 text-white text-center bg-[#074173] box-border rounded bg-cover hover:shadow hover:scale-[1.01] transition-all "
                 >
                     <h1 className="text-4xl font-bold mb-8 ">ค้นหารายวิชา</h1>

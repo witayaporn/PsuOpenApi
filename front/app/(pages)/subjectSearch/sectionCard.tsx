@@ -118,22 +118,22 @@ export default function SectionCard(prop: any) {
                                       {date.classDateDesc} {timeFormatter(date.startTime) + " - " + timeFormatter(date.stopTime)}
                                   </p>
                                   {date.roomName ? (
-                                      <p className="block md:inline-flex p-1">
-                                          <p className="py-1 md:mr-3">{date.roomName}</p>
+                                      <p className="inline-flex p-1">
+                                          <p className="py-1 mr-3">{date.roomName}</p>
                                           <a
                                               className="inline-flex py-1 px-2 bg-gray-300 w-fit h-fit rounded-lg"
                                               href={`/mapSearch/?search=${date.roomName}`}
                                               target="_blank"
                                               rel="noopener noreferrer"
                                           >
-                                              ค้นหาห้อง
+                                              <p className="hidden md:flex">ค้นหาห้อง</p>
                                               <svg
                                                   xmlns="http://www.w3.org/2000/svg"
                                                   fill="none"
                                                   viewBox="0 0 24 24"
                                                   strokeWidth="1.5"
                                                   stroke="currentColor"
-                                                  className="w-5 h-5 ml-1"
+                                                  className="w-5 h-5 md:ml-1"
                                               >
                                                   <path
                                                       strokeLinecap="round"

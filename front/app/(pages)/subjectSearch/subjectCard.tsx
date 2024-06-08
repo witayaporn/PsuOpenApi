@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChartData } from "chart.js";
 import config from "@/app/config";
 
+
 export default function SubjectCard(prop: any) {
     const data = prop.data;
     const subjectNameEN = data.subjectCode + " " + data.subjectNameEng;
@@ -32,6 +33,7 @@ export default function SubjectCard(prop: any) {
     const [subjectStat, setSubjectStat] = useState<any[]>([]);
     const [subject, setSubject] = useState<any>();
     const [subjectPreviewComment, setSubjectPreviewComment] = useState<any>({});
+    const [facColor, setFacColor] = useState<any>({})
 
     const fetchSubjectDetail = () => {
         try {
@@ -183,15 +185,16 @@ export default function SubjectCard(prop: any) {
         setShowModal(!showModal);
     };
 
-    const faculty = facultyData.filter((fac) => fac.facId == data.facId)[0];
-    const facColor = {
-        primary: faculty?.primaryColor,
-        secondary: faculty?.secondaryColor,
-    };
-
     useEffect(() => {
         const modal = urlParam.get("modal");
         modal == "open" ? handleCardClick() : null;
+
+        const faculty = facultyData.filter((fac) => fac.facId == data.facId)[0];
+        setFacColor({
+            primary: faculty?.primaryColor,
+            secondary: faculty?.secondaryColor,
+        });
+        
     }, []);
 
     return (
