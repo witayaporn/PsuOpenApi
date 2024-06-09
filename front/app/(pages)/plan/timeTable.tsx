@@ -143,6 +143,9 @@ export default function TimeTable(prop: any) {
                                                     maxWidth: `${renderData.period * 120}px`,
                                                     backgroundColor: "#" + item.subjectCode.replace(/-/, "") + "80",
                                                 }}
+                                                href={`/subjectSearch?subjectId=${item.subjectId}&term=${item.eduTerm}&year=${item.eduYear}&modal=open`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                             >
                                                 <p
                                                     className="text-xs font-bold text-gray-900 truncate"

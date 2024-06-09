@@ -156,7 +156,7 @@ export default function PlanPage() {
                 setSelectSubjectMid(pastSelectSubject.subjectMids);
                 setSelectSubjectFinal(pastSelectSubject.subjectFinals);
             }
-            
+
             setClassDate([]);
             fetchStudentInterest(userData);
         }
@@ -239,9 +239,9 @@ export default function PlanPage() {
                                           <p className="pr-2 py-2 text-xs md:text-sm border-b break-words">{`${subject[0][0].subjectCode} ${subject[0][0].shortNameEng}`}</p>
                                           {midExam ? (
                                               <p
-                                                  className="pr-2 py-2 text-xs md:text-sm border-b break-words"
+                                                  className="pr-2 py-2 text-gray-700 text-xs md:text-sm border-b break-words"
                                                   style={{
-                                                      color: `${midOverlap.length ? "red" : "black"}`,
+                                                      color: `${midOverlap.length ? "#EF4444" : ""}`,
                                                   }}
                                               >{`${midDateStr} เวลา ${timeFormatter(midExam?.examStartTime)} - ${timeFormatter(
                                                   midExam?.examStopTime
@@ -251,9 +251,9 @@ export default function PlanPage() {
                                           )}
                                           {finalExam ? (
                                               <p
-                                                  className="pr-2 py-2 text-xs md:text-sm border-b break-words"
+                                                  className="pr-2 py-2 text-gray-700 text-xs md:text-sm border-b break-words"
                                                   style={{
-                                                      color: `${finalOverlap.length ? "red" : "black"}`,
+                                                      color: `${finalOverlap.length ? "#EF4444" : ""}`,
                                                   }}
                                               >{`${finalDateStr} เวลา ${timeFormatter(finalExam?.examStartTime)} - ${timeFormatter(
                                                   finalExam?.examStopTime
