@@ -13,6 +13,7 @@ export default function CommentModal(prop: any) {
     const [userData, setUserData] = useState<any>({});
     const [tempName, setTempName] = useState<string>("");
     const [subjectComment, setSubjectComment] = useState<any[]>([]);
+    const [hasComment, setHasComment] = useState<boolean>(prop.hasComment);
     const [studentVote, setStudentVote] = useState<any[]>([]);
     const [studentRegistInfo, setStudentRegistInfo] = useState<any>({});
     const [newComment, setNewComment] = useState<any>({});
@@ -135,20 +136,24 @@ export default function CommentModal(prop: any) {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    data.sort((commA: any, commB: any) => {
-                        if (commA.vote > commB.vote) {
-                            return -1;
-                        } else if (commA.vote < commB.vote) {
-                            return 1;
-                        } else {
-                            if (commA.created > commB.created) {
+                    if (data.length) {
+                        data.sort((commA: any, commB: any) => {
+                            if (commA.vote > commB.vote) {
                                 return -1;
-                            } else {
+                            } else if (commA.vote < commB.vote) {
                                 return 1;
+                            } else {
+                                if (commA.created > commB.created) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
                             }
-                        }
-                    });
-                    setSubjectComment(data);
+                        });
+
+                        setSubjectComment(data);
+                        setHasComment(true);
+                    }
                 });
         } catch (e) {
             console.error(e);
@@ -239,7 +244,7 @@ export default function CommentModal(prop: any) {
                             <p className="w-full font-bold text-lg ">ความคิดเห็นต่อรายวิชา</p>
                         </div>
                         <div className="flex flex-col h-full overflow-y-auto px-3">
-                            {prop.hasComment ? (
+                            {hasComment ? (
                                 subjectComment.length ? (
                                     subjectComment.map((comment: any) => {
                                         if (comment.parentId == null) {

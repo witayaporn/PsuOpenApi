@@ -2123,9 +2123,9 @@
         "is_in:country": "Thailand",
         "is_in:district": "Hat Yai",
         "is_in:province": "Songkhla",
-        "name": "อาคารปฏิบัติการหลังใหม่",
+        "name": "อาคารปฏิบัติการรวมหลังใหม่",
         "nameEng": "New Multi Lab building",
-        "name:th": "อาคารปฏิบัติการหลังใหม่"
+        "name:th": "อาคารปฏิบัติการรวมหลังใหม่"
       },
       "geometry": {
         "type": "Polygon",
