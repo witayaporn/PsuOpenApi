@@ -92,8 +92,12 @@ export default function PlanPage() {
             tempSelectSubjectFinal.push(finalExam);
         } else {
             tempSelectSubject = tempSelectSubject.filter((item: any) => item[0][0].subjectId != subjectId || item[0][0].section != section);
-            tempSelectSubjectMid = tempSelectSubjectMid.filter((item: any) => (item?.length ? item[0][0].subjectId != subjectId || item[0][0].section != section : null));
-            tempSelectSubjectFinal = tempSelectSubjectFinal.filter((item: any) => (item?.length ? item[0][0].subjectId != subjectId || item[0][0].section != section : null));
+            tempSelectSubjectMid = tempSelectSubjectMid.filter((item: any) =>
+                item?.length ? item[0][0].subjectId != subjectId || item[0][0].section != section : null
+            );
+            tempSelectSubjectFinal = tempSelectSubjectFinal.filter((item: any) =>
+                item?.length ? item[0][0].subjectId != subjectId || item[0][0].section != section : null
+            );
         }
         setSelectSubject(tempSelectSubject);
         setSelectSubjectMid(tempSelectSubjectMid);
@@ -132,6 +136,22 @@ export default function PlanPage() {
             }).then((res) => {
                 // console.log(res);
                 if (res.status == 204) {
+                    const tempSelectSubject = selectSubject.filter(
+                        (item: any) => item[0][0].subjectId != deletedSubject.subjectId || item[0][0].section != deletedSubject.section
+                    );
+                    const tempSelectSubjectMid = selectSubjectMid.filter((item: any) =>
+                        item?.length ? item[0][0].subjectId != deletedSubject.subjectId || item[0][0].section != deletedSubject.section : null
+                    );
+                    const tempSelectSubjectFinal = selectSubjectFinal.filter((item: any) =>
+                        item?.length ? item[0][0].subjectId != deletedSubject.subjectId || item[0][0].section != deletedSubject.section : null
+                    );
+                    const planSelect = { subjects: tempSelectSubject, subjectMids: tempSelectSubjectMid, subjectFinals: tempSelectSubjectFinal };
+
+                    setSelectSubject(tempSelectSubject);
+                    setSelectSubjectMid(tempSelectSubjectMid);
+                    setSelectSubjectFinal(tempSelectSubjectFinal);
+                    localStorage.setItem(`plan-${termYear.term}-${termYear.year}`, JSON.stringify(planSelect));
+
                     setDeletedSubject({});
                     setSelectSubject([]);
                     setForceChange(!forceChange);
@@ -286,7 +306,10 @@ export default function PlanPage() {
                     {classDate.length ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white w-full p-2">
                             {classDate.map((subject: any) => {
-                                const isSelect: boolean = selectSubject.filter((item: any) => item[0][0].subjectId == subject[0].subjectId && item[0][0].section == subject[0].section).length > 0
+                                const isSelect: boolean =
+                                    selectSubject.filter(
+                                        (item: any) => item[0][0].subjectId == subject[0].subjectId && item[0][0].section == subject[0].section
+                                    ).length > 0;
                                 return (
                                     <SelectableSectionCard
                                         key={subject[0].subjectId}
