@@ -92,12 +92,15 @@ export default function PlanPage() {
             tempSelectSubjectFinal.push(finalExam);
         } else {
             tempSelectSubject = tempSelectSubject.filter((item: any) => item[0][0].subjectId != subjectId || item[0][0].section != section);
-            tempSelectSubjectMid = tempSelectSubjectMid.filter((item: any) => item[0][0].subjectId != subjectId || item[0][0].section != section);
-            tempSelectSubjectFinal = tempSelectSubjectFinal.filter((item: any) => item[0][0].subjectId != subjectId || item[0][0].section != section);
+            tempSelectSubjectMid = tempSelectSubjectMid.filter((item: any) => (item?.length ? item[0][0].subjectId != subjectId || item[0][0].section != section : null));
+            tempSelectSubjectFinal = tempSelectSubjectFinal.filter((item: any) => (item?.length ? item[0][0].subjectId != subjectId || item[0][0].section != section : null));
         }
         setSelectSubject(tempSelectSubject);
         setSelectSubjectMid(tempSelectSubjectMid);
         setSelectSubjectFinal(tempSelectSubjectFinal);
+
+        const planSelect = { subjects: tempSelectSubject, subjectMids: tempSelectSubjectMid, subjectFinals: tempSelectSubjectFinal };
+        localStorage.setItem(`plan-${termYear.term}-${termYear.year}`, JSON.stringify(planSelect));
     };
 
     const handleTermSelect = (e: any) => {
@@ -147,6 +150,13 @@ export default function PlanPage() {
     useEffect(() => {
         const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
         if (Object.keys(userData).length && status == "authenticated") {
+            const pastSelectSubject = JSON.parse(localStorage.getItem(`plan-${termYear.term}-${termYear.year}`) || "{}");
+            if (Object.keys(pastSelectSubject).length) {
+                setSelectSubject(pastSelectSubject.subjects);
+                setSelectSubjectMid(pastSelectSubject.subjectMids);
+                setSelectSubjectFinal(pastSelectSubject.subjectFinals);
+            }
+            
             setClassDate([]);
             fetchStudentInterest(userData);
         }
@@ -275,14 +285,18 @@ export default function PlanPage() {
 
                     {classDate.length ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white w-full p-2">
-                            {classDate.map((subject: any) => (
-                                <SelectableSectionCard
-                                    key={subject.subjectId}
-                                    data={subject}
-                                    onClick={handleSubjectSelect}
-                                    onDelete={handleDeleteInterest}
-                                />
-                            ))}
+                            {classDate.map((subject: any) => {
+                                const isSelect: boolean = selectSubject.filter((item: any) => item[0][0].subjectId == subject[0].subjectId && item[0][0].section == subject[0].section).length > 0
+                                return (
+                                    <SelectableSectionCard
+                                        key={subject[0].subjectId}
+                                        data={subject[0]}
+                                        onClick={handleSubjectSelect}
+                                        onDelete={handleDeleteInterest}
+                                        selected={isSelect}
+                                    />
+                                );
+                            })}
                         </div>
                     ) : (
                         <div className="flex flex-col w-full">

@@ -2,8 +2,8 @@
 import { useState } from "react";
 
 export default function SelectableSectionCard(prop: any) {
-    const [select, setSelect] = useState<boolean>(false);
-    const data = prop.data[0];
+    const [select, setSelect] = useState<boolean>(prop.selected);
+    const data = prop.data;
     const subjectShortNameEN = data.subjectCode + " " + data.shortNameEng;
 
     const handleCardClick = () => {
