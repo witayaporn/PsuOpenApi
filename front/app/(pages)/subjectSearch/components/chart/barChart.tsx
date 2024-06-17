@@ -1,6 +1,5 @@
 import { Bar } from "react-chartjs-2";
 import { Chart, ChartData, registerables } from "chart.js";
-// import { useEffect, useState } from "react";
 
 export default function BarChart(prop: any) {
     Chart.register(...registerables);

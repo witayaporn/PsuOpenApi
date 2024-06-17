@@ -1,4 +1,4 @@
-import facultyData from "../../../public/faculty-data.json";
+import facultyData from "@/public/static-data/faculty-data.json";
 
 export default function DetailCard(prop: any) {
     const propData = prop.data;

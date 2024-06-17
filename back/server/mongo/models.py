@@ -5,6 +5,7 @@ from pydantic.json_schema import GenerateJsonSchema, JsonSchemaValue  # type: ig
 from bson import ObjectId  # type: ignore
 from datetime import datetime, timezone, timedelta
 
+
 class _ObjectIdPydanticAnnotation:
     @classmethod
     def __get_pydantic_core_schema__(
@@ -22,6 +23,7 @@ class _ObjectIdPydanticAnnotation:
             ],
             serialization=core_schema.to_string_ser_schema(),
         )
+
 
 PydanticObjectId = Annotated[ObjectId, _ObjectIdPydanticAnnotation]
 

@@ -8,6 +8,7 @@ from mongo.models import Comment, CommentUpdate, PydanticObjectId
 
 router_comment = APIRouter()
 
+
 @router_comment.get(
     "/{subjectId}",
     response_description="Get a comment for subject by subjectId",
@@ -160,6 +161,7 @@ async def find_max_vote_comment(subjectId: str, request: Request):
             detail=f"Internal Error {str(err)}",
         )
 
+
 @router_comment.post(
     "/",
     response_description="Create a new comment",
@@ -185,6 +187,7 @@ async def create_comment(request: Request):
             detail=f"Internal Error {str(err)}",
         )
 
+
 @router_comment.post(
     "/update/{commentId}",
     response_description="Update a comment",
@@ -204,14 +207,16 @@ async def update_comment(commentId: PydanticObjectId, request: Request):
                     detail=f"Comment with ID {commentId} not found",
                 )
         if (
-            existing_comment := request.app.database["Comment"].find_one({"_id": commentId})
+            existing_comment := request.app.database["Comment"].find_one(
+                {"_id": commentId}
+            )
         ) is not None:
             return existing_comment
-        
+
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Comment with ID {commentId} not found",
-        ) 
+        )
     except Exception as err:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -238,7 +243,9 @@ async def delete_comment(
                 },
                 {
                     "$project": {
-                        "ids": {"$map": {"input": "$ids", "as": "id", "in": "$$id._id"}},
+                        "ids": {
+                            "$map": {"input": "$ids", "as": "id", "in": "$$id._id"}
+                        },
                         "_id": 0,
                     }
                 },
@@ -257,7 +264,7 @@ async def delete_comment(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Comment with ID {commentId} not found",
-        ) 
+        )
     except Exception as err:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 export default function MapSearchPage() {
     const router = useRouter();
-    const Map = dynamic(() => import("./map"), {
+    const Map = dynamic(() => import("./components/map/map"), {
         ssr: false,
         loading: () => <p>Loading...</p>,
     });

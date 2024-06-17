@@ -1,15 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-import SelectableSectionCard from "./selectableSubjectCard";
-import TimeTable from "./timeTable";
+import SelectableSectionCard from "./components/card/selectableSubjectCard";
+import TimeTable from "./components/timeTable/timeTable";
 import { timeFormatter, dateToTHstr, checkDateTimeOverlap } from "@/app/utils/timeUtils";
 import { TermYearJSON } from "../subjectSearch/page";
 import { useSession } from "next-auth/react";
 import { AnimatePresence } from "framer-motion";
-import ProtectPageModel from "@/app/components/protectPageModal";
+import ProtectPageModel from "@/app/components/modal/protectPageModal";
 import config from "@/app/config";
 import { encryptStorage } from "@/app/utils/encryptStorage";
-import AlertModal from "@/app/components/alertModal";
+import AlertModal from "@/app/components/modal/alertModal";
 
 export default function PlanPage() {
     const { status } = useSession();

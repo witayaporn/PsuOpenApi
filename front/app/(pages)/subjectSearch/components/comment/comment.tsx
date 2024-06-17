@@ -2,13 +2,10 @@ import { datetimeToTHstr } from "@/app/utils/timeUtils";
 import config from "@/app/config";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { AnimatePresence, motion } from "framer-motion";
 import { encryptStorage } from "@/app/utils/encryptStorage";
 
 export function Comment(prop: any) {
     const data = prop.data;
-    // const allCommentData = prop.comments ? prop.comments : [];
-    // const allStudentVote = prop.votes ? prop.votes : [];
     const dateCreated = datetimeToTHstr(data.created);
 
     const { data: session, status } = useSession();

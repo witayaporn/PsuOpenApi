@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import BarChart from "./barChart";
+import BarChart from "../chart/barChart";
 import SectionCard from "./sectionCard";
-import CommentModal from "./commentModal";
-import { Comment } from "./comment";
-import SuccessModal from "@/app/components/successModal";
-import facultyData from "@/public/faculty-data.json";
+import CommentModal from "../comment/commentModal";
+import { Comment } from "../comment/comment";
+import SuccessModal from "@/app/components/modal/successModal";
+import facultyData from "@/public/static-data/faculty-data.json";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChartData } from "chart.js";

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Body, Request, Response, HTTPException, status  #
 from fastapi.encoders import jsonable_encoder  # type: ignore
 from typing import List
 from bson import ObjectId  # type: ignore
-from datetime import datetime 
+from datetime import datetime
 from mongo.models import Vote, PydanticObjectId
 
 
@@ -32,7 +32,7 @@ async def find_vote(commentId: PydanticObjectId, request: Request):
             vote := list(request.app.database["Vote"].find({"commentId": commentId}))
         ) is not None:
             return vote
-        
+
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Vote with commentId {commentId} not found",
@@ -62,7 +62,9 @@ async def find_vote(studentId: str, request: Request, subjectId: str = None):
                 return vote
         else:
             if (
-                vote := list(request.app.database["Vote"].find({"studentId": studentId}))
+                vote := list(
+                    request.app.database["Vote"].find({"studentId": studentId})
+                )
             ) is not None:
                 return vote
         raise HTTPException(
@@ -87,10 +89,14 @@ async def create_vote(request: Request):
         vote = jsonable_encoder(await request.json())
         vote["_id"] = ObjectId()
         vote["created"] = datetime.now()
-        vote["commentId"] = ObjectId(vote["commentId"]) if len(vote["commentId"]) else None
+        vote["commentId"] = (
+            ObjectId(vote["commentId"]) if len(vote["commentId"]) else None
+        )
         new_vote = request.app.database["Vote"].insert_one(vote)
-        created_vote = request.app.database["Vote"].find_one({"_id": new_vote.inserted_id})
-        return created_vote 
+        created_vote = request.app.database["Vote"].find_one(
+            {"_id": new_vote.inserted_id}
+        )
+        return created_vote
     except Exception as err:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -122,7 +128,7 @@ async def update_vote(voteId: PydanticObjectId, request: Request):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Vote with ID {voteId} not found",
-        ) 
+        )
     except Exception as err:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

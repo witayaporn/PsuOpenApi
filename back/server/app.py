@@ -34,7 +34,9 @@ async def lifespan(app: FastAPI):
     yield
     app.mongodb_client.close()
 
+
 app = FastAPI(lifespan=lifespan)
+
 
 @app.get("/")
 def read_root():

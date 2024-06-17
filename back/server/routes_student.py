@@ -1,24 +1,27 @@
 from fastapi import APIRouter, Body, Request, Response, HTTPException, status  # type: ignore
 from fastapi.encoders import jsonable_encoder  # type: ignore
-from typing import List 
+from typing import List
 from bson import ObjectId  # type: ignore
-from mongo.models import Student 
+from mongo.models import Student
 
 router_student = APIRouter()
 
 
 @router_student.get(
-    "/", response_description="List all subject interested", response_model=List[Student]
+    "/",
+    response_description="List all subject interested",
+    response_model=List[Student],
 )
 async def list_student(request: Request):
     try:
         student = list(request.app.database["Student"].find({}))
-        return student 
+        return student
     except Exception as err:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Internal Error {str(err)}",
         )
+
 
 @router_student.get(
     "/{studentId}",
@@ -48,7 +51,7 @@ async def find_student(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Student with ID {studentId} not found",
-        ) 
+        )
     except Exception as err:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -77,8 +80,10 @@ async def create_student(request: Request):
             detail=f"Internal Error {str(err)}",
         )
 
+
 @router_student.post(
-    "/deleteSubjectInterest/{dataId}", response_description="Delete a subject interested"
+    "/deleteSubjectInterest/{dataId}",
+    response_description="Delete a subject interested",
 )
 async def delete_student(dataId: str, request: Request, response: Response):
     try:
@@ -147,34 +152,34 @@ async def find_student(
 ):
     try:
         if year is not None or term is not None:
-                result = request.app.database["Student"].aggregate(
-                    [
-                        {"$match": {"subjectId": subjectId, "term": term, "year": year}},
-                        {
-                            "$group": {
-                                "_id": {
-                                    "section": "$section",
-                                    "studentFaculty": "$studentFaculty",
-                                },
-                                "count": {"$sum": 1},
-                                "totalSectionCount": {"$sum": 1},
-                            }
-                        },
-                        {
-                            "$group": {
-                                "_id": "$_id.section",
-                                "summary": {
-                                    "$push": {
-                                        "studentFaculty": "$_id.studentFaculty",
-                                        "count": "$count",
-                                    }
-                                },
-                                "totalCount": {"$sum": "$totalSectionCount"},
-                            }
-                        },
-                    ]
-                )
-                return result
+            result = request.app.database["Student"].aggregate(
+                [
+                    {"$match": {"subjectId": subjectId, "term": term, "year": year}},
+                    {
+                        "$group": {
+                            "_id": {
+                                "section": "$section",
+                                "studentFaculty": "$studentFaculty",
+                            },
+                            "count": {"$sum": 1},
+                            "totalSectionCount": {"$sum": 1},
+                        }
+                    },
+                    {
+                        "$group": {
+                            "_id": "$_id.section",
+                            "summary": {
+                                "$push": {
+                                    "studentFaculty": "$_id.studentFaculty",
+                                    "count": "$count",
+                                }
+                            },
+                            "totalCount": {"$sum": "$totalSectionCount"},
+                        }
+                    },
+                ]
+            )
+            return result
         else:
             if (
                 result := list(
@@ -191,4 +196,3 @@ async def find_student(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Internal Error {str(err)}",
         )
-        

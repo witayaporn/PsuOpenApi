@@ -5,10 +5,9 @@ import config from "@/app/config";
 import { useSession } from "next-auth/react";
 import CommentSkeleton from "./commentSkeleton";
 import { encryptStorage } from "@/app/utils/encryptStorage";
-import AlertModal from "@/app/components/alertModal";
+import AlertModal from "@/app/components/modal/alertModal";
 
 export default function CommentModal(prop: any) {
-    // const commentData = prop.comment;
     const subjectId = prop.subjectId;
     const [userData, setUserData] = useState<any>({});
     const [tempName, setTempName] = useState<string>("");
@@ -30,7 +29,6 @@ export default function CommentModal(prop: any) {
 
     const handleCommentSubmit = (e: any) => {
         e.preventDefault();
-        // const userData = JSON.parse(encryptStorage.getItem("userData") || "{}");
         if (Object.keys(userData).length && status == "authenticated") {
             const body = {
                 content: commentText,
@@ -91,7 +89,6 @@ export default function CommentModal(prop: any) {
                 method: "POST",
             }).then((res) => {
                 if (res.status == 204) {
-                    // console.log(data);
                     setNewComment({});
                     setCommentText("");
                     setRepliedComment({});

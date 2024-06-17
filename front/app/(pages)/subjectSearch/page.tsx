@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import SubjectCard from "./subjectCard";
+import SubjectCard from "./components/card/subjectCard";
 import SearchBar from "@/app/components/searchBar";
-import facultyData from "@/public/faculty-data.json";
+import facultyData from "@/public/static-data/faculty-data.json";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 

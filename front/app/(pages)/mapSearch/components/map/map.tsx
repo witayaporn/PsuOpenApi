@@ -5,11 +5,11 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import "leaflet-defaulticon-compatibility";
 import { useEffect, useState } from "react";
-import DetailCard from "./detailCard";
+import DetailCard from "../card/detailCard";
 import { motion } from "framer-motion";
-import buildingData from "@/public/building-data.json";
-import parkingData from "@/public/parking-data.json";
-import roomData from "@/public/room-data.json";
+import buildingData from "@/public/static-data/building-data.json";
+import parkingData from "@/public/static-data/parking-data.json";
+import roomData from "@/public/static-data/room-data.json";
 import { useSearchParams } from "next/navigation";
 
 export default function Map() {
