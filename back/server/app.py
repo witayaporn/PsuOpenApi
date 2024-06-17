@@ -34,29 +34,7 @@ async def lifespan(app: FastAPI):
     yield
     app.mongodb_client.close()
 
-
 app = FastAPI(lifespan=lifespan)
-
-# @app.on_event("startup")
-# def startup_db_client():
-#    try:
-#        app.mongodb_client = MongoClient(config["ATLAS_URI"], serverSelectionTimeoutMS=1)
-#        app.mongodb_client.server_info()
-#        app.database = app.mongodb_client[config["DB_NAME"]]
-#        print("Connected to the MongoDB database!")
-#    except ServerSelectionTimeoutError:
-#        print("Fail Connect to the MongoDB database!")
-#        pid = os.getpid()
-#        parent = psutil.Process(pid)
-#        for child in parent.children(recursive=True):
-#            child.kill()
-#        parent.kill()
-
-
-# @app.on_event("shutdown")
-# def shutdown_db_client():
-#    app.mongodb_client.close()
-
 
 @app.get("/")
 def read_root():

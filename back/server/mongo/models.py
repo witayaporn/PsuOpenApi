@@ -5,7 +5,6 @@ from pydantic.json_schema import GenerateJsonSchema, JsonSchemaValue  # type: ig
 from bson import ObjectId  # type: ignore
 from datetime import datetime, timezone, timedelta
 
-
 class _ObjectIdPydanticAnnotation:
     @classmethod
     def __get_pydantic_core_schema__(
@@ -18,13 +17,11 @@ class _ObjectIdPydanticAnnotation:
 
         return core_schema.union_schema(
             [
-                # check if it's an instance first before doing any further work
                 core_schema.is_instance_schema(ObjectId),
                 core_schema.no_info_plain_validator_function(validate_from_str),
             ],
             serialization=core_schema.to_string_ser_schema(),
         )
-
 
 PydanticObjectId = Annotated[ObjectId, _ObjectIdPydanticAnnotation]
 
@@ -85,8 +82,6 @@ class Comment(BaseModel):
     created: datetime = Field(default=datetime.now(tz=timezone(timedelta(hours=7))))
     voting: dict = {"upvote": 0, "downvote": 0}
     vote: int = 0
-    # voteInfo: list[Vote] = Field(...)
-    # reply: list[PydanticObjectId] = Field(...)
 
     class Config:
         populate_by_name = True
@@ -169,9 +164,3 @@ Comment.model_json_schema(mode="serialization")
 CommentUpdate.model_json_schema(mode="serialization")
 Vote.model_json_schema(mode="serialization")
 VoteUpdate.model_json_schema(mode="serialization")
-# Student.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
-# StudentUpdate.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
-# SubjectInterest.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
-# SubjectInterestUpdate.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
-# comment.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
-# commentUpdate.model_json_schema(mode='validation', schema_generator=MyGenerateJsonSchema)
